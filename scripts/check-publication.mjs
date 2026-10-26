@@ -174,6 +174,14 @@ try {
       await page.waitForFunction(() => document.querySelectorAll('tbody tr').length === 1);
       assert.equal(await page.locator('tbody tr').count(), 1);
       const serviceId = await page.locator('tbody tr').getAttribute('data-service-id');
+      const reportDownload = page.waitForEvent('download');
+      await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+      const report = await readFile(await (await reportDownload).path(), 'utf8');
+      assert.equal(report.split('\r\n').length, 2);
+      assert.ok(report.startsWith('\uFEFF'));
+      assert.match(report, /Mantenimiento estático con foto/);
+      assert.ok(report.includes('"45000,00";"Activo"'));
+
       await page.getByRole('button', { name: /^Anular servicio/ }).click();
       await page.getByLabel('Motivo de anulación').fill('Prueba estática de anulación');
       await page.getByRole('button', { name: 'Confirmar anulación', exact: true }).click();

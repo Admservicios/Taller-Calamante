@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { History, Plus, Search, Wrench } from 'lucide-react';
+import { Download, History, Plus, Search, Wrench } from 'lucide-react';
 import { useData } from '../app/store';
 import { Empty, Modal, ModalCancelButton, PageTitle, Panel } from '../components/ui';
 import { PhotoGallery } from '../components/MaintenancePhotos';
 import { ServicePDFButton } from '../components/ServicePDFButton';
-import { dateLabel, money, number, type Service } from '../lib/demo';
+import { dateLabel, download, number, type Service } from '../lib/demo';
 import { maintenanceKind } from '../lib/maintenancePlans';
+import { maintenanceCSV, maintenanceSummary, reportMoney as money } from '../lib/maintenanceReport';
 
 const actions = {
   created: 'Registro creado',
@@ -171,7 +172,7 @@ function StatusDialog({ service, close }: { service: Service; close: () => void 
   );
 }
 export function MaintenanceList() {
-  const { services, vehicles, customers } = useData();
+  const { services, vehicles, customers, mode, referenceDate, notify } = useData();
   const [params, setParams] = useSearchParams();
   const [dialog, setDialog] = useState<{ service: Service; kind: 'history' | 'status' } | null>(
     null,
@@ -234,6 +235,22 @@ export function MaintenanceList() {
       );
     })
     .sort((a, b) => b.date.localeCompare(a.date) || b.km - a.km || a.id.localeCompare(b.id));
+  const summary = maintenanceSummary(filtered);
+  const exportCSV = () => {
+    if (!filtered.length || invalidDates) return;
+    try {
+      download(
+        `taller-calamante-mantenimientos${mode === 'demo' ? '-demo' : ''}-${referenceDate}.csv`,
+        maintenanceCSV(filtered, vehicles, customers, mode === 'demo'),
+        'text/csv;charset=utf-8',
+      );
+      notify(
+        `CSV descargado con ${filtered.length} mantenimientos${mode === 'demo' ? ' de demostración' : ''}. Incluye todas las páginas del resultado filtrado.`,
+      );
+    } catch {
+      notify('No se pudo descargar el CSV. Tus registros se conservan; volvé a intentarlo.');
+    }
+  };
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const requestedPage = Number(params.get('pagina') ?? 1);
   const page = Math.min(
@@ -251,10 +268,20 @@ export function MaintenanceList() {
         title="Mantenimientos"
         subtitle="El trabajo de tu taller, registrado visita a visita."
         actions={
-          <Link className="button primary" to="/mantenimientos/nuevo">
-            <Plus size={17} />
-            Registrar mantenimiento
-          </Link>
+          <div className="history-heading-actions">
+            <button
+              className="button"
+              onClick={exportCSV}
+              disabled={!filtered.length || invalidDates}
+            >
+              <Download size={17} />
+              Exportar CSV
+            </button>
+            <Link className="button primary" to="/mantenimientos/nuevo">
+              <Plus size={17} />
+              Registrar mantenimiento
+            </Link>
+          </div>
         }
       />
       <section className="panel history-filters" aria-label="Filtros del historial">
@@ -317,6 +344,36 @@ export function MaintenanceList() {
           {filtered.length} registros
         </span>
         {invalidDates && <p role="alert">La fecha Desde debe ser anterior o igual a Hasta.</p>}
+      </section>
+      <section aria-label="Resumen del historial" className="history-report">
+        <div className="history-report-cards">
+          <article aria-label="Servicios activos del resultado">
+            <span>Servicios activos</span>
+            <strong>{number(summary.active)}</strong>
+            <small>Dentro de los filtros elegidos</small>
+          </article>
+          <article aria-label="Importe de servicios activos">
+            <span>Importe registrado</span>
+            <strong>{money(summary.total)}</strong>
+            <small>ARS · Solo servicios activos</small>
+          </article>
+          <article aria-label="Importe promedio por servicio activo">
+            <span>Importe promedio</span>
+            <strong>{money(summary.average)}</strong>
+            <small>ARS · Por servicio activo</small>
+          </article>
+          <article aria-label="Servicios anulados del resultado">
+            <span>Servicios anulados</span>
+            <strong>{number(summary.annulled)}</strong>
+            <small>Fuera de los importes del resumen</small>
+          </article>
+        </div>
+        <p className="fineprint">
+          El resumen y el CSV incluyen todas las páginas del resultado filtrado. Los importes son
+          valores registrados de servicios; no indican cobros ni ganancias. El CSV incluye los
+          anulados si los elegís en Estado, y excluye notas privadas e historial de cambios.{' '}
+          {mode === 'demo' && 'Estás viendo datos ficticios de demostración.'}
+        </p>
       </section>
       <Panel title="Historial del taller" icon={Wrench}>
         <div className="table-scroll">

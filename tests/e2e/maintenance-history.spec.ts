@@ -247,3 +247,101 @@ test('en celular los filtros y los diálogos no desbordan y un motivo sin guarda
   await expect(page.getByRole('dialog')).toHaveCount(0);
   expect((await data(page)).services[1].annulment).toBeUndefined();
 });
+
+test('resumen y CSV usan todos los resultados filtrados, incluyen centavos y separan anulados', async ({
+  page,
+}) => {
+  await seed(page, true);
+  await page.goto('/mantenimientos');
+  const summary = page.getByRole('region', { name: 'Resumen del historial' });
+  await expect(
+    summary.getByRole('article', { name: 'Servicios activos del resultado' }).locator('strong'),
+  ).toHaveText('13');
+  const before = await data(page);
+  let pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+  let downloaded = await pending;
+  expect(downloaded.suggestedFilename()).toBe('taller-calamante-mantenimientos-2026-10-23.csv');
+  let csv = await readFile((await downloaded.path())!, 'utf8');
+  expect(csv.split('\r\n')).toHaveLength(14); // Incluye las otras páginas.
+  expect(await data(page)).toEqual(before);
+  await page
+    .getByRole('combobox', { name: 'Tipo de servicio', exact: true })
+    .selectOption('frenos');
+  await expect(
+    summary.getByRole('article', { name: 'Servicios activos del resultado' }).locator('strong'),
+  ).toHaveText('1');
+  await row(page)
+    .getByRole('link', { name: /Editar servicio/ })
+    .click();
+  await page.getByLabel('Importe total').fill('123.45');
+  await page.getByLabel('Observaciones privadas', { exact: true }).fill('NOTA-PRIVADA-INFORME');
+  await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
+  await expect(page).toHaveURL(/vehiculos\/v2$/);
+  await page.goto('/mantenimientos?tipo=frenos');
+  await expect(
+    summary
+      .getByRole('article', { name: 'Importe de servicios activos', exact: true })
+      .locator('strong'),
+  ).toHaveText('$\u00a0123,45');
+  pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+  csv = await readFile((await (await pending).path())!, 'utf8');
+  expect(csv.split('\r\n')).toHaveLength(2);
+  expect(csv).toContain('"123,45";"Activo"');
+  expect(csv).not.toContain('NOTA-PRIVADA-INFORME');
+  await annul(page);
+  await expect(page.getByRole('button', { name: 'Exportar CSV', exact: true })).toBeDisabled();
+  await page.getByLabel('Estado del mantenimiento').selectOption('todos');
+  await expect(
+    summary.getByRole('article', { name: 'Servicios activos del resultado' }).locator('strong'),
+  ).toHaveText('0');
+  await expect(
+    summary.getByRole('article', { name: 'Servicios anulados del resultado' }).locator('strong'),
+  ).toHaveText('1');
+  await expect(
+    summary
+      .getByRole('article', { name: 'Importe de servicios activos', exact: true })
+      .locator('strong'),
+  ).toHaveText('$\u00a00,00');
+  pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+  csv = await readFile((await (await pending).path())!, 'utf8');
+  expect(csv).toContain('"123,45";"Anulado"');
+  expect(csv).not.toContain('Carga duplicada de prueba');
+  await row(page)
+    .getByRole('button', { name: /Recuperar servicio/ })
+    .click();
+  await page.getByLabel('Motivo de recuperación').fill('Importe verificado');
+  await page.getByRole('button', { name: 'Confirmar recuperación', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(
+    summary
+      .getByRole('article', { name: 'Importe de servicios activos', exact: true })
+      .locator('strong'),
+  ).toHaveText('$\u00a0123,45');
+  await page.setViewportSize({ width: 320, height: 780 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: '/tmp/calamante-resumen-mobile.png', fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole('button', { name: 'Activar modo oscuro' }).click();
+  await page.setViewportSize({ width: 320, height: 780 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('CSV de demostración identificado y exportación vacía deshabilitada', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('motortrack-view-mode', 'demo'));
+  await page.goto('/mantenimientos');
+  const pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+  const downloaded = await pending;
+  expect(downloaded.suggestedFilename()).toContain('-demo-');
+  expect(await readFile((await downloaded.path())!, 'utf8')).toContain('"Demostración"');
+  await page.getByLabel('Buscar mantenimientos').fill('Sin resultados 879642');
+  await expect(page.getByRole('button', { name: 'Exportar CSV', exact: true })).toBeDisabled();
+  const summary = page.getByRole('region', { name: 'Resumen del historial' });
+  await expect(
+    summary.getByRole('article', { name: 'Servicios activos del resultado' }).locator('strong'),
+  ).toHaveText('0');
+  expect(await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY)).toBeNull();
+});

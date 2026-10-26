@@ -69,3 +69,12 @@ El usuario autorizó implementar la base local y subir la estructura a GitHub pa
 - Los metadatos opcionales conservan la versión 1 y las claves existentes. Se validan al guardar/restaurar y se incluyen en JSON, ZIP y SQLite. No se borra automáticamente el historial (límite validado de 1.000 eventos por mantenimiento, además de los límites existentes del respaldo).
 - Un servicio anulado debe recuperarse antes de editar o emitir un nuevo PDF. Los PDF ya descargados no se modifican. Las notas y el historial privado de cambios no se incluyen en los comprobantes.
 - Se mantiene el desarrollo web en GitHub; la instalación Windows y el acceso público por internet siguen en la etapa posterior.
+
+## Paso 4: resumen y exportación del historial
+
+- Resumen en Mantenimientos con cantidad de servicios activos, importe registrado, importe promedio por servicio activo y cantidad de anulados. Usa todos los resultados de los filtros, sin limitarse a la página visible. Los anulados no forman parte de los importes; los servicios gratuitos sí cuentan en el promedio. Los importes registrados no representan cobros, ganancias ni facturación fiscal.
+- Importes del historial, su detalle y el resumen con dos decimales. El resumen suma centavos por visita para evitar errores binarios acumulados; importes antiguos con más de dos decimales se redondean para el informe, sin modificar la base.
+- CSV para Excel con todos los resultados filtrados, en el mismo orden: vehículo, cliente actual, servicio, trabajos, insumos, kilómetros, importe ARS, estado y vencimiento guardado en esa visita. Se exporta el vencimiento histórico disponible; no se sustituye por el vigente ni se reconstruye uno ausente.
+- CSV con UTF-8/BOM, separador punto y coma, coma decimal y textos entre comillas. Conserva comillas, acentos y saltos de línea, y trata como texto las entradas que una planilla pudiera interpretar como fórmulas. Excluye notas privadas, motivos de anulación y auditoría. Los anulados se incluyen si el filtro elegido los contiene, con su estado explícito.
+- La demostración se identifica en el nombre del archivo y en cada fila. Con resultados vacíos o fechas invertidas la descarga queda deshabilitada. Descargar un informe no modifica registros ni reemplaza un respaldo JSON/ZIP.
+- Se conserva la base existente y la preparación futura del instalador; esta entrega continúa en la versión web.

@@ -20,7 +20,8 @@ Disponible:
 
 - Clientes: crear, editar, buscar y desactivar.
 - Vehículos: registrar, editar y consultar su ficha e historial.
-- Mantenimientos: registrar trabajos e insumos, importe y próximo servicio.
+- Mantenimientos: registrar y editar trabajos, insumos, importe y vencimientos; filtros, anulación recuperable e historial privado de cambios.
+- Resumen del historial y descarga CSV para Excel: todas las páginas del resultado filtrado, importes con centavos y anulados identificados.
 - Comprobantes PDF: guardar y descargar al registrar un servicio, o descargar desde el historial del vehículo y el listado de mantenimientos. Incluyen importe con centavos y excluyen notas privadas del cliente y del servicio.
 - Dashboard, gráficos y vencimientos calculados sobre los registros locales.
 - Datos del taller persistentes.
