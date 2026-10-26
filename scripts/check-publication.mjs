@@ -6,6 +6,15 @@ import { extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 
+// Conservar el error real como anotación de Actions, además del stack habitual.
+process.on('uncaughtExceptionMonitor', (error) => {
+  const message = String(error.message)
+    .replaceAll('%', '%25')
+    .replaceAll('\r', '%0D')
+    .replaceAll('\n', '%0A');
+  console.error(`::error title=Verificación de publicación::${message}`);
+});
+
 const root = fileURLToPath(new URL('../', import.meta.url));
 assert.equal(
   await readFile(resolve(root, 'index.html'), 'utf8'),
@@ -238,11 +247,11 @@ try {
       await page.getByRole('button', { name: 'Cliente de vehículos', exact: true }).click();
       await page.getByRole('combobox', { name: 'Buscar cliente', exact: true }).fill(ownerName);
       await page.getByRole('option', { name: ownerName, exact: true }).click();
-      assert.ok(
-        (
-          await page.getByRole('button', { name: 'Cliente de vehículos', exact: true }).innerText()
-        ).includes(ownerName),
-      );
+      // Elegir una opción navega mediante el router; esperar el render confirmado.
+      await page
+        .getByRole('button', { name: 'Cliente de vehículos', exact: true })
+        .getByText(ownerName, { exact: true })
+        .waitFor();
       await page.getByRole('button', { name: 'Limpiar filtros', exact: true }).click();
       assert.equal(
         await page.getByRole('button', { name: 'Tabla', exact: true }).getAttribute('aria-pressed'),
