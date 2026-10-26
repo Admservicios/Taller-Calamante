@@ -1,3 +1,4 @@
+import { CustomerFilter } from '../components/CustomerFilter';
 import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, CalendarDays, Copy, Info, MessageSquare, Plus, Search } from 'lucide-react';
@@ -259,20 +260,12 @@ export function Reminders() {
             <option key={state}>{state}</option>
           ))}
         </select>
-        <select
-          aria-label="Cliente de próximos servicios"
+        <CustomerFilter
+          label="Cliente de próximos servicios"
+          customers={customers}
           value={customerId}
-          onChange={(e) => change('cliente', e.target.value)}
-        >
-          <option value="">Todos los clientes</option>
-          {[...customers]
-            .sort((a, b) => a.name.localeCompare(b.name, 'es'))
-            .map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-        </select>
+          onChange={(value) => change('cliente', value)}
+        />
         <select
           aria-label="Tipo de próximos servicios"
           value={category}

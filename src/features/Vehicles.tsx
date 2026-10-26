@@ -1,3 +1,4 @@
+import { CustomerFilter } from '../components/CustomerFilter';
 import { isServerMode } from '../lib/serverClient';
 import { useConfirmDiscard } from '../components/UnsavedChanges';
 import { randomId } from '../lib/ids';
@@ -247,7 +248,6 @@ export function Vehicles() {
     for (const key of ['buscar', 'estado', 'cliente', 'marca', 'pagina']) next.delete(key);
     setParams(next, { replace: true, flushSync: true });
   };
-  const owners = [...customers].sort((a, b) => a.name.localeCompare(b.name, 'es'));
   const brands = [
     ...new Map(vehicles.map((v) => [normalizedVehicleText(v.brand), v.brand.trim()])).entries(),
   ].sort((a, b) => a[1].localeCompare(b[1], 'es'));
@@ -315,18 +315,12 @@ export function Vehicles() {
             <option key={state}>{state}</option>
           ))}
         </select>
-        <select
-          aria-label="Cliente de vehículos"
+        <CustomerFilter
+          label="Cliente de vehículos"
+          customers={customers}
           value={customerId}
-          onChange={(e) => change('cliente', e.target.value)}
-        >
-          <option value="">Todos los clientes</option>
-          {owners.map((owner) => (
-            <option key={owner.id} value={owner.id}>
-              {owner.name}
-            </option>
-          ))}
-        </select>
+          onChange={(value) => change('cliente', value)}
+        />
         <select
           aria-label="Marca del vehículo"
           value={brand}

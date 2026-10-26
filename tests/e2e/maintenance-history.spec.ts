@@ -109,7 +109,9 @@ test('filtra por cliente, categoría, fechas y texto; pagina y conserva los filt
     'frenos',
   );
   await page.getByRole('button', { name: 'Limpiar filtros' }).click();
-  await page.getByLabel('Cliente del vehículo').selectOption(initialVehicles[1].customerId);
+  await page.getByRole('button', { name: 'Cliente del vehículo', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Buscar cliente', exact: true }).fill('María González');
+  await page.getByRole('option', { name: 'María González', exact: true }).click();
   await expect(page.locator('tbody tr')).toHaveCount(2);
   await page.getByLabel('Desde', { exact: true }).fill('2026-02-10');
   await page.getByLabel('Hasta', { exact: true }).fill('2026-02-10');

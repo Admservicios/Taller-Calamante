@@ -66,9 +66,9 @@ test('agenda filtra, cuenta servicios por estado, pagina y conserva filtros al r
   await expect(page.locator('tbody tr')).toHaveCount(20);
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.locator('tbody tr')).toHaveCount(6);
-  await page
-    .getByLabel('Cliente de próximos servicios')
-    .selectOption(initialVehicles[1].customerId);
+  await page.getByRole('button', { name: 'Cliente de próximos servicios', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Buscar cliente', exact: true }).fill('María González');
+  await page.getByRole('option', { name: 'María González', exact: true }).click();
   await expect(page.locator('tbody tr')).toHaveCount(2);
   await expect(page.getByText('Página 1 de 1', { exact: true })).toBeVisible();
   await page.getByLabel('Tipo de próximos servicios').selectOption('aceite-filtros');

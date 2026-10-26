@@ -97,3 +97,10 @@ El usuario autorizó implementar la base local y subir la estructura a GitHub pa
 - CSV de todos los vehículos filtrados, en el orden elegido y sin limitarse a la página visible. Una fila por vehículo: datos técnicos, cliente actual, lectura registrada, estado general, cantidad de servicios por estado, objetivos del servicio prioritario y detalle completo de todos los vencimientos vigentes en una celda multilínea. Incluye fecha de referencia y marca la demo en archivo y filas. No incluye teléfono, documentos ni notas privadas del cliente.
 - La exportación comparte el formato CSV validado del historial: UTF-8/BOM, punto y coma, comillas escapadas y neutralización de fórmulas. Descarga deshabilitada cuando no hay coincidencias. El CSV es un informe; el JSON/ZIP continúa siendo el respaldo restaurable.
 - No se modifica el formato de la base ni se requiere migración. La preparación futura de la aplicación PC se mantiene con la misma interfaz.
+
+## Buscador en los filtros de clientes
+
+- Los filtros de cliente de Vehículos, Mantenimientos y Próximos servicios incorporan un desplegable con búsqueda por nombre, DNI/CUIT o teléfono. Se ignoran mayúsculas y acentos, y los números pueden escribirse sin puntos, espacios o guiones.
+- Escribir busca dentro de los clientes disponibles; el filtro del listado cambia únicamente al seleccionar una opción. Todos los clientes permite quitar la selección. El valor seleccionado sigue en la dirección, con los demás filtros y el tamaño de página existentes.
+- Navegación con flechas y Enter, cierre con Escape, Tab o clic afuera y retorno de foco al selector. Búsquedas sin coincidencias no cambian el filtro. La lista muestra hasta 80 clientes y permite acotar por texto; la selección actual sigue visible al abrir una lista extensa.
+- El desplegable se adapta al espacio disponible, evita recortes dentro de las tarjetas y ofrece detalles de DNI/CUIT y teléfono para distinguir nombres similares. Compatible con móvil y modo oscuro. No modifica registros ni el formato de la base.

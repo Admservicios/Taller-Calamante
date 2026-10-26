@@ -1,3 +1,4 @@
+import { CustomerFilter } from '../components/CustomerFilter';
 import { useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Download, History, Plus, Search, Wrench } from 'lucide-react';
@@ -294,19 +295,15 @@ export function MaintenanceList() {
             onChange={(e) => update('buscar', e.target.value)}
           />
         </div>
-        <label>
-          Cliente del vehículo
-          <select value={customer} onChange={(e) => update('cliente', e.target.value)}>
-            <option value="">Todos los clientes</option>
-            {[...customers]
-              .sort((a, b) => a.name.localeCompare(b.name, 'es'))
-              .map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-          </select>
-        </label>
+        <div className="customer-filter-field">
+          <span>Cliente del vehículo</span>
+          <CustomerFilter
+            label="Cliente del vehículo"
+            customers={customers}
+            value={customer}
+            onChange={(value) => update('cliente', value)}
+          />
+        </div>
         <label>
           Tipo de servicio
           <select value={category} onChange={(e) => update('tipo', e.target.value)}>

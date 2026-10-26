@@ -89,7 +89,9 @@ test('tarjetas y tabla comparten filtros, orden y paginación; volver de la fich
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.locator('.vehicle-card')).toHaveCount(12);
   expect(await page.evaluate(() => scrollY)).toBe(0);
-  await page.getByLabel('Cliente de vehículos').selectOption(base.customerId);
+  await page.getByRole('button', { name: 'Cliente de vehículos', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Buscar cliente', exact: true }).fill('María González');
+  await page.getByRole('option', { name: 'María González', exact: true }).click();
   await expect(page.locator('.vehicle-card')).toHaveCount(2);
   await expect(page.getByText('Página 1 de 1', { exact: true })).toBeVisible();
   await page.getByLabel('Marca del vehículo').selectOption('toyota');

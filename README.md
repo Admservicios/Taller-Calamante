@@ -19,6 +19,7 @@ Los datos se guardan en **el navegador del usuario**, usando `localStorage` para
 Disponible:
 
 - Clientes: crear, editar, buscar y desactivar.
+- Filtros de cliente con búsqueda por nombre, DNI/CUIT o teléfono en vehículos, mantenimientos y próximos servicios.
 - Vehículos: registrar y editar, filtrar por cliente/marca/estado, ordenar, alternar tarjetas/tabla y exportar la flota a CSV con sus vencimientos vigentes.
 - Mantenimientos: registrar y editar trabajos, insumos, importe y vencimientos; filtros, anulación recuperable e historial privado de cambios.
 - Resumen del historial y descarga CSV para Excel: todas las páginas del resultado filtrado, importes con centavos y anulados identificados.

@@ -234,6 +234,15 @@ try {
       assert.ok(fleetCSV.startsWith('\uFEFF'));
       assert.match(fleetCSV, /Hilux/);
       assert.match(fleetCSV, /Todos los vencimientos vigentes/);
+      const ownerName = await page.locator('tbody tr').first().locator('td').nth(1).innerText();
+      await page.getByRole('button', { name: 'Cliente de vehículos', exact: true }).click();
+      await page.getByRole('combobox', { name: 'Buscar cliente', exact: true }).fill(ownerName);
+      await page.getByRole('option', { name: ownerName, exact: true }).click();
+      assert.ok(
+        (
+          await page.getByRole('button', { name: 'Cliente de vehículos', exact: true }).innerText()
+        ).includes(ownerName),
+      );
       await page.getByRole('button', { name: 'Limpiar filtros', exact: true }).click();
       assert.equal(
         await page.getByRole('button', { name: 'Tabla', exact: true }).getAttribute('aria-pressed'),
