@@ -18,7 +18,7 @@ Los datos se guardan en **el navegador del usuario**, usando `localStorage` para
 
 Disponible:
 
-- Clientes: crear, editar, buscar y desactivar.
+- Clientes: crear, editar y desactivar; buscar también por patente, filtrar por estado y vehículos, ordenar y paginar con filtros conservados al volver de la ficha.
 - Filtros de cliente con búsqueda por nombre, DNI/CUIT o teléfono en vehículos, mantenimientos y próximos servicios.
 - Vehículos: registrar y editar, filtrar por cliente/marca/estado, ordenar, alternar tarjetas/tabla y exportar la flota a CSV con sus vencimientos vigentes.
 - Mantenimientos: registrar y editar trabajos, insumos, importe y vencimientos; filtros, anulación recuperable e historial privado de cambios.
@@ -30,7 +30,7 @@ Disponible:
 - Datos del taller persistentes.
 - Respaldo JSON versionado, validación de relaciones y restauración confirmada.
 - Copia previa antes de restaurar cuando ya existe una base.
-- Exportación de clientes a CSV.
+- Exportación de todos los clientes filtrados a CSV, con sus patentes actuales y demo identificada.
 - Fotos de mantenimiento persistentes y galería por vehículo.
 - Documentos PDF e imágenes por vehículo: cédula, seguro, VTV / RTO, facturas y otros.
 - Respaldo ZIP completo con registros, fotografías y documentos verificados.

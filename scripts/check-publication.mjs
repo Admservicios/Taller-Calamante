@@ -103,6 +103,23 @@ try {
       await page.getByRole('dialog').getByRole('checkbox').check();
       await page.getByRole('dialog').getByRole('button', { name: 'Confirmar y restaurar' }).click();
       await page.getByRole('dialog').waitFor({ state: 'hidden' });
+      await page.goto(`${url}#/clientes`);
+      await page.getByLabel('Buscar clientes', { exact: true }).fill('AE610ZZ');
+      await page.getByRole('button', { name: /^Julián Acosta DNI/ }).click();
+      await page.getByRole('button', { name: 'Cerrar ficha del cliente', exact: true }).click();
+      assert.equal(
+        await page.getByLabel('Buscar clientes', { exact: true }).inputValue(),
+        'AE610ZZ',
+      );
+      await page.reload();
+      await page.getByRole('button', { name: /^Julián Acosta DNI/ }).waitFor();
+      const customersDownload = page.waitForEvent('download');
+      await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+      const customersCSV = await readFile(await (await customersDownload).path(), 'utf8');
+      assert.match(customersCSV, /Julián Acosta/);
+      assert.match(customersCSV, /Patentes actuales/);
+      assert.match(customersCSV, /AE 610 ZZ/);
+      assert.ok(!customersCSV.includes('Valentina Suárez'));
       await page.goto(`${url}#/mantenimientos`);
       const pending = page.waitForEvent('download');
       await page

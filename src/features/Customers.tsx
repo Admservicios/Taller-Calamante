@@ -6,7 +6,6 @@ import {
   CalendarDays,
   CarFront,
   Check,
-  ChevronLeft,
   ChevronRight,
   Download,
   Mail,
@@ -22,7 +21,8 @@ import {
 } from 'lucide-react';
 import { Avatar, Badge, Empty, Modal, ModalCancelButton, PageTitle, Panel } from '../components/ui';
 import { useData } from '../app/store';
-import { customerCSV, dateLabel, download, money, type Customer } from '../lib/demo';
+import { dateLabel, download, money, type Customer } from '../lib/demo';
+import { customerRows, selectCustomerRows, customerCatalogueCSV } from '../lib/customerCatalogue';
 
 export function CustomerEditor({ customer, close }: { customer?: Customer; close: () => void }) {
   const { saveCustomer, notify, mode } = useData();
@@ -119,14 +119,45 @@ export function CustomerEditor({ customer, close }: { customer?: Customer; close
   );
 }
 export function Customers() {
-  const { customers, vehicles, activeServices: services, mode } = useData();
+  const { customers, vehicles, activeServices: services, mode, referenceDate, notify } = useData();
   const [params, setParams] = useSearchParams();
   const selected = customers.find((c) => c.id === (params.get('cliente') ?? customers[0]?.id));
-  const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('todos');
+  const search = params.get('buscar') ?? '';
+  const status = ['activos', 'inactivos'].includes(params.get('estado') ?? '')
+    ? params.get('estado')!
+    : 'todos';
+  const ownership = ['con', 'sin'].includes(params.get('vehiculos') ?? '')
+    ? params.get('vehiculos')!
+    : 'todos';
+  const order = ['nombre-desc', 'vehiculos'].includes(params.get('orden') ?? '')
+    ? params.get('orden')!
+    : 'nombre';
+  const pageSize = [10, 25, 50].includes(Number(params.get('cantidad')))
+    ? Number(params.get('cantidad'))
+    : 10;
+  const currentParams = () => {
+    const url = new URL(window.location.href);
+    return new URLSearchParams(
+      url.hash.startsWith('#/') ? (url.hash.split('?')[1] ?? '') : url.search,
+    );
+  };
+  const change = (key: string, value: string, resetPage = true) => {
+    const next = currentParams();
+    value ? next.set(key, value) : next.delete(key);
+    if (resetPage) next.delete('pagina');
+    setParams(next, { replace: true, flushSync: true });
+  };
+  const selectCustomer = (id: string) => {
+    const next = currentParams();
+    next.set('cliente', id);
+    setParams(next);
+  };
+  const go = (value: number) => {
+    change('pagina', String(value), false);
+    searchRef.current?.scrollIntoView({ block: 'center', behavior: 'instant' });
+  };
   const [tab, setTab] = useState('Información');
   const [editing, setEditing] = useState<Customer | 'new' | null>(null);
-  const [page, setPage] = useState(1);
   const detailRef = useRef<HTMLElement>(null);
   const selectedButton = useRef<HTMLButtonElement | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -141,26 +172,33 @@ export function Customers() {
     return () => cancelAnimationFrame(frame);
   }, [selected?.id, explicitCustomer, detailRequest]);
 
-  const pageSize = 6;
-  const filtered = customers.filter(
-    (c) =>
-      `${c.name} ${c.document} ${c.phone} ${c.email}`
-        .toLocaleLowerCase('es')
-        .includes(search.toLocaleLowerCase('es')) &&
-      (status === 'todos' || c.active === (status === 'activos')),
-  );
+  const rows = customerRows(customers, vehicles);
+  const filtered = selectCustomerRows(rows, { search, status, ownership, order });
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const currentPage = Math.min(page, pageCount);
+  const requested = Number(params.get('pagina') ?? 1);
+  const currentPage = Math.min(
+    pageCount,
+    Math.max(1, Number.isSafeInteger(requested) ? requested : 1),
+  );
   const selectedVehicles = vehicles.filter((v) => v.customerId === selected?.id);
   const selectedServices = services
     .filter((s) => selectedVehicles.some((v) => v.id === s.vehicleId))
     .sort((a, b) => b.date.localeCompare(a.date));
-  const exportCSV = () =>
-    download(
-      mode === 'demo' ? 'taller-calamante-clientes-demo.csv' : 'taller-calamante-clientes.csv',
-      customerCSV(filtered),
-      'text/csv;charset=utf-8',
-    );
+  const exportCSV = () => {
+    if (!filtered.length) return;
+    try {
+      download(
+        `taller-calamante-clientes${mode === 'demo' ? '-demo' : ''}-${referenceDate}.csv`,
+        customerCatalogueCSV(filtered, referenceDate, mode === 'demo'),
+        'text/csv;charset=utf-8',
+      );
+      notify(
+        `CSV descargado con ${filtered.length} clientes${mode === 'demo' ? ' de demostración' : ''}. Incluye todas las páginas filtradas.`,
+      );
+    } catch {
+      notify('No se pudo descargar el CSV. Volvé a intentarlo.');
+    }
+  };
   return (
     <>
       <PageTitle
@@ -172,7 +210,7 @@ export function Customers() {
               <Plus size={18} />
               Nuevo cliente
             </button>
-            <button className="button" onClick={exportCSV}>
+            <button className="button" onClick={exportCSV} disabled={!filtered.length}>
               <Download size={17} />
               Exportar CSV
             </button>
@@ -192,8 +230,7 @@ export function Customers() {
                 },
                 {
                   label: 'Con vehículos',
-                  value: customers.filter((c) => vehicles.some((v) => v.customerId === c.id))
-                    .length,
+                  value: rows.filter((row) => row.vehicles.length > 0).length,
                   color: 'green',
                   icon: CarFront,
                 },
@@ -216,38 +253,50 @@ export function Customers() {
               ))}
             </div>
           </Panel>
-          <div className="filter-bar">
+          <div className="filter-bar customer-catalogue-filters">
             <div className="input-icon">
               <Search size={17} />
               <input
                 ref={searchRef}
                 aria-label="Buscar clientes"
-                placeholder="Buscar por nombre, DNI, teléfono o email…"
+                placeholder="Nombre, DNI, teléfono, email o patente…"
                 value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setPage(1);
-                }}
+                onChange={(e) => change('buscar', e.target.value)}
               />
             </div>
             <select
               aria-label="Filtrar clientes por estado"
               value={status}
-              onChange={(e) => {
-                setStatus(e.target.value);
-                setPage(1);
-              }}
+              onChange={(e) => change('estado', e.target.value)}
             >
               <option value="todos">Todos los estados</option>
               <option value="activos">Activos</option>
               <option value="inactivos">Inactivos</option>
             </select>
+            <select
+              aria-label="Filtrar clientes por vehículos"
+              value={ownership}
+              onChange={(e) => change('vehiculos', e.target.value)}
+            >
+              <option value="todos">Con o sin vehículos</option>
+              <option value="con">Con vehículos</option>
+              <option value="sin">Sin vehículos</option>
+            </select>
+            <select
+              aria-label="Ordenar clientes"
+              value={order}
+              onChange={(e) => change('orden', e.target.value)}
+            >
+              <option value="nombre">Nombre: A–Z</option>
+              <option value="nombre-desc">Nombre: Z–A</option>
+              <option value="vehiculos">Más vehículos</option>
+            </select>
             <button
               className="text-button"
               onClick={() => {
-                setSearch('');
-                setStatus('todos');
-                setPage(1);
+                const next = currentParams();
+                for (const key of ['buscar', 'estado', 'vehiculos', 'pagina']) next.delete(key);
+                setParams(next, { replace: true, flushSync: true });
               }}
             >
               <SlidersHorizontal size={15} />
@@ -269,94 +318,100 @@ export function Customers() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((c) => (
-                    <tr key={c.id} className={selected?.id === c.id ? 'selected-row' : ''}>
-                      <td>
-                        <button
-                          className="customer-name"
-                          onClick={(event) => {
-                            selectedButton.current = event.currentTarget;
-                            setDetailRequest((request) => request + 1);
-                            setParams({ cliente: c.id });
-                            setTab('Información');
-                          }}
-                        >
-                          <Avatar name={c.name} />
-                          <span>
-                            <strong>{c.name}</strong>
-                            <small>
-                              {c.document ? `DNI ${c.document}` : 'Sin documento registrado'}
-                            </small>
-                          </span>
-                        </button>
-                      </td>
-                      <td>
-                        <div className="contact-cell">
-                          <span>
-                            <Phone size={13} />
-                            {c.phone || 'Sin teléfono'}
-                          </span>
-                          <span>
-                            <Mail size={13} />
-                            {c.email || 'Sin email'}
-                          </span>
-                        </div>
-                      </td>
-                      <td>{vehicles.filter((v) => v.customerId === c.id).length}</td>
-                      <td>
-                        <Badge>{c.active ? 'Activo' : 'Inactivo'}</Badge>
-                      </td>
-                      <td>
-                        <button
-                          className="icon-button"
-                          aria-label={`Editar ${c.name}`}
-                          onClick={() => setEditing(c)}
-                        >
-                          <Pencil size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {filtered
+                    .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+                    .map(({ customer: c, vehicles: owned }) => (
+                      <tr key={c.id} className={selected?.id === c.id ? 'selected-row' : ''}>
+                        <td>
+                          <button
+                            className="customer-name"
+                            onClick={(event) => {
+                              selectedButton.current = event.currentTarget;
+                              setDetailRequest((request) => request + 1);
+                              selectCustomer(c.id);
+                              setTab('Información');
+                            }}
+                          >
+                            <Avatar name={c.name} />
+                            <span>
+                              <strong>{c.name}</strong>
+                              <small>
+                                {c.document ? `DNI ${c.document}` : 'Sin documento registrado'}
+                              </small>
+                            </span>
+                          </button>
+                        </td>
+                        <td>
+                          <div className="contact-cell">
+                            <span>
+                              <Phone size={13} />
+                              {c.phone || 'Sin teléfono'}
+                            </span>
+                            <span>
+                              <Mail size={13} />
+                              {c.email || 'Sin email'}
+                            </span>
+                          </div>
+                        </td>
+                        <td>{owned.length}</td>
+                        <td>
+                          <Badge>{c.active ? 'Activo' : 'Inactivo'}</Badge>
+                        </td>
+                        <td>
+                          <button
+                            className="icon-button"
+                            aria-label={`Editar ${c.name}`}
+                            onClick={() => setEditing(c)}
+                          >
+                            <Pencil size={16} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
             {!filtered.length && <Empty text="No encontramos clientes" />}
           </div>
-          <div className="pagination">
+          <div className="history-pagination">
             <span>
               {filtered.length ? (currentPage - 1) * pageSize + 1 : 0}–
               {Math.min(currentPage * pageSize, filtered.length)} de {filtered.length} clientes
             </span>
-            <div>
+            <nav aria-label="Páginas de clientes">
               <button
-                className="page-button"
+                className="button small"
                 disabled={currentPage === 1}
-                aria-label="Página anterior"
-                onClick={() => setPage(currentPage - 1)}
+                onClick={() => go(currentPage - 1)}
               >
-                <ChevronLeft size={16} />
+                Anterior
               </button>
-              {Array.from({ length: pageCount }, (_, i) => (
-                <button
-                  key={i}
-                  className={`page-button ${currentPage === i + 1 ? 'active' : ''}`}
-                  aria-current={currentPage === i + 1 ? 'page' : undefined}
-                  onClick={() => setPage(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              <span aria-live="polite">
+                Página {currentPage} de {pageCount}
+              </span>
               <button
-                className="page-button"
+                className="button small"
                 disabled={currentPage === pageCount}
-                aria-label="Página siguiente"
-                onClick={() => setPage(currentPage + 1)}
+                onClick={() => go(currentPage + 1)}
               >
-                <ChevronRight size={16} />
+                Siguiente
               </button>
-            </div>
-            <span>{pageSize} por página</span>
+            </nav>
+            <label>
+              Clientes por página
+              <select value={pageSize} onChange={(e) => change('cantidad', e.target.value)}>
+                {[10, 25, 50].map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
+          <p className="fineprint">
+            El CSV incluye todos los clientes filtrados y sus patentes actuales, sin notas privadas,
+            DNI ni domicilio. Los totales superiores representan toda la base.
+          </p>
         </div>
         {selected && (
           <aside
@@ -369,7 +424,7 @@ export function Customers() {
               className="detail-close icon-button"
               aria-label="Cerrar ficha del cliente"
               onClick={() => {
-                setParams({ cliente: 'ninguno' });
+                selectCustomer('ninguno');
                 const target = selectedButton.current?.isConnected
                   ? selectedButton.current
                   : searchRef.current;

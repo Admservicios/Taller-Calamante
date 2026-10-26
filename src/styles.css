@@ -5582,3 +5582,20 @@ input[type='checkbox'] {
 .vehicle-history-pdf .check-label input {
   flex-shrink: 0;
 }
+
+.customers-main .customer-catalogue-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+}
+.customer-catalogue-filters .input-icon {
+  grid-column: 1 / -1;
+}
+.customers-main .customer-catalogue-filters select {
+  width: 100%;
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  .customers-main .customer-catalogue-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
