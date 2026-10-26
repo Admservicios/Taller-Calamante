@@ -5320,3 +5320,84 @@ input[type='checkbox'] {
   max-width: 100%;
   min-width: 0;
 }
+
+/* Agenda y preparación local de avisos al cliente. */
+.reminder-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  align-items: center;
+}
+.reminder-filters .input-icon {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.reminder-filters select {
+  min-width: 0;
+  max-width: 100%;
+  flex: 1 1 170px;
+}
+.reminder-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 200px;
+}
+.reminder-preview {
+  overflow-wrap: anywhere;
+}
+.reminder-plan-picker {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  min-width: 0;
+}
+.reminder-plan-picker legend {
+  font-weight: 600;
+  padding: 0 6px;
+}
+.reminder-plan-option {
+  width: 100%;
+  justify-content: space-between;
+  margin: 7px 0;
+  white-space: normal;
+  text-align: left;
+  gap: 10px;
+}
+.reminder-plan-option > span:first-child {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.reminder-plan-option small {
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.reminder-plan-option.selected {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+.reminder-preview textarea {
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.reminder-copy-feedback {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+@media (max-width: 540px) {
+  .reminder-filters {
+    padding: 14px;
+  }
+  .reminder-filters > * {
+    width: 100%;
+  }
+  .reminder-plan-option {
+    flex-wrap: wrap;
+  }
+}

@@ -213,6 +213,18 @@ try {
           .changes.map((entry) => entry.action),
         ['created', 'annulled', 'restored'],
       );
+      await page.goto(`${url}#/proximos-servicios`);
+      await page.getByLabel('Buscar próximos servicios').fill('Hilux');
+      await page
+        .getByRole('button', { name: /^Preparar aviso/ })
+        .first()
+        .click();
+      const reminderDialog = page.getByRole('dialog', { name: 'Preparar aviso al cliente' });
+      const reminderText = await reminderDialog.getByLabel('Texto del aviso').inputValue();
+      assert.match(reminderText, /Toyota Hilux/);
+      assert.match(reminderText, /lo que ocurra primero/);
+      assert.match(reminderText, /Confirmá el kilometraje actual/);
+      await reminderDialog.getByRole('button', { name: 'Cerrar diálogo' }).click();
       assert.deepEqual(errors, [], `${name}: errores en el sitio servido sin Vite`);
       console.log(
         `${name}: rutas, persistencia, PDF, fotos, documentos locales y respaldo ZIP correctos.`,

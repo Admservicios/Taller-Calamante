@@ -10,11 +10,8 @@ import { downloadServicePDF } from '../lib/servicePDF';
 import { PhotoPicker } from '../components/MaintenancePhotos';
 import type { PreparedPhoto } from '../lib/photos';
 import {
-  allPlanRows,
   maintenanceKind,
   maintenanceTypes,
-  planServiceURL,
-  planStatus,
   recordServicePlan,
   servicePlan,
   vehiclePlans,
@@ -29,14 +26,12 @@ import {
   FileDown,
   Info,
   NotebookPen,
-  Plus,
   Save,
-  Search,
   Settings2,
   Wallet,
   Wrench,
 } from 'lucide-react';
-import { Badge, Empty, PageTitle, Panel, VehicleArt } from '../components/ui';
+import { Empty, PageTitle, Panel, VehicleArt } from '../components/ui';
 import { useData } from '../app/store';
 import { dateLabel, number, type Service } from '../lib/demo';
 
@@ -827,133 +822,4 @@ function MaintenanceFormFields() {
 function GaugeIcon() {
   return <CarFront size={16} />;
 }
-export function Reminders() {
-  const { vehicles, customers, referenceDate } = useData();
-  const [status, setStatus] = useState('Todos');
-  const [search, setSearch] = useState('');
-  const rows = allPlanRows(vehicles, referenceDate);
-  const filtered = rows.filter(
-    ({ vehicle: v, plan }) =>
-      (status === 'Todos' || planStatus(plan, v.km, referenceDate) === status) &&
-      `${v.plate} ${v.brand} ${v.model} ${plan.label} ${plan.recommendation} ${customers.find((c) => c.id === v.customerId)?.name}`
-        .toLocaleLowerCase('es')
-        .includes(search.toLocaleLowerCase('es')),
-  );
-  return (
-    <>
-      <PageTitle
-        title="Próximos servicios"
-        subtitle="Anticipate a cada revisión. Que ningún mantenimiento quede atrás."
-      />
-      <div className="reminder-summary">
-        {['Vencido', 'Próximo', 'Al día'].map((state, i) => (
-          <button
-            key={state}
-            className={`reminder-summary-card ${['red', 'amber', 'green'][i]} ${status === state ? 'chosen' : ''}`}
-            onClick={() => setStatus(status === state ? 'Todos' : state)}
-          >
-            <CalendarDays size={24} />
-            <span>
-              <strong>
-                {
-                  rows.filter(
-                    ({ vehicle, plan }) => planStatus(plan, vehicle.km, referenceDate) === state,
-                  ).length
-                }
-              </strong>
-              <small>
-                {state === 'Vencido'
-                  ? 'Vencidos'
-                  : state === 'Próximo'
-                    ? 'Próximos a vencer'
-                    : 'Al día'}
-              </small>
-            </span>
-            <ArrowRight size={18} />
-          </button>
-        ))}
-      </div>
-      <div className="filter-bar">
-        <div className="input-icon">
-          <Search size={17} />
-          <input
-            aria-label="Buscar próximos servicios"
-            placeholder="Buscar por patente, cliente o tipo de servicio…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <select
-          aria-label="Filtrar vencimientos"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option>Todos</option>
-          <option>Vencido</option>
-          <option>Próximo</option>
-          <option>Al día</option>
-        </select>
-      </div>
-      <Panel title="Agenda de mantenimiento" icon={CalendarDays}>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Vehículo</th>
-                <th>Cliente</th>
-                <th>Trabajo recomendado</th>
-                <th>Fecha / Kilometraje objetivo</th>
-                <th>Estado</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(({ vehicle: v, plan }) => (
-                <tr key={`${v.id}-${plan.category}`}>
-                  <td>
-                    <Link className="table-link" to={`/vehiculos/${v.id}`}>
-                      <strong>{v.plate}</strong>
-                      <small>
-                        {v.brand} {v.model}
-                      </small>
-                    </Link>
-                  </td>
-                  <td>{customers.find((c) => c.id === v.customerId)?.name}</td>
-                  <td>
-                    <strong>{plan.label}</strong>
-                    <small className="block muted">{plan.recommendation}</small>
-                  </td>
-                  <td>
-                    <div className="table-link">
-                      <strong>{dateLabel(plan.nextDate)}</strong>
-                      <small>
-                        {number(plan.nextKm)} km · actual: {number(v.km)} km
-                      </small>
-                    </div>
-                  </td>
-                  <td>
-                    <Badge>{planStatus(plan, v.km, referenceDate)}</Badge>
-                  </td>
-                  <td>
-                    <Link className="button small" to={planServiceURL(v, plan)}>
-                      <Plus size={14} />
-                      Registrar
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {!filtered.length && <Empty text="No hay servicios con estos filtros" />}
-      </Panel>
-      <div className="info-strip">
-        <Info size={18} />
-        <span>
-          Fecha de referencia: {dateLabel(referenceDate)}. “Próximo” significa hasta 30 días o 1.000
-          km restantes. El kilometraje es una estimación basada en el último registro.
-        </span>
-      </div>
-    </>
-  );
-}
+export { Reminders } from './Reminders';
