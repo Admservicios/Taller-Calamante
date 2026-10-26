@@ -222,6 +222,19 @@ try {
           .changes.map((entry) => entry.action),
         ['created', 'annulled', 'restored'],
       );
+      await page.goto(`${url}#/vehiculos/practica-v02`);
+      await page.getByRole('button', { name: 'Historial PDF', exact: true }).click();
+      const historyDialog = page.getByRole('dialog', { name: 'Descargar historial del vehículo' });
+      await historyDialog.getByLabel('Incluir importes de los servicios').uncheck();
+      const historyDownload = page.waitForEvent('download');
+      await historyDialog
+        .getByRole('button', { name: 'Descargar historial PDF', exact: true })
+        .click();
+      const historyPDF = (await readFile(await (await historyDownload).path())).toString('latin1');
+      assert.match(historyPDF, /^%PDF-/);
+      assert.match(historyPDF, /Historial de mantenimiento del vehículo/);
+      assert.ok(!historyPDF.includes('Importe registrado'));
+      await historyDialog.getByRole('button', { name: 'Cerrar diálogo' }).click();
       await page.goto(`${url}#/proximos-servicios`);
       await page.getByLabel('Buscar próximos servicios').fill('Hilux');
       await page

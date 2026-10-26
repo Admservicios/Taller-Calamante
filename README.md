@@ -23,6 +23,7 @@ Disponible:
 - Vehículos: registrar y editar, filtrar por cliente/marca/estado, ordenar, alternar tarjetas/tabla y exportar la flota a CSV con sus vencimientos vigentes.
 - Mantenimientos: registrar y editar trabajos, insumos, importe y vencimientos; filtros, anulación recuperable e historial privado de cambios.
 - Resumen del historial y descarga CSV para Excel: todas las páginas del resultado filtrado, importes con centavos y anulados identificados.
+- Historial completo del vehículo en PDF, con fechas, importes opcionales y vencimientos históricos/vigentes diferenciados; sin notas privadas ni servicios anulados.
 - Comprobantes PDF: guardar y descargar al registrar un servicio, o descargar desde el historial del vehículo y el listado de mantenimientos. Incluyen importe con centavos y excluyen notas privadas del cliente y del servicio.
 - Dashboard, gráficos y vencimientos calculados sobre los registros locales.
 - Agenda filtrada por cliente, tipo y estado; días/km restantes y avisos con varios servicios del mismo vehículo, preparados para copiar y contactar manualmente al cliente.

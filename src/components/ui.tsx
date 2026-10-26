@@ -119,10 +119,12 @@ export function Modal({
   title,
   children,
   close,
+  protectChanges = true,
 }: {
   title: string;
   children: ReactNode;
   close: () => void;
+  protectChanges?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [dirty, setDirty] = useState(false);
@@ -141,7 +143,7 @@ export function Modal({
         ref={ref}
         className="modal"
         aria-label={title}
-        onChangeCapture={() => setDirty(true)}
+        onChangeCapture={protectChanges ? () => setDirty(true) : undefined}
         onCancel={(e) => {
           e.preventDefault();
           guardedClose();

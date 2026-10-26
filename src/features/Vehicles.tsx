@@ -1,3 +1,4 @@
+import { VehicleHistoryPDFButton } from '../components/VehicleHistoryPDF';
 import { CustomerFilter } from '../components/CustomerFilter';
 import { isServerMode } from '../lib/serverClient';
 import { useConfirmDiscard } from '../components/UnsavedChanges';
@@ -700,10 +701,13 @@ export function VehicleDetail() {
                 title="Historial de mantenimientos"
                 icon={Wrench}
                 action={
-                  <Link className="button small" to={`/mantenimientos/nuevo?vehiculo=${id}`}>
-                    <Plus size={16} />
-                    Registrar mantenimiento
-                  </Link>
+                  <div className="history-heading-actions">
+                    <VehicleHistoryPDFButton vehicleId={vehicle.id} />
+                    <Link className="button small" to={`/mantenimientos/nuevo?vehiculo=${id}`}>
+                      <Plus size={16} />
+                      Registrar mantenimiento
+                    </Link>
+                  </div>
                 }
               >
                 <p className="panel-description">
