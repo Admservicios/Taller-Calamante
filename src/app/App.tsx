@@ -1,3 +1,4 @@
+import { Products } from '../features/Products';
 import { isServerMode, api } from '../lib/serverClient';
 import { useConfirmDiscard } from '../components/UnsavedChanges';
 import { useEffect, useState } from 'react';
@@ -17,6 +18,7 @@ import {
   Settings,
   Sun,
   Users,
+  Package,
   Wrench,
   X,
   CheckCircle2,
@@ -39,6 +41,7 @@ const navigation = [
   { to: '/vehiculos', label: 'Vehículos', icon: CarFront },
   { to: '/mantenimientos', label: 'Mantenimientos', icon: ClipboardCheck },
   { to: '/proximos-servicios', label: 'Próximos servicios', icon: CalendarDays },
+  { to: '/productos', label: 'Productos', icon: Package },
   { to: '/backups', label: 'Backups', icon: CloudUpload },
   { to: '/ajustes', label: 'Ajustes', icon: Settings },
 ];
@@ -378,6 +381,7 @@ export default function App() {
             <Route path="mantenimientos/nuevo" element={<MaintenanceForm key="new" />} />
             <Route path="mantenimientos/:id/editar" element={<MaintenanceForm />} />
             <Route path="proximos-servicios" element={<Reminders />} />
+            <Route path="productos" element={<Products />} />
             <Route path="backups" element={<Backups />} />
             <Route path="ajustes" element={<SettingsPage />} />
             <Route path="*" element={<NotFound />} />

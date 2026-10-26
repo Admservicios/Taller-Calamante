@@ -1,4 +1,6 @@
-import { useRef } from 'react';
+import { ProductPicker } from './ProductPicker';
+import { productServiceItem } from '../lib/products';
+import { useRef, useState } from 'react';
 import { Plus, Trash2, Package } from 'lucide-react';
 import { randomId } from '../lib/ids';
 import {
@@ -36,6 +38,8 @@ export function SupplyItemsEditor({
   legacy: string;
   onLegacyChange: (value: string) => void;
 }) {
+  const [picking, setPicking] = useState(false);
+  const catalogueButton = useRef<HTMLButtonElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
   const hadLegacy = useRef(!!legacy);
   const descriptions = useRef(new Map<string, HTMLInputElement>());
@@ -53,8 +57,33 @@ export function SupplyItemsEditor({
   };
   return (
     <div className="supply-items-editor">
+      {picking && (
+        <ProductPicker
+          close={() => {
+            setPicking(false);
+            requestAnimationFrame(() => catalogueButton.current?.focus());
+          }}
+          choose={(product) => {
+            if (rows.length >= 30) return;
+            const item = productServiceItem(product, randomId());
+            onChange([...rows, draftItem(item)]);
+            setPicking(false);
+            requestAnimationFrame(() => descriptions.current.get(item.id)?.focus());
+          }}
+        />
+      )}
+
       <div className="supply-items-toolbar">
         <p>Agregá los artículos utilizados. El precio es por unidad de medida.</p>
+        <button
+          ref={catalogueButton}
+          type="button"
+          className="button"
+          disabled={rows.length >= 30}
+          onClick={() => setPicking(true)}
+        >
+          <Package size={17} /> Agregar desde catálogo
+        </button>
         <button
           ref={addButton}
           type="button"
@@ -101,6 +130,7 @@ export function SupplyItemsEditor({
                     </span>
                     <input
                       aria-label={`Código artículo ${index + 1}`}
+                      readOnly={!!row.productId}
                       maxLength={40}
                       value={row.code}
                       onChange={(e) => update(row.id, 'code', e.target.value)}
@@ -116,6 +146,7 @@ export function SupplyItemsEditor({
                     <input
                       aria-label={`Descripción artículo ${index + 1}`}
                       required
+                      readOnly={!!row.productId}
                       maxLength={120}
                       value={row.description}
                       ref={(node) => {
@@ -126,6 +157,24 @@ export function SupplyItemsEditor({
                       placeholder="Descripción / marca"
                     />
                   </label>
+                  {row.productId && (
+                    <button
+                      type="button"
+                      className="text-button product-unlink"
+                      aria-label={`Desvincular artículo ${index + 1}`}
+                      onClick={() =>
+                        onChange(
+                          rows.map((item) => {
+                            if (item.id !== row.id) return item;
+                            const { productId: _link, ...manual } = item;
+                            return manual;
+                          }),
+                        )
+                      }
+                    >
+                      Catálogo · pasar a manual
+                    </button>
+                  )}
                 </td>
                 <td>
                   <label>
@@ -149,6 +198,7 @@ export function SupplyItemsEditor({
                     <select
                       aria-label={`Unidad artículo ${index + 1}`}
                       value={row.unit}
+                      disabled={!!row.productId}
                       onChange={(e) => update(row.id, 'unit', e.target.value)}
                     >
                       {supplyUnits.map((unit) => (

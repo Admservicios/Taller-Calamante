@@ -6,6 +6,7 @@ const precision = (value: number, scale: number) =>
 export const supplyUnits = ['Unidad', 'Litro', 'Kilogramo', 'Metro', 'Juego'] as const;
 export const supplyItemSchema = z.strictObject({
   id: z.string().min(1).max(100),
+  productId: z.string().min(1).max(100).optional(),
   code: z.string().trim().max(40),
   description: z.string().trim().min(1, 'Completá la descripción del artículo.').max(120),
   quantity: z

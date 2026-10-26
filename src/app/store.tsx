@@ -1,3 +1,4 @@
+import { demoProducts, saveProductData, type Product } from '../lib/products';
 import { useRef } from 'react';
 import {
   isServerMode,
@@ -63,6 +64,7 @@ type Store = LocalData & {
   storageError: string | null;
   updatedAt: string;
   switchMode: () => void;
+  saveProduct: (product: Product, original?: Product) => Promise<boolean>;
   saveCustomer: (customer: Customer) => Promise<boolean>;
   saveVehicle: (vehicle: Vehicle) => Promise<boolean>;
   saveWorkshop: (workshop: Workshop) => Promise<boolean>;
@@ -142,6 +144,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   });
   const [demo, setDemo] = useState<LocalData>(() => ({
+    products: structuredClone(demoProducts),
     customers: structuredClone(initialCustomers),
     vehicles: structuredClone(initialVehicles),
     services: structuredClone(initialServices),
@@ -207,6 +210,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
           ? error.message
           : 'No se pudo guardar. El almacenamiento está lleno, bloqueado o los datos no son válidos. La base anterior se conserva.';
       notify(message);
+      return false;
+    }
+  };
+  const saveProduct = async (product: Product, original?: Product) => {
+    try {
+      return await commit(saveProductData(data, product, original));
+    } catch (error) {
+      notify(error instanceof Error ? error.message : 'No se pudo guardar el producto.');
       return false;
     }
   };
@@ -477,6 +488,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         storageError: mode === 'local' ? local.error : null,
         updatedAt: local.raw && !local.error ? local.database.updatedAt : '',
         switchMode,
+        saveProduct,
         saveCustomer,
         saveVehicle,
         addService,

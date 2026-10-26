@@ -120,6 +120,7 @@ export function editServiceData(
     );
   });
   const result: LocalData = {
+    ...(data.products ? { products: data.products } : {}),
     customers: data.customers,
     workshop: data.workshop,
     services,

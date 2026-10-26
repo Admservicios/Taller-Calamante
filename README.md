@@ -27,6 +27,7 @@ Disponible:
 - Comprobantes PDF: guardar y descargar al registrar un servicio, o descargar desde el historial del vehículo y el listado de mantenimientos. Incluyen importe con centavos y excluyen notas privadas del cliente y del servicio.
 - Dashboard, gráficos y vencimientos calculados sobre los registros locales.
 - Agenda filtrada por cliente, tipo y estado; días/km restantes y avisos con varios servicios del mismo vehículo, preparados para copiar y contactar manualmente al cliente.
+- Catálogo de productos: código único, marca, unidad, precio sugerido y estado; buscador para agregar artículos al mantenimiento conservando sus datos y precios históricos.
 - Datos del taller persistentes.
 - Respaldo JSON versionado, validación de relaciones y restauración confirmada.
 - Copia previa antes de restaurar cuando ya existe una base.

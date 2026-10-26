@@ -120,6 +120,15 @@ try {
       assert.match(customersCSV, /Patentes actuales/);
       assert.match(customersCSV, /AE 610 ZZ/);
       assert.ok(!customersCSV.includes('Valentina Suárez'));
+      await page.goto(`${url}#/productos`);
+      await page.getByRole('button', { name: 'Nuevo producto', exact: true }).click();
+      const productDialog = page.getByRole('dialog');
+      await productDialog.getByLabel('Código').fill('CAT-001');
+      await productDialog.getByLabel('Descripción').fill('Shell Helix HX8');
+      await productDialog.getByLabel('Unidad de medida').selectOption('Litro');
+      await productDialog.getByLabel('Precio sugerido').fill('10000');
+      await productDialog.getByRole('button', { name: 'Guardar producto', exact: true }).click();
+      await productDialog.waitFor({ state: 'hidden' });
       await page.goto(`${url}#/mantenimientos`);
       const pending = page.waitForEvent('download');
       await page
@@ -132,10 +141,10 @@ try {
       await page.reload();
       await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
       await page.getByLabel(/Detalle del Servicio/).fill('Mantenimiento estático con foto.');
-      await page.getByRole('button', { name: 'Agregar artículo manual', exact: true }).click();
-      await page.getByLabel('Descripción artículo 1', { exact: true }).fill('Shell Helix HX8');
+      await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
+      await page.getByLabel('Buscar producto', { exact: true }).fill('cat001');
+      await page.getByRole('button', { name: 'Agregar CAT-001', exact: true }).click();
       await page.getByLabel('Cantidad artículo 1', { exact: true }).fill('4.5');
-      await page.getByLabel('Unidad artículo 1', { exact: true }).selectOption('Litro');
       await page.getByLabel('Precio unitario artículo 1', { exact: true }).fill('10000');
       // El enrutador publicado usa hash: comprobar también enlaces y Atrás reales.
       for (const leave of [
@@ -174,7 +183,7 @@ try {
         await page.getByLabel('Descripción artículo 1', { exact: true }).inputValue(),
         'Shell Helix HX8',
       );
-      await page.getByLabel('Descripción artículo 1', { exact: true }).fill('Motul 8100');
+      await page.getByLabel('Precio unitario artículo 1', { exact: true }).fill('11000');
       await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
       await page.waitForURL(/vehiculos\/practica-v02$/);
       await page.reload();
@@ -260,7 +269,16 @@ try {
       assert.equal(
         backedUp.data.services.find((service) => service.id === serviceId).supplyItems[0]
           .description,
-        'Motul 8100',
+        'Shell Helix HX8',
+      );
+      assert.equal(backedUp.data.products.length, 1);
+      assert.equal(
+        backedUp.data.services.find((service) => service.id === serviceId).supplyItems[0].productId,
+        backedUp.data.products[0].id,
+      );
+      assert.equal(
+        backedUp.data.services.find((service) => service.id === serviceId).supplyItems[0].unitPrice,
+        11000,
       );
       await page.goto(`${url}#/vehiculos/practica-v02`);
       await page.getByRole('button', { name: 'Historial PDF', exact: true }).click();

@@ -190,18 +190,54 @@ try {
       await expect(
         page.getByRole('button', { name: /^Cliente creado sin internet/ }),
       ).toBeVisible();
+      await page.goto(`${url}#/productos`);
+      await page.getByRole('button', { name: 'Nuevo producto', exact: true }).click();
+      const productDialog = page.getByRole('dialog');
+      await productDialog.getByLabel('Código').fill('HAB-OFF');
+      await productDialog.getByLabel('Descripción').fill('Filtro de habitáculo sin conexión');
+      await productDialog.getByLabel('Precio sugerido').fill('12000');
+      await productDialog.getByRole('button', { name: 'Guardar producto', exact: true }).click();
+      await productDialog.waitFor({ state: 'hidden' });
+      await page.reload();
+      await page.getByRole('button', { name: 'Editar producto HAB-OFF', exact: true }).waitFor();
       await page.goto(`${url}#/mantenimientos/nuevo?vehiculo=practica-v02`);
       await page.getByLabel(/Tipo de servicio/).selectOption('Filtro de habitáculo');
       await page
         .getByLabel(/Detalle del Servicio/)
         .fill('Filtro de habitáculo cargado sin internet.');
+      await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
+      await page.getByLabel('Buscar producto', { exact: true }).fill('haboff');
+      await page.getByRole('button', { name: 'Agregar HAB-OFF', exact: true }).click();
+      await expect(page.getByLabel('Precio unitario artículo 1', { exact: true })).toHaveValue(
+        '12000',
+      );
       await page.getByLabel(/Importe total/).fill('35000');
       await page
         .getByLabel('Seleccionar fotos')
         .setInputFiles(resolve(root, 'tests/fixtures/foto-prueba.jpg'));
       await page.locator('.photo-previews img').waitFor();
       await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
-      await page.waitForURL(/vehiculos\/practica-v02$/);
+      try {
+        await page.waitForURL(/vehiculos\/practica-v02$/);
+      } catch (error) {
+        console.error(
+          'Diagnóstico guardado offline:',
+          await page.evaluate(() => ({
+            messages: [...document.querySelectorAll('.form-error,.toast')].map(
+              (node) => node.textContent,
+            ),
+            invalid: [...document.querySelectorAll('input,select,textarea')]
+              .filter((node) => !node.validity.valid)
+              .map((node) => ({
+                name: node.name,
+                label: node.getAttribute('aria-label'),
+                value: node.value,
+                validation: node.validationMessage,
+              })),
+          })),
+        );
+        throw error;
+      }
       await page.reload();
       await page.getByRole('tab', { name: 'Fotos', exact: true }).click();
       await page.getByRole('button', { name: /^Ver foto foto-prueba.jpg/ }).waitFor();

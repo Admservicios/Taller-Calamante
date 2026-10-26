@@ -1,3 +1,4 @@
+import { productSchema, productCode, type Product } from './products';
 import { supplyItemsSchema, supplyItemsSummary } from './supplyItems';
 import { suppliesDetailSchema, suppliesSummary } from './maintenanceEntry';
 import { z } from 'zod';
@@ -106,6 +107,7 @@ export const workshopSchema = z.strictObject({
 });
 export type Workshop = z.infer<typeof workshopSchema>;
 export type LocalData = {
+  products?: Product[];
   customers: Customer[];
   vehicles: Vehicle[];
   services: Service[];
@@ -117,6 +119,7 @@ export type LocalData = {
 };
 export const dataSchema = z
   .strictObject({
+    products: z.array(productSchema).max(20000).optional(),
     customers: z.array(customerSchema).max(20000),
     vehicles: z.array(vehicleSchema).max(20000),
     services: z.array(serviceSchema).max(50000),
@@ -127,6 +130,20 @@ export const dataSchema = z
     documents: z.array(documentReferenceSchema).max(MAX_DOCUMENTS).optional(),
   })
   .superRefine((data, context) => {
+    const products = data.products ?? [];
+    const productIds = new Set(products.map((product) => product.id));
+    if (
+      productIds.size !== products.length ||
+      new Set(products.map((product) => productCode(product.code))).size !== products.length ||
+      data.services.some((service) =>
+        service.supplyItems?.some((item) => item.productId && !productIds.has(item.productId)),
+      )
+    )
+      context.addIssue({
+        code: 'custom',
+        message:
+          'El catálogo tiene códigos o identificadores repetidos, o artículos con referencias de producto inválidas.',
+      });
     const customers = new Set(data.customers.map((c) => c.id));
     const vehicles = new Set(data.vehicles.map((v) => v.id));
     const services = new Set(data.services.map((s) => s.id));

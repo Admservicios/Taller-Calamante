@@ -5755,3 +5755,117 @@ input[type='checkbox'] {
   overflow-wrap: anywhere;
   line-height: 1.5;
 }
+
+.product-editor-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.product-card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.product-card > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+.product-card h2 {
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 16px 0 4px;
+}
+.product-card p {
+  margin-bottom: 20px;
+}
+.product-card small {
+  font-weight: 400;
+  color: var(--muted);
+}
+.product-code {
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.product-picker {
+  display: grid;
+  gap: 14px;
+}
+.product-picker ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.product-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 10px;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 4px;
+}
+.product-choice:hover {
+  background: var(--surface-soft);
+}
+.product-choice span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.product-choice small {
+  display: block;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.product-choice > strong {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.product-unlink {
+  font-size: 11px;
+  min-height: 34px;
+  text-align: left;
+  white-space: normal;
+  margin-top: 6px;
+}
+@media (max-width: 1250px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .product-filters {
+    flex-wrap: wrap;
+  }
+  .product-filters .input-icon {
+    flex-basis: 100%;
+  }
+  .product-choice {
+    flex-wrap: wrap;
+  }
+  .product-choice > strong {
+    width: 100%;
+  }
+}

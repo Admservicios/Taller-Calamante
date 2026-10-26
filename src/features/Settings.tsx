@@ -50,6 +50,7 @@ import {
 export function Backups() {
   const auto = useAutomaticBackups();
   const {
+    products,
     customers,
     vehicles,
     services,
@@ -73,6 +74,7 @@ export function Backups() {
   const [working, setWorking] = useState(false);
   const [reading, setReading] = useState(false);
   const localData = {
+    ...(products ? { products } : {}),
     customers,
     vehicles,
     services,
@@ -112,6 +114,7 @@ export function Backups() {
             demo: true,
             restorable: false,
             exportedAt: new Date().toISOString(),
+            products: products ?? [],
             customers,
             vehicles,
             services,
@@ -293,8 +296,8 @@ export function Backups() {
           <AutomaticBackupPanel />
           <Panel title="Exportar información" icon={HardDriveDownload}>
             <p className="panel-description">
-              Clientes, vehículos, mantenimientos y datos del taller. Si cargaste fotos o
-              documentos, usá el ZIP completo.
+              Clientes, vehículos, mantenimientos, catálogo de productos y datos del taller. Si
+              cargaste fotos o documentos, usá el ZIP completo.
             </p>
             <div className="export-options">
               <div>
@@ -549,7 +552,11 @@ export function Backups() {
             </p>
             <p>
               Actuales: {customers.length} clientes, {vehicles.length} vehículos y {services.length}{' '}
-              mantenimientos.
+              mantenimientos y {products?.length ?? 0} productos.
+            </p>
+            <p>
+              El respaldo contiene {candidate.data.products?.length ?? 0} productos. Se reemplaza
+              también el catálogo actual.
             </p>
             <button
               className="button"
