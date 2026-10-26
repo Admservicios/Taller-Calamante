@@ -5599,3 +5599,51 @@ input[type='checkbox'] {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.maintenance-task-picker {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-soft);
+  margin: 18px 0;
+}
+.maintenance-task-picker > strong {
+  font-size: 14px;
+}
+.maintenance-task-picker p,
+.entry-legacy-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 6px 0 12px;
+}
+.maintenance-task-picker > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.maintenance-task-picker .button {
+  min-height: 40px;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.5;
+}
+.entry-other-supplies {
+  grid-column: 1 / -1;
+}
+.entry-more-supplies {
+  min-height: 44px;
+  margin-top: 8px;
+  text-align: left;
+}
+.entry-legacy-note {
+  padding: 12px;
+  border-left: 3px solid var(--blue);
+  background: var(--surface-soft);
+}
+@media (max-width: 540px) {
+  .form-main .maintenance-vehicle-grid,
+  .form-main .form-grid.maintenance-supplies-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

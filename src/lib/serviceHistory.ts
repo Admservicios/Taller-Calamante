@@ -9,6 +9,7 @@ const fields: [keyof Service, string][] = [
   ['type', 'Tipo de servicio'],
   ['work', 'Trabajos'],
   ['supplies', 'Insumos'],
+  ['suppliesDetail', 'Campos de insumos'],
   ['amount', 'Importe'],
   ['notes', 'Observaciones privadas'],
   ['public', 'Visibilidad pública'],

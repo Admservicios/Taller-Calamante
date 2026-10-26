@@ -132,6 +132,7 @@ try {
       await page.reload();
       await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
       await page.getByLabel(/Trabajos realizados/).fill('Mantenimiento estático con foto.');
+      await page.getByLabel('Aceite de motor', { exact: true }).fill('Shell Helix HX8');
       // El enrutador publicado usa hash: comprobar también enlaces y Atrás reales.
       for (const leave of [
         () =>
@@ -158,6 +159,19 @@ try {
         .setInputFiles(resolve(root, 'tests/fixtures/foto-prueba.jpg'));
       await page.locator('.photo-previews img').waitFor();
       await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
+      await page.waitForURL(/vehiculos\/practica-v02$/);
+      await page
+        .getByRole('row')
+        .filter({ hasText: 'Mantenimiento estático con foto.' })
+        .getByRole('link', { name: 'Editar', exact: true })
+        .click();
+      await page.getByLabel('Aceite de motor', { exact: true }).waitFor();
+      assert.equal(
+        await page.getByLabel('Aceite de motor', { exact: true }).inputValue(),
+        'Shell Helix HX8',
+      );
+      await page.getByLabel('Aceite de motor', { exact: true }).fill('Motul 8100');
+      await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
       await page.waitForURL(/vehiculos\/practica-v02$/);
       await page.reload();
       await page.getByRole('tab', { name: 'Fotos', exact: true }).click();
@@ -237,7 +251,11 @@ try {
         backedUp.data.services
           .find((service) => service.id === serviceId)
           .changes.map((entry) => entry.action),
-        ['created', 'annulled', 'restored'],
+        ['created', 'edited', 'annulled', 'restored'],
+      );
+      assert.equal(
+        backedUp.data.services.find((service) => service.id === serviceId).suppliesDetail.oil,
+        'Motul 8100',
       );
       await page.goto(`${url}#/vehiculos/practica-v02`);
       await page.getByRole('button', { name: 'Historial PDF', exact: true }).click();

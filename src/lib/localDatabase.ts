@@ -1,3 +1,4 @@
+import { suppliesDetailSchema, suppliesSummary } from './maintenanceEntry';
 import { z } from 'zod';
 import type { Customer, Service, Vehicle } from './demo';
 import { photoReferenceSchema, type PhotoReference } from './photos';
@@ -43,41 +44,51 @@ const vehicleSchema = z.strictObject({
   maintenancePlans: z.array(maintenancePlanSchema).max(100).optional(),
   manualKm: z.number().int().min(0).max(9999999).optional(),
 });
-const serviceSchema = z.strictObject({
-  id,
-  vehicleId: id,
-  date: z.iso.date(),
-  km: z.number().int().min(0).max(9999999),
-  type: z.string().trim().min(1).max(100),
-  work: text(2000),
-  supplies: text(1000),
-  amount: z.number().min(0).max(999999999),
-  notes: text(500),
-  public: z.boolean(),
-  maintenance: maintenancePlanSchema.optional(),
-  annulment: z
-    .strictObject({ at: z.iso.datetime(), reason: z.string().trim().min(3).max(500) })
-    .optional(),
-  changes: z
-    .array(
-      z.strictObject({
-        at: z.iso.datetime(),
-        action: z.enum(['created', 'edited', 'annulled', 'restored']),
-        reason: z.string().max(500).optional(),
-        changes: z
-          .array(
-            z.strictObject({
-              field: z.string().max(100),
-              before: z.string().max(10000),
-              after: z.string().max(10000),
-            }),
-          )
-          .max(30),
-      }),
-    )
-    .max(1000)
-    .optional(),
-});
+const serviceSchema = z
+  .strictObject({
+    id,
+    vehicleId: id,
+    date: z.iso.date(),
+    km: z.number().int().min(0).max(9999999),
+    type: z.string().trim().min(1).max(100),
+    work: text(2000),
+    supplies: text(1000),
+    suppliesDetail: suppliesDetailSchema.optional(),
+    amount: z.number().min(0).max(999999999),
+    notes: text(500),
+    public: z.boolean(),
+    maintenance: maintenancePlanSchema.optional(),
+    annulment: z
+      .strictObject({ at: z.iso.datetime(), reason: z.string().trim().min(3).max(500) })
+      .optional(),
+    changes: z
+      .array(
+        z.strictObject({
+          at: z.iso.datetime(),
+          action: z.enum(['created', 'edited', 'annulled', 'restored']),
+          reason: z.string().max(500).optional(),
+          changes: z
+            .array(
+              z.strictObject({
+                field: z.string().max(100),
+                before: z.string().max(10000),
+                after: z.string().max(10000),
+              }),
+            )
+            .max(30),
+        }),
+      )
+      .max(1000)
+      .optional(),
+  })
+  .refine(
+    (service) =>
+      !service.suppliesDetail || suppliesSummary(service.suppliesDetail) === service.supplies,
+    {
+      message: 'El detalle de los insumos no coincide con su resumen.',
+      path: ['suppliesDetail'],
+    },
+  );
 export const workshopSchema = z.strictObject({
   name: z.string().trim().min(1).max(100),
   phone: text(30),

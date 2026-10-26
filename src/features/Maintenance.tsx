@@ -3,6 +3,18 @@ import { randomId } from '../lib/ids';
 import { useUnsavedChanges } from '../components/UnsavedChanges';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import {
+  alignmentEntry,
+  alignmentSummary,
+  alignmentOptions,
+  balancingOptions,
+  appendTask,
+  commonTasks,
+  entrySupplies,
+  saveEntrySupplies,
+  supplyLabels,
+  type SuppliesDetail,
+} from '../lib/maintenanceEntry';
 import { editableServicePlan, editServiceData } from '../lib/serviceEditing';
 import { serviceSchema, serviceFieldsSchema } from '../lib/serviceValidation';
 import { nextServiceDate } from '../lib/localDatabase';
@@ -98,7 +110,52 @@ function MaintenanceFormFields() {
   const [customType, setCustomType] = useState(original?.type ?? requestedPlan?.label ?? '');
   const actualType = serviceType === 'Otro mantenimiento' ? customType.trim() : serviceType;
   const kind = maintenanceKind(actualType);
-  const isAlignment = !original && serviceType === 'Alineación y balanceo';
+  const isAlignment = serviceType === 'Alineación y balanceo';
+  const [initialAlignment] = useState(() =>
+    original?.type === 'Alineación y balanceo'
+      ? alignmentEntry(original.work)
+      : { work: original?.work ?? '', alignment: '', balancing: '' },
+  );
+  const [work, setWork] = useState(initialAlignment.work);
+  const [alignment, setAlignment] = useState(
+    original ? initialAlignment.alignment : 'Eje delantero',
+  );
+  const [balancing, setBalancing] = useState(
+    original ? initialAlignment.balancing : 'Las 4 ruedas',
+  );
+  const [suppliesDetail, setSuppliesDetail] = useState(() => entrySupplies(original));
+  const [showAllSupplies, setShowAllSupplies] = useState(false);
+  const legacySupplies =
+    !!original &&
+    !original.suppliesDetail &&
+    !!original.supplies &&
+    original.supplies !== 'Sin insumos registrados';
+  const supplyKeys = (Object.keys(supplyLabels) as (keyof SuppliesDetail)[]).filter(
+    (key) =>
+      showAllSupplies ||
+      suppliesDetail[key] ||
+      key === 'other' ||
+      ['aceite-filtros', 'filtros'].includes(kind.key) ||
+      (kind.key === 'otro-filtro-de-habitaculo' && key === 'cabinFilter'),
+  );
+  const changeSupply = (key: keyof SuppliesDetail, value: string) => {
+    setSuppliesDetail((previous) => ({ ...previous, [key]: value }));
+  };
+  const chooseType = (value: string) => {
+    if (isAlignment && value !== 'Alineación y balanceo') {
+      setWork(alignmentSummary(work, alignment, balancing));
+      setAlignment('');
+      setBalancing('');
+    } else if (!isAlignment && value === 'Alineación y balanceo') {
+      const parsed = alignmentEntry(work);
+      setWork(parsed.work);
+      setAlignment(parsed.alignment || (original ? '' : 'Eje delantero'));
+      setBalancing(parsed.balancing || (original ? '' : 'Las 4 ruedas'));
+    }
+    setServiceType(value);
+    setCustomRecommendation(false);
+    setRecommendation(maintenanceKind(value).recommendations[0]);
+  };
   const [dirty, setDirty] = useState(false);
   const { markClean, confirmDiscard } = useUnsavedChanges(dirty);
   const [error, setError] = useState('');
@@ -112,6 +169,9 @@ function MaintenanceFormFields() {
   const [nextKm, setNextKm] = useState(initialPlan?.nextKm ?? (initialVehicle?.km ?? 0) + 10000);
   const [recommendation, setRecommendation] = useState(
     initialPlan?.recommendation ?? initialKind.recommendations[0],
+  );
+  const [customRecommendation, setCustomRecommendation] = useState(
+    !!initialPlan && !initialKind.recommendations.includes(initialPlan.recommendation),
   );
   const changeVehicle = (id: string) => {
     setVehicleId(id);
@@ -130,8 +190,6 @@ function MaintenanceFormFields() {
     if (!vehicle || saving || preparingPhotos) return;
     const wantsPDF = (e.nativeEvent as SubmitEvent).submitter?.getAttribute('value') === 'pdf';
     const data = new FormData(e.currentTarget);
-    const alignment = String(data.get('alignment') ?? '');
-    const balancing = String(data.get('balancing') ?? '');
     if (isAlignment && alignment === 'No realizada' && balancing === 'No realizado') {
       setError('Indicá una alineación o un balanceo realizado para guardar este servicio.');
       return;
@@ -140,7 +198,7 @@ function MaintenanceFormFields() {
       date: data.get('date'),
       km: Number(data.get('km')),
       type: actualType,
-      work: data.get('work'),
+      work,
       amount: Number(data.get('amount')),
       nextDate,
       nextKm,
@@ -149,10 +207,10 @@ function MaintenanceFormFields() {
       setError(result.error.issues[0].message);
       return;
     }
-    const work = isAlignment
-      ? `Alineación: ${alignment}. Balanceo: ${balancing}. ${result.data.work}`
+    const savedWork = isAlignment
+      ? alignmentSummary(result.data.work, alignment, balancing)
       : result.data.work;
-    if (work.length > 2000) {
+    if (savedWork.length > 2000) {
       setError('El detalle completo del trabajo no puede superar los 2000 caracteres.');
       return;
     }
@@ -164,23 +222,19 @@ function MaintenanceFormFields() {
       setError('La fecha del servicio no puede ser posterior a la fecha actual de referencia.');
       return;
     }
-    const supplies = original
-      ? String(data.get('supplies') ?? '').trim()
-      : ['oil', 'viscosity', 'oilFilter', 'airFilter', 'fuelFilter', 'cabinFilter', 'other']
-          .map((key) => {
-            const value = String(data.get(key) ?? '').trim();
-            return key === 'cabinFilter' && value ? `Filtro de habitáculo: ${value}` : value;
-          })
-          .filter(Boolean)
-          .join(' · ');
+    const supplyData = saveEntrySupplies(suppliesDetail, original);
+    if (supplyData.supplies.length > 1000) {
+      setError('El detalle completo de insumos y repuestos no puede superar los 1000 caracteres.');
+      return;
+    }
     const service: Service = {
       id: original?.id ?? randomId(),
       vehicleId: vehicle.id,
       date: result.data.date,
       km: result.data.km,
       type: result.data.type,
-      work,
-      supplies: original ? supplies : supplies || 'Sin insumos registrados',
+      work: savedWork,
+      ...supplyData,
       amount: result.data.amount,
       notes: String(data.get('notes')).trim(),
       public: mode === 'demo' ? data.get('public') === 'on' : (original?.public ?? false),
@@ -279,7 +333,7 @@ function MaintenanceFormFields() {
     <>
       <PageTitle
         title={original ? 'Editar mantenimiento' : 'Registrar mantenimiento'}
-        subtitle="Completá la información del servicio realizado al vehículo."
+        subtitle="Elegí el vehículo, agregá las tareas realizadas y revisá el próximo vencimiento."
         actions={
           <button className="button" onClick={cancel} disabled={saving || preparingPhotos}>
             <ArrowLeft size={16} />
@@ -361,7 +415,7 @@ function MaintenanceFormFields() {
             </div>
           )}
           <Panel title="Cliente y vehículo" icon={CarFront}>
-            <div className="form-grid">
+            <div className="form-grid maintenance-vehicle-grid">
               <label>
                 Cliente <span>*</span>
                 <select
@@ -472,10 +526,7 @@ function MaintenanceFormFields() {
                   name="type"
                   required
                   value={serviceType}
-                  onChange={(e) => {
-                    setServiceType(e.target.value);
-                    setRecommendation(maintenanceKind(e.target.value).recommendations[0]);
-                  }}
+                  onChange={(e) => chooseType(e.target.value)}
                 >
                   <option>Service general</option>
                   <option>Cambio de aceite</option>
@@ -505,16 +556,44 @@ function MaintenanceFormFields() {
                 />
               </label>
             )}
+            {!!commonTasks[kind.key]?.length && (
+              <div className="maintenance-task-picker" role="group" aria-label="Tareas frecuentes">
+                <strong>Tareas frecuentes</strong>
+                <p>Agregá solo las que realizaste. Podés corregir el detalle debajo.</p>
+                <div>
+                  {commonTasks[kind.key].map((task) => (
+                    <button
+                      type="button"
+                      className="button small"
+                      key={task}
+                      disabled={work.split('\n').some((line) => line.trim() === task)}
+                      onClick={() => {
+                        const next = appendTask(work, task);
+                        if (next.length > (isAlignment ? 1800 : 2000)) {
+                          setError('No hay espacio para agregar esta tarea. Acortá el detalle.');
+                          return;
+                        }
+                        setWork(next);
+                        setDirty(true);
+                      }}
+                    >
+                      + {task}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <label>
               Trabajos realizados <span>*</span>
               <textarea
                 name="work"
-                defaultValue={original?.work}
+                value={work}
+                onChange={(e) => setWork(e.target.value)}
                 required
                 minLength={5}
                 maxLength={isAlignment ? 1800 : 2000}
-                rows={3}
-                placeholder="Describí las tareas realizadas en este servicio…"
+                rows={4}
+                placeholder="Seleccioná tareas frecuentes o describí el trabajo realizado…"
               />
             </label>
           </Panel>
@@ -523,19 +602,30 @@ function MaintenanceFormFields() {
               <div className="form-grid">
                 <label>
                   Alineación realizada <span>*</span>
-                  <select name="alignment" required defaultValue="Eje delantero">
-                    <option>Eje delantero</option>
-                    <option>Ejes delantero y trasero</option>
-                    <option>No realizada</option>
+                  <select
+                    name="alignment"
+                    required={!original}
+                    value={alignment}
+                    onChange={(e) => setAlignment(e.target.value)}
+                  >
+                    <option value="">Sin especificar</option>
+                    {alignmentOptions.map((value) => (
+                      <option key={value}>{value}</option>
+                    ))}
                   </select>
                 </label>
                 <label>
                   Ruedas balanceadas <span>*</span>
-                  <select name="balancing" required defaultValue="Las 4 ruedas">
-                    <option>Las 4 ruedas</option>
-                    <option>2 ruedas delanteras</option>
-                    <option>2 ruedas traseras</option>
-                    <option>No realizado</option>
+                  <select
+                    name="balancing"
+                    required={!original}
+                    value={balancing}
+                    onChange={(e) => setBalancing(e.target.value)}
+                  >
+                    <option value="">Sin especificar</option>
+                    {balancingOptions.map((value) => (
+                      <option key={value}>{value}</option>
+                    ))}
                   </select>
                 </label>
               </div>
@@ -546,61 +636,73 @@ function MaintenanceFormFields() {
             </Panel>
           )}
           <Panel title="Insumos y repuestos" icon={Settings2}>
-            {original ? (
-              <label>
-                Insumos y repuestos registrados
-                <textarea
-                  name="supplies"
-                  rows={4}
-                  maxLength={1000}
-                  defaultValue={original.supplies}
-                />
-              </label>
-            ) : (
-              <div className="form-grid three">
-                <label>
-                  Aceite de motor
-                  <input name="oil" list="oils" placeholder="Marca y producto" maxLength={100} />
-                  <datalist id="oils">
-                    <option>Shell Helix HX8</option>
-                    <option>Motul 8100</option>
-                    <option>Castrol Magnatec</option>
-                    <option>YPF Elaion</option>
-                  </datalist>
-                </label>
-                <label>
-                  Viscosidad
-                  <select name="viscosity">
-                    <option value="">Sin especificar</option>
-                    <option>0W-20</option>
-                    <option>5W-30</option>
-                    <option>5W-40</option>
-                    <option>10W-40</option>
-                    <option>15W-40</option>
-                  </select>
-                </label>
-                <label>
-                  Filtro de aceite
-                  <input name="oilFilter" placeholder="Marca / código" maxLength={100} />
-                </label>
-                <label>
-                  Filtro de aire
-                  <input name="airFilter" placeholder="Marca / código" maxLength={100} />
-                </label>
-                <label>
-                  Filtro de combustible
-                  <input name="fuelFilter" placeholder="Marca / código" maxLength={100} />
-                </label>
-                <label>
-                  Filtro de habitáculo
-                  <input name="cabinFilter" placeholder="Marca / código" maxLength={100} />
-                </label>
-                <label>
-                  Otros repuestos
-                  <input name="other" placeholder="Ej.: bujías, correa…" maxLength={300} />
-                </label>
-              </div>
+            <p className="fine-print">
+              Completá solo lo utilizado. Cambiar el tipo de servicio conserva los insumos que ya
+              cargaste.
+            </p>
+            {legacySupplies && (
+              <p className="entry-legacy-note">
+                Este registro guardó los insumos como texto. El detalle original se conserva abajo;
+                podés distribuirlo en los campos y quitar lo que ya hayas trasladado.
+              </p>
             )}
+            <div className="form-grid three maintenance-supplies-grid">
+              {supplyKeys.map((key) => (
+                <label key={key} className={key === 'other' ? 'entry-other-supplies' : undefined}>
+                  {key === 'other' && legacySupplies
+                    ? 'Insumos y repuestos registrados'
+                    : supplyLabels[key]}
+                  {key === 'other' ? (
+                    <textarea
+                      name="other"
+                      rows={3}
+                      maxLength={1000}
+                      value={suppliesDetail.other}
+                      onChange={(e) => changeSupply('other', e.target.value)}
+                      placeholder="Pastillas, discos, bujías, correas u otros detalles…"
+                    />
+                  ) : key === 'viscosity' ? (
+                    <input
+                      name={key}
+                      list="viscosities"
+                      maxLength={100}
+                      value={suppliesDetail[key]}
+                      onChange={(e) => changeSupply(key, e.target.value)}
+                      placeholder="Ej.: 5W-30"
+                    />
+                  ) : (
+                    <input
+                      name={key}
+                      list={key === 'oil' ? 'oils' : undefined}
+                      maxLength={100}
+                      value={suppliesDetail[key]}
+                      onChange={(e) => changeSupply(key, e.target.value)}
+                      placeholder={key === 'oil' ? 'Marca y producto' : 'Marca / código'}
+                    />
+                  )}
+                </label>
+              ))}
+            </div>
+            <datalist id="oils">
+              {['Shell Helix HX8', 'Motul 8100', 'Castrol Magnatec', 'YPF Elaion'].map((value) => (
+                <option key={value}>{value}</option>
+              ))}
+            </datalist>
+            <datalist id="viscosities">
+              {['0W-20', '5W-30', '5W-40', '10W-40', '15W-40'].map((value) => (
+                <option key={value}>{value}</option>
+              ))}
+            </datalist>
+            <button
+              type="button"
+              className="text-button entry-more-supplies"
+              aria-expanded={showAllSupplies}
+              onClick={() => setShowAllSupplies((value) => !value)}
+            >
+              {showAllSupplies
+                ? 'Mostrar insumos del servicio'
+                : 'Mostrar todos los campos de insumos'}
+            </button>
           </Panel>
           <Panel title={`Próximo mantenimiento · ${kind.label}`} icon={CalendarDays}>
             {original && (
@@ -643,26 +745,35 @@ function MaintenanceFormFields() {
                 </label>
                 <label>
                   Trabajo recomendado
-                  {original ? (
+                  <select
+                    name="nextType"
+                    value={customRecommendation ? '__custom__' : recommendation}
+                    onChange={(e) => {
+                      if (e.target.value === '__custom__') setCustomRecommendation(true);
+                      else {
+                        setCustomRecommendation(false);
+                        setRecommendation(e.target.value);
+                      }
+                    }}
+                  >
+                    {kind.recommendations.map((value) => (
+                      <option key={value}>{value}</option>
+                    ))}
+                    <option value="__custom__">Otro trabajo recomendado…</option>
+                  </select>
+                </label>
+                {customRecommendation && (
+                  <label className="entry-other-supplies">
+                    Trabajo recomendado personalizado
                     <input
-                      name="nextType"
                       required
                       maxLength={150}
                       value={recommendation}
                       onChange={(e) => setRecommendation(e.target.value)}
+                      placeholder="Escribí la recomendación"
                     />
-                  ) : (
-                    <select
-                      name="nextType"
-                      value={recommendation}
-                      onChange={(e) => setRecommendation(e.target.value)}
-                    >
-                      {kind.recommendations.map((r) => (
-                        <option key={r}>{r}</option>
-                      ))}
-                    </select>
-                  )}
-                </label>
+                  </label>
+                )}
               </div>
             )}
             <p className="fine-print">

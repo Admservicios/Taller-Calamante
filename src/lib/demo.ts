@@ -1,3 +1,4 @@
+import type { SuppliesDetail } from './maintenanceEntry';
 import { vehiclePlanStatus, type MaintenancePlan } from './maintenancePlans';
 
 export type Customer = {
@@ -43,6 +44,7 @@ export type Service = {
   type: string;
   work: string;
   supplies: string;
+  suppliesDetail?: SuppliesDetail;
   amount: number;
   notes: string;
   public: boolean;
