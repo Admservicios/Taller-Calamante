@@ -5401,3 +5401,52 @@ input[type='checkbox'] {
     flex-wrap: wrap;
   }
 }
+
+/* Catálogo de vehículos con filtros y dos vistas del mismo resultado. */
+.vehicle-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.vehicle-filters .input-icon {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.vehicle-filters select {
+  flex: 1 1 165px;
+  min-width: 0;
+  max-width: 100%;
+}
+.vehicle-view-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.vehicle-view-options button[aria-pressed='true'] {
+  background: var(--blue-soft);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.vehicle-card-priority {
+  display: grid;
+  gap: 5px;
+  border-top: 1px solid var(--border);
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.vehicle-card-priority span {
+  color: var(--muted);
+}
+@media (max-width: 540px) {
+  .vehicle-filters {
+    padding: 14px;
+  }
+  .vehicle-filters > * {
+    width: 100%;
+  }
+}

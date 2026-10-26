@@ -2,7 +2,7 @@ import { isServerMode } from '../lib/serverClient';
 import { useConfirmDiscard } from '../components/UnsavedChanges';
 import { randomId } from '../lib/ids';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import QRCode from 'qrcode';
 import { nextServiceDate } from '../lib/localDatabase';
 import {
@@ -10,6 +10,7 @@ import {
   ArrowRight,
   CalendarDays,
   Camera,
+  CarFront,
   Check,
   ChevronRight,
   ClipboardList,
@@ -18,6 +19,8 @@ import {
   Fuel,
   Gauge,
   Info,
+  LayoutGrid,
+  List,
   Mail,
   Pencil,
   Phone,
@@ -43,7 +46,13 @@ import { PhotoGallery } from '../components/MaintenancePhotos';
 import { MaintenanceSchedules } from '../components/MaintenanceSchedules';
 import { VehicleDocuments } from '../components/VehicleDocuments';
 import { nextVehiclePlan, planServiceURL } from '../lib/maintenancePlans';
-import { dateLabel, maintenanceStatus, money, number, type Vehicle } from '../lib/demo';
+import { dateLabel, download, maintenanceStatus, money, number, type Vehicle } from '../lib/demo';
+import {
+  normalizedVehicleText,
+  selectVehicleRows,
+  vehicleCSV,
+  vehicleRows,
+} from '../lib/vehicleCatalogue';
 
 export function VehicleEditor({ vehicle, close }: { vehicle?: Vehicle; close: () => void }) {
   const {
@@ -205,91 +214,322 @@ export function VehicleEditor({ vehicle, close }: { vehicle?: Vehicle; close: ()
   );
 }
 export function Vehicles() {
-  const { vehicles, customers, referenceDate } = useData();
-  const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('todos');
+  const { vehicles, customers, referenceDate, mode, notify } = useData();
+  const [params, setParams] = useSearchParams();
   const [adding, setAdding] = useState(false);
-  const filtered = vehicles.filter(
-    (v) =>
-      `${v.plate} ${v.brand} ${v.model} ${customers.find((c) => c.id === v.customerId)?.name}`
-        .toLocaleLowerCase('es')
-        .includes(search.toLocaleLowerCase('es')) &&
-      (status === 'todos' || maintenanceStatus(v, referenceDate) === status),
-  );
+  const search = params.get('buscar') ?? '';
+  const status = params.get('estado') ?? 'todos';
+  const customerId = params.get('cliente') ?? '';
+  const brand = params.get('marca') ?? '';
+  const order = params.get('orden') ?? 'patente';
+  const table = params.get('vista') === 'tabla';
+  const pageSize = [12, 24, 48].includes(Number(params.get('cantidad')))
+    ? Number(params.get('cantidad'))
+    : 12;
+  const currentParams = () => {
+    const url = new URL(window.location.href);
+    return new URLSearchParams(
+      url.hash.startsWith('#/') ? (url.hash.split('?')[1] ?? '') : url.search,
+    );
+  };
+  const change = (key: string, value: string, resetPage = true) => {
+    const next = currentParams();
+    value ? next.set(key, value) : next.delete(key);
+    if (resetPage) next.delete('pagina');
+    setParams(next, { replace: true, flushSync: true });
+  };
+  const go = (value: number) => {
+    change('pagina', String(value), false);
+    window.scrollTo(0, 0);
+  };
+  const clearFilters = () => {
+    const next = currentParams();
+    for (const key of ['buscar', 'estado', 'cliente', 'marca', 'pagina']) next.delete(key);
+    setParams(next, { replace: true, flushSync: true });
+  };
+  const owners = [...customers].sort((a, b) => a.name.localeCompare(b.name, 'es'));
+  const brands = [
+    ...new Map(vehicles.map((v) => [normalizedVehicleText(v.brand), v.brand.trim()])).entries(),
+  ].sort((a, b) => a[1].localeCompare(b[1], 'es'));
+  const filtered = selectVehicleRows(vehicleRows(vehicles, customers, referenceDate), {
+    search,
+    status,
+    customerId,
+    brand,
+    order,
+  });
+  const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const requested = Number(params.get('pagina') ?? 1);
+  const page = Math.min(pages, Math.max(1, Number.isSafeInteger(requested) ? requested : 1));
+  const visible = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const exportCSV = () => {
+    if (!filtered.length) return;
+    try {
+      download(
+        `taller-calamante-vehiculos${mode === 'demo' ? '-demo' : ''}-${referenceDate}.csv`,
+        vehicleCSV(filtered, referenceDate, mode === 'demo'),
+        'text/csv;charset=utf-8',
+      );
+      notify(
+        `CSV descargado con ${filtered.length} vehículos${mode === 'demo' ? ' de demostración' : ''}. Incluye todas las páginas filtradas y sus vencimientos vigentes.`,
+      );
+    } catch {
+      notify('No se pudo descargar el CSV. Volvé a intentarlo.');
+    }
+  };
   return (
     <>
       <PageTitle
         title="Vehículos"
         subtitle="Cada vehículo, su historia. Toda tu flota organizada."
         actions={
-          <button className="button primary" onClick={() => setAdding(true)}>
-            <Plus size={17} />
-            Nuevo vehículo
-          </button>
+          <div className="history-heading-actions">
+            <button className="button" disabled={!filtered.length} onClick={exportCSV}>
+              <Download size={17} />
+              Exportar CSV
+            </button>
+            <button className="button primary" onClick={() => setAdding(true)}>
+              <Plus size={17} />
+              Nuevo vehículo
+            </button>
+          </div>
         }
       />
-      <div className="filter-bar">
+      <section className="panel vehicle-filters" aria-label="Filtros de vehículos">
         <div className="input-icon">
           <Search size={17} />
           <input
             aria-label="Buscar vehículos"
-            placeholder="Buscar por patente, marca, modelo o cliente…"
+            placeholder="Patente, marca, modelo o cliente…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => change('buscar', e.target.value)}
           />
         </div>
         <select
           aria-label="Estado de mantenimiento"
           value={status}
-          onChange={(e) => setStatus(e.target.value)}
+          onChange={(e) => change('estado', e.target.value)}
         >
           <option value="todos">Todos los estados</option>
-          <option>Al día</option>
-          <option>Próximo</option>
-          <option>Vencido</option>
-          <option>Sin datos</option>
+          {['Al día', 'Próximo', 'Vencido', 'Sin datos'].map((state) => (
+            <option key={state}>{state}</option>
+          ))}
         </select>
-        <span className="results-count">{filtered.length} vehículos</span>
-      </div>
-      <div className="vehicle-grid">
-        {filtered.map((v) => (
-          <Link className="vehicle-card" key={v.id} to={`/vehiculos/${v.id}`}>
-            <div className="vehicle-card-image">
-              <VehicleArt color={v.color} />
-              <span className="vehicle-plate">{v.plate}</span>
-            </div>
-            <div className="vehicle-card-content">
-              <div className="vehicle-card-title">
-                <div>
-                  <h2>
-                    {v.brand} {v.model}
-                  </h2>
-                  <p>
-                    {v.year} · {v.engine} · {v.fuel}
-                  </p>
+        <select
+          aria-label="Cliente de vehículos"
+          value={customerId}
+          onChange={(e) => change('cliente', e.target.value)}
+        >
+          <option value="">Todos los clientes</option>
+          {owners.map((owner) => (
+            <option key={owner.id} value={owner.id}>
+              {owner.name}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Marca del vehículo"
+          value={brand}
+          onChange={(e) => change('marca', e.target.value)}
+        >
+          <option value="">Todas las marcas</option>
+          {brands.map(([key, label]) => (
+            <option key={key} value={key}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Ordenar vehículos"
+          value={order}
+          onChange={(e) => change('orden', e.target.value)}
+        >
+          <option value="patente">Patente (A–Z)</option>
+          <option value="urgencia">Más urgentes</option>
+          <option value="kilometraje">Mayor kilometraje</option>
+        </select>
+        <button className="button" onClick={clearFilters}>
+          Limpiar filtros
+        </button>
+        <div className="vehicle-view-options" role="group" aria-label="Vista de vehículos">
+          <button
+            className="button small"
+            aria-pressed={!table}
+            onClick={() => change('vista', '', false)}
+          >
+            <LayoutGrid size={16} />
+            Tarjetas
+          </button>
+          <button
+            className="button small"
+            aria-pressed={table}
+            onClick={() => change('vista', 'tabla', false)}
+          >
+            <List size={16} />
+            Tabla
+          </button>
+        </div>
+        <span className="results-count" aria-live="polite">
+          {filtered.length} vehículos
+        </span>
+      </section>
+      {table ? (
+        <Panel title="Listado de vehículos" icon={CarFront}>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Patente / Vehículo</th>
+                  <th>Cliente</th>
+                  <th>Kilometraje</th>
+                  <th>Estado general</th>
+                  <th>Servicio prioritario</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map(({ vehicle: v, customerName, plans, priority, status: state }) => (
+                  <tr key={v.id} data-vehicle-id={v.id}>
+                    <td>
+                      <Link className="table-link" to={`/vehiculos/${v.id}`}>
+                        <strong>{v.plate}</strong>
+                        <small>
+                          {v.brand} {v.model} · {v.year}
+                        </small>
+                      </Link>
+                    </td>
+                    <td>{customerName}</td>
+                    <td>{number(v.km)} km</td>
+                    <td>
+                      <Badge>{state}</Badge>
+                      <small className="block muted">{plans.length} vencimientos</small>
+                    </td>
+                    <td>
+                      {priority ? (
+                        <>
+                          <strong>{priority.label}</strong>
+                          <small className="block muted">
+                            {dateLabel(priority.nextDate)} · {number(priority.nextKm)} km
+                          </small>
+                        </>
+                      ) : (
+                        <span>Sin vencimientos programados</span>
+                      )}
+                    </td>
+                    <td>
+                      <div className="reminder-row-actions">
+                        <Link className="button small" to={`/vehiculos/${v.id}`}>
+                          Ver ficha
+                        </Link>
+                        <Link
+                          className="button small"
+                          to={
+                            priority
+                              ? planServiceURL(v, priority)
+                              : `/mantenimientos/nuevo?vehiculo=${encodeURIComponent(v.id)}`
+                          }
+                        >
+                          <Plus size={14} />
+                          Registrar
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+      ) : (
+        <div className="vehicle-grid">
+          {visible.map(({ vehicle: v, customerName, priority, status: state }) => (
+            <Link
+              className="vehicle-card"
+              key={v.id}
+              data-vehicle-id={v.id}
+              to={`/vehiculos/${v.id}`}
+            >
+              <div className="vehicle-card-image">
+                <VehicleArt color={v.color} />
+                <span className="vehicle-plate">{v.plate}</span>
+              </div>
+              <div className="vehicle-card-content">
+                <div className="vehicle-card-title">
+                  <div>
+                    <h2>
+                      {v.brand} {v.model}
+                    </h2>
+                    <p>
+                      {v.year} · {v.engine} · {v.fuel}
+                    </p>
+                  </div>
+                  <ArrowRight size={18} />
                 </div>
-                <ArrowRight size={18} />
+                <div className="vehicle-card-meta">
+                  <span>
+                    <Gauge size={16} />
+                    {number(v.km)} km
+                  </span>
+                  <Badge>{state}</Badge>
+                </div>
+                <div className="vehicle-card-priority">
+                  {priority ? (
+                    <>
+                      <strong>{priority.label}</strong>
+                      <span>
+                        {dateLabel(priority.nextDate)} · {number(priority.nextKm)} km
+                      </span>
+                    </>
+                  ) : (
+                    <span>Sin vencimientos programados</span>
+                  )}
+                </div>
+                <div className="vehicle-card-owner">
+                  <UserRound size={15} />
+                  {customerName}
+                  <span>
+                    Ver ficha
+                    <ChevronRight size={13} />
+                  </span>
+                </div>
               </div>
-              <div className="vehicle-card-meta">
-                <span>
-                  <Gauge size={16} />
-                  {number(v.km)} km
-                </span>
-                <Badge>{maintenanceStatus(v, referenceDate)}</Badge>
-              </div>
-              <div className="vehicle-card-owner">
-                <UserRound size={15} />
-                {customers.find((c) => c.id === v.customerId)?.name}
-                <span>
-                  Ver ficha
-                  <ChevronRight size={13} />
-                </span>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      )}
       {!filtered.length && <Empty text="No encontramos vehículos" />}
+      <div className="history-pagination">
+        <span>
+          {filtered.length
+            ? `${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, filtered.length)} de ${filtered.length}`
+            : '0 vehículos'}
+        </span>
+        <nav aria-label="Páginas de vehículos">
+          <button className="button small" disabled={page <= 1} onClick={() => go(page - 1)}>
+            Anterior
+          </button>
+          <span aria-live="polite">
+            Página {page} de {pages}
+          </span>
+          <button className="button small" disabled={page >= pages} onClick={() => go(page + 1)}>
+            Siguiente
+          </button>
+        </nav>
+        <label>
+          Vehículos por página
+          <select value={pageSize} onChange={(e) => change('cantidad', e.target.value)}>
+            {[12, 24, 48].map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <p className="fineprint">
+        El CSV incluye todos los vehículos filtrados y sus vencimientos vigentes. El servicio
+        prioritario resume el más urgente; los demás conservan sus propios objetivos.
+      </p>
       {adding && <VehicleEditor close={() => setAdding(false)} />}
     </>
   );

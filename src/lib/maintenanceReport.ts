@@ -1,3 +1,4 @@
+import { csvDocument } from './csv';
 import type { Customer, Service, Vehicle } from './demo';
 
 const reportCurrency = new Intl.NumberFormat('es-AR', {
@@ -24,12 +25,6 @@ export function maintenanceSummary(services: Service[]) {
     total: totalCents / 100,
     average: active.length ? Math.round(totalCents / active.length) / 100 : 0,
   };
-}
-
-function csvCell(value: string) {
-  // Se conserva el texto como tal al abrirlo en una hoja de cálculo.
-  const safe = /^[\s\u0000-\u001f]*[=+@-]|^[\t\r\n]/.test(value) ? `'${value}` : value;
-  return `"${safe.replaceAll('"', '""')}"`;
 }
 
 export function maintenanceCSV(
@@ -80,5 +75,5 @@ export function maintenanceCSV(
       ];
     }),
   ];
-  return '\uFEFF' + rows.map((row) => row.map(csvCell).join(';')).join('\r\n');
+  return csvDocument(rows);
 }

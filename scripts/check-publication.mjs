@@ -225,6 +225,20 @@ try {
       assert.match(reminderText, /lo que ocurra primero/);
       assert.match(reminderText, /Confirmá el kilometraje actual/);
       await reminderDialog.getByRole('button', { name: 'Cerrar diálogo' }).click();
+      await page.goto(`${url}#/vehiculos?vista=tabla&buscar=Hilux`);
+      await page.getByRole('heading', { name: 'Listado de vehículos', exact: true }).waitFor();
+      await page.waitForFunction(() => document.querySelectorAll('tbody tr').length > 0);
+      const fleetDownload = page.waitForEvent('download');
+      await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
+      const fleetCSV = await readFile(await (await fleetDownload).path(), 'utf8');
+      assert.ok(fleetCSV.startsWith('\uFEFF'));
+      assert.match(fleetCSV, /Hilux/);
+      assert.match(fleetCSV, /Todos los vencimientos vigentes/);
+      await page.getByRole('button', { name: 'Limpiar filtros', exact: true }).click();
+      assert.equal(
+        await page.getByRole('button', { name: 'Tabla', exact: true }).getAttribute('aria-pressed'),
+        'true',
+      );
       assert.deepEqual(errors, [], `${name}: errores en el sitio servido sin Vite`);
       console.log(
         `${name}: rutas, persistencia, PDF, fotos, documentos locales y respaldo ZIP correctos.`,
