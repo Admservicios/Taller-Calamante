@@ -86,8 +86,8 @@ test('editar desde el historial conserva el ID, corrige kilómetros y datos, y g
   await expect(page.getByLabel('Kilometraje objetivo')).toHaveValue('42000');
   await page.getByLabel('Fecha del servicio').fill('2026-02-11');
   await expect(page.getByLabel('Fecha recomendada')).toHaveValue('2027-02-11');
-  await page.getByLabel('Trabajos realizados').fill('Pastillas delanteras y traseras corregidas');
-  await page.getByLabel('Insumos y repuestos registrados').fill('Pastillas Bosch corregidas');
+  await page.getByLabel('Detalle del Servicio').fill('Pastillas delanteras y traseras corregidas');
+  await page.getByLabel('Detalle anterior de insumos').fill('Pastillas Bosch corregidas');
   await page
     .getByLabel('Observaciones privadas', { exact: true })
     .fill('Importe corregido por error de carga');
@@ -209,7 +209,7 @@ test('conserva fotos al editar y mover un servicio; permite quitar y agregar fot
     };
   }, DATABASE_KEY);
   await save(page);
-  await expect(page.getByRole('status')).toContainText('No se pudo guardar');
+  await expect(page.locator('.toast[role="status"]')).toContainText('No se pudo guardar');
   expect(await data(page)).toEqual(before);
   await page.evaluate(() => {
     (window as unknown as { restoreWrite: () => void }).restoreWrite();

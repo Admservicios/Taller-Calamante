@@ -59,7 +59,7 @@ test('clientes: filtrar, crear y descartar datos al recargar', async ({ page }) 
 test('mantenimiento: validar, guardar en memoria y actualizar historial', async ({ page }) => {
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
   await expect(page.getByRole('combobox', { name: 'Vehículo', exact: true })).toHaveValue('v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Cambio de aceite de prueba automatizada');
+  await page.getByLabel(/Detalle del Servicio/).fill('Cambio de aceite de prueba automatizada');
   await page.getByLabel(/Importe total/).fill('120000');
   await page.getByLabel(/Próximo kilometraje|Kilometraje objetivo/).fill('125000');
   await page.getByLabel(/Mostrar este servicio/).check();
@@ -70,7 +70,7 @@ test('mantenimiento: validar, guardar en memoria y actualizar historial', async 
   ).toBeVisible();
   await expect(page.locator('.next-service-values')).toContainText('125.000 km');
   await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
-  await page.getByLabel(/Trabajos realizados/).fill('Control de prueba');
+  await page.getByLabel(/Detalle del Servicio/).fill('Control de prueba');
   await page.getByLabel(/Importe total/).fill('1000');
   await page.getByLabel(/Fecha recomendada/).fill('2026-10-20');
   await page.getByRole('button', { name: 'Guardar en demo' }).click();

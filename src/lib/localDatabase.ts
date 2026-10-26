@@ -1,3 +1,4 @@
+import { supplyItemsSchema, supplyItemsSummary } from './supplyItems';
 import { suppliesDetailSchema, suppliesSummary } from './maintenanceEntry';
 import { z } from 'zod';
 import type { Customer, Service, Vehicle } from './demo';
@@ -52,7 +53,9 @@ const serviceSchema = z
     km: z.number().int().min(0).max(9999999),
     type: z.string().trim().min(1).max(100),
     work: text(2000),
-    supplies: text(1000),
+    supplies: text(20000),
+    supplyItems: supplyItemsSchema.optional(),
+    suppliesLegacy: text(10000).optional(),
     suppliesDetail: suppliesDetailSchema.optional(),
     amount: z.number().min(0).max(999999999),
     notes: text(500),
@@ -71,8 +74,8 @@ const serviceSchema = z
             .array(
               z.strictObject({
                 field: z.string().max(100),
-                before: z.string().max(10000),
-                after: z.string().max(10000),
+                before: z.string().max(30000),
+                after: z.string().max(30000),
               }),
             )
             .max(30),
@@ -83,7 +86,11 @@ const serviceSchema = z
   })
   .refine(
     (service) =>
-      !service.suppliesDetail || suppliesSummary(service.suppliesDetail) === service.supplies,
+      service.supplyItems !== undefined
+        ? !service.suppliesDetail &&
+          supplyItemsSummary(service.supplyItems, service.suppliesLegacy) === service.supplies
+        : service.suppliesLegacy === undefined &&
+          (!service.suppliesDetail || suppliesSummary(service.suppliesDetail) === service.supplies),
     {
       message: 'El detalle de los insumos no coincide con su resumen.',
       path: ['suppliesDetail'],

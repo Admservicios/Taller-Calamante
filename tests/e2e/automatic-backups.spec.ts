@@ -107,7 +107,7 @@ test('carpeta persistente, ZIP con foto y documento, copia manual y pausa sin bo
   await setup(page);
   await page.clock.install({ time: new Date('2026-10-22T20:00:00Z') });
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Servicio para respaldo automático completo.');
+  await page.getByLabel(/Detalle del Servicio/).fill('Servicio para respaldo automático completo.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page
     .getByLabel('Seleccionar fotos')

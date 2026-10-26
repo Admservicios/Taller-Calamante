@@ -5,7 +5,6 @@ import { recordServiceChange } from '../../src/lib/serviceHistory';
 import {
   alignmentEntry,
   alignmentSummary,
-  appendTask,
   blankSupplies,
   entrySupplies,
   saveEntrySupplies,
@@ -68,7 +67,7 @@ describe('carga y edición unificadas de mantenimiento', () => {
     const changes = recordServiceChange(initialServices[0], service, 'edited').changes!.at(
       -1,
     )!.changes;
-    expect(changes.map((change) => change.field)).toContain('Campos de insumos');
+    expect(changes.map((change) => change.field)).toContain('Campos de insumos anteriores');
   });
   it('reconoce únicamente el formato guardado de alineación y vuelve a guardarlo sin duplicaciones', () => {
     for (const [alignment, balancing] of [
@@ -84,11 +83,5 @@ describe('carga y edición unificadas de mantenimiento', () => {
     }
     const free = 'Alineación revisada, detalle sin formato.';
     expect(alignmentEntry(free)).toEqual({ alignment: '', balancing: '', work: free });
-  });
-  it('agrega tareas explícitamente, sin reemplazar el texto ni repetir una tarea ya agregada', () => {
-    expect(appendTask('', 'Cambio de aceite de motor')).toBe('Cambio de aceite de motor');
-    const text = 'Detalle escrito por el taller.\nControl de niveles';
-    expect(appendTask(text, 'Control de niveles')).toBe(text);
-    expect(appendTask(text, 'Revisión de frenos')).toBe(text + '\nRevisión de frenos');
   });
 });

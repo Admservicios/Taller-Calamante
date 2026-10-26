@@ -28,7 +28,7 @@ async function data(page: Page) {
 }
 async function prepare(page: Page) {
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Servicio con fotografía local persistente.');
+  await page.getByLabel(/Detalle del Servicio/).fill('Servicio con fotografía local persistente.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page
     .getByLabel('Seleccionar fotos')
@@ -152,7 +152,7 @@ for (const failure of ['archivos', 'registros'] as const) {
       { failure, key: DATABASE_KEY },
     );
     await page.getByRole('button', { name: 'Guardar y generar PDF', exact: true }).click();
-    await expect(page.getByRole('status')).toContainText('No se pudo guardar');
+    await expect(page.locator('.toast[role="status"]')).toContainText('No se pudo guardar');
     await expect(
       page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }),
     ).toBeEnabled();

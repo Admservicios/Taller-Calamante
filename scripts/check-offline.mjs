@@ -193,7 +193,7 @@ try {
       await page.goto(`${url}#/mantenimientos/nuevo?vehiculo=practica-v02`);
       await page.getByLabel(/Tipo de servicio/).selectOption('Filtro de habitáculo');
       await page
-        .getByLabel(/Trabajos realizados/)
+        .getByLabel(/Detalle del Servicio/)
         .fill('Filtro de habitáculo cargado sin internet.');
       await page.getByLabel(/Importe total/).fill('35000');
       await page
@@ -237,18 +237,18 @@ try {
       await context.setOffline(false);
       variant.version = 2;
       await page.goto(`${url}#/mantenimientos/nuevo?vehiculo=practica-v02`);
-      await page.getByLabel(/Trabajos realizados/).fill('Texto pendiente que no se debe perder.');
+      await page.getByLabel(/Detalle del Servicio/).fill('Texto pendiente que no se debe perder.');
       await page.evaluate(async () => {
         await (await navigator.serviceWorker.getRegistration()).update();
       });
       await page.getByRole('button', { name: 'Actualizar aplicación', exact: true }).waitFor();
       assert.equal(await page.locator('meta[name="test-version"]').getAttribute('content'), '1');
-      await expect(page.getByLabel(/Trabajos realizados/)).toHaveValue(
+      await expect(page.getByLabel(/Detalle del Servicio/)).toHaveValue(
         'Texto pendiente que no se debe perder.',
       );
       await page.getByRole('button', { name: 'Actualizar aplicación', exact: true }).click();
       await page.getByRole('dialog').getByRole('button', { name: 'Más tarde' }).click();
-      await expect(page.getByLabel(/Trabajos realizados/)).toHaveValue(
+      await expect(page.getByLabel(/Detalle del Servicio/)).toHaveValue(
         'Texto pendiente que no se debe perder.',
       );
       // Otra pestaña puede aplicar la actualización sin recargar el formulario pendiente.
@@ -260,7 +260,7 @@ try {
         .getByRole('button', { name: 'Recargar y actualizar' })
         .click();
       await expect(background.locator('meta[name="test-version"]')).toHaveAttribute('content', '2');
-      await expect(page.getByLabel(/Trabajos realizados/)).toHaveValue(
+      await expect(page.getByLabel(/Detalle del Servicio/)).toHaveValue(
         'Texto pendiente que no se debe perder.',
       );
       assert.equal(await page.locator('meta[name="test-version"]').getAttribute('content'), '1');

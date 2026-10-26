@@ -35,7 +35,7 @@ async function register(page: Page, type: string, km: number, nextKm: number, wo
   await page.getByLabel(/Tipo de servicio/).selectOption(type);
   await page.getByLabel(/Kilometraje actual/).fill(String(km));
   await page.getByLabel(/Kilometraje objetivo/).fill(String(nextKm));
-  await page.getByLabel(/Trabajos realizados/).fill(work);
+  await page.getByLabel(/Detalle del Servicio/).fill(work);
   await page.getByLabel(/Importe total/).fill('45000');
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
@@ -181,7 +181,7 @@ test('dos servicios con nombre propio conservan vencimientos separados y se ven 
     await page.goto('/mantenimientos/nuevo?vehiculo=v2');
     await page.getByLabel(/Tipo de servicio/).selectOption('Otro mantenimiento');
     await page.getByLabel(/Nombre del servicio/).fill(name);
-    await page.getByLabel(/Trabajos realizados/).fill(`Trabajo completo de ${name}.`);
+    await page.getByLabel(/Detalle del Servicio/).fill(`Trabajo completo de ${name}.`);
     await page.getByLabel(/Importe total/).fill('45000');
     await page.getByLabel(/Kilometraje actual/).fill(String(km));
     await page.getByLabel(/Kilometraje objetivo/).fill(String(nextKm));

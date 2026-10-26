@@ -116,7 +116,7 @@ try {
   let snapshot = await data(page);
   const vehicle = snapshot.vehicles[0];
   await page.goto(url + `/#/mantenimientos/nuevo?vehiculo=${vehicle.id}`);
-  await page.getByLabel('Trabajos realizados').fill('Service compartido desde la PC del taller.');
+  await page.getByLabel('Detalle del Servicio').fill('Service compartido desde la PC del taller.');
   await page.getByLabel('Importe total').fill('35000');
   await page
     .getByLabel('Seleccionar fotos')

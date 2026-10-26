@@ -1,3 +1,4 @@
+import { serviceSuppliesText } from './supplyItems';
 import { z } from 'zod';
 import { dateLabel, number, type Customer, type Service, type Vehicle } from './demo';
 import type { Workshop } from './localDatabase';
@@ -154,7 +155,7 @@ export async function createVehicleHistoryPDF(report: VehicleHistoryReport) {
     text(service.work || 'Sin detalle registrado.');
     y += 2;
     text('Insumos y repuestos', 10, true);
-    text(service.supplies || 'Sin insumos registrados.');
+    text(serviceSuppliesText(service, includeAmounts) || 'Sin insumos registrados.');
     if (includeAmounts)
       text(`Importe registrado: ARS ${currency(amountCents(service.amount) / 100)}`, 10, true);
     if (service.maintenance) {

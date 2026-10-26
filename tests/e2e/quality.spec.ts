@@ -20,21 +20,25 @@ test('mantenimiento: conservar al cancelar navegación y salir al confirmar; gua
 }) => {
   await demo(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Trabajo que todavía no guardé');
+  await page.getByLabel(/Detalle del Servicio/).fill('Trabajo que todavía no guardé');
   const clientes = page
     .getByRole('navigation')
     .getByRole('link', { name: 'Clientes', exact: true });
   await answer(page, false, () => clientes.click());
   await expect(page).toHaveURL(/mantenimientos\/nuevo/);
-  await expect(page.getByLabel(/Trabajos realizados/)).toHaveValue('Trabajo que todavía no guardé');
+  await expect(page.getByLabel(/Detalle del Servicio/)).toHaveValue(
+    'Trabajo que todavía no guardé',
+  );
   await answer(page, false, () =>
     page.getByRole('button', { name: 'Cancelar', exact: true }).click(),
   );
-  await expect(page.getByLabel(/Trabajos realizados/)).toHaveValue('Trabajo que todavía no guardé');
+  await expect(page.getByLabel(/Detalle del Servicio/)).toHaveValue(
+    'Trabajo que todavía no guardé',
+  );
   await answer(page, true, () => clientes.click());
   await expect(page).toHaveURL(/clientes$/);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Trabajo confirmado');
+  await page.getByLabel(/Detalle del Servicio/).fill('Trabajo confirmado');
   await page.getByLabel(/Importe total/).fill('1000');
   const unexpected: string[] = [];
   page.on('dialog', async (d) => {
@@ -50,10 +54,10 @@ test('Atrás del navegador conserva el formulario si se rechaza salir', async ({
   await demo(page);
   await page.goto('/mantenimientos');
   await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
-  await page.getByLabel(/Trabajos realizados/).fill('No perder al volver atrás');
+  await page.getByLabel(/Detalle del Servicio/).fill('No perder al volver atrás');
   await answer(page, false, () => page.goBack());
   await expect(page).toHaveURL(/mantenimientos\/nuevo/);
-  await expect(page.getByLabel(/Trabajos realizados/)).toHaveValue('No perder al volver atrás');
+  await expect(page.getByLabel(/Detalle del Servicio/)).toHaveValue('No perder al volver atrás');
   await answer(page, true, () => page.goBack());
   await expect(page).toHaveURL(/mantenimientos$/);
 });

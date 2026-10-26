@@ -131,8 +131,12 @@ try {
       await page.goto(`${url}#/vehiculos/practica-v02`);
       await page.reload();
       await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
-      await page.getByLabel(/Trabajos realizados/).fill('Mantenimiento estático con foto.');
-      await page.getByLabel('Aceite de motor', { exact: true }).fill('Shell Helix HX8');
+      await page.getByLabel(/Detalle del Servicio/).fill('Mantenimiento estático con foto.');
+      await page.getByRole('button', { name: 'Agregar artículo manual', exact: true }).click();
+      await page.getByLabel('Descripción artículo 1', { exact: true }).fill('Shell Helix HX8');
+      await page.getByLabel('Cantidad artículo 1', { exact: true }).fill('4.5');
+      await page.getByLabel('Unidad artículo 1', { exact: true }).selectOption('Litro');
+      await page.getByLabel('Precio unitario artículo 1', { exact: true }).fill('10000');
       // El enrutador publicado usa hash: comprobar también enlaces y Atrás reales.
       for (const leave of [
         () =>
@@ -149,7 +153,7 @@ try {
         await page.waitForURL(/mantenimientos\/nuevo/);
         assert.match(page.url(), /mantenimientos\/nuevo/);
         assert.equal(
-          await page.getByLabel(/Trabajos realizados/).inputValue(),
+          await page.getByLabel(/Detalle del Servicio/).inputValue(),
           'Mantenimiento estático con foto.',
         );
       }
@@ -165,12 +169,12 @@ try {
         .filter({ hasText: 'Mantenimiento estático con foto.' })
         .getByRole('link', { name: 'Editar', exact: true })
         .click();
-      await page.getByLabel('Aceite de motor', { exact: true }).waitFor();
+      await page.getByLabel('Descripción artículo 1', { exact: true }).waitFor();
       assert.equal(
-        await page.getByLabel('Aceite de motor', { exact: true }).inputValue(),
+        await page.getByLabel('Descripción artículo 1', { exact: true }).inputValue(),
         'Shell Helix HX8',
       );
-      await page.getByLabel('Aceite de motor', { exact: true }).fill('Motul 8100');
+      await page.getByLabel('Descripción artículo 1', { exact: true }).fill('Motul 8100');
       await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
       await page.waitForURL(/vehiculos\/practica-v02$/);
       await page.reload();
@@ -254,7 +258,8 @@ try {
         ['created', 'edited', 'annulled', 'restored'],
       );
       assert.equal(
-        backedUp.data.services.find((service) => service.id === serviceId).suppliesDetail.oil,
+        backedUp.data.services.find((service) => service.id === serviceId).supplyItems[0]
+          .description,
         'Motul 8100',
       );
       await page.goto(`${url}#/vehiculos/practica-v02`);

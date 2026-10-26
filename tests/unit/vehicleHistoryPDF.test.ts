@@ -188,3 +188,32 @@ describe('historial vehicular PDF', () => {
     expect(input.map((s) => s.id)).toEqual(['first', 'cancelled', 'last']);
   });
 });
+
+it('el historial sin importes no revela precios ni total de artículos estructurados', async () => {
+  const { saveSupplyItems } = await import('../../src/lib/supplyItems');
+  const data = report();
+  data.services = [
+    {
+      ...first,
+      ...saveSupplyItems(
+        [
+          {
+            id: 'part',
+            code: 'ACE-001',
+            description: 'ARTICULO-ESTRUCTURADO',
+            quantity: 4.5,
+            unit: 'Litro',
+            unitPrice: 8765.43,
+          },
+        ],
+        '',
+      ),
+    },
+  ];
+  data.includeAmounts = false;
+  const result = await createVehicleHistoryPDF(data);
+  const pdf = Buffer.from(result.bytes).toString('latin1');
+  expect(pdf).toContain('ARTICULO-ESTRUCTURADO');
+  expect(pdf).not.toContain('8.765,43');
+  expect(pdf).not.toContain('Total de insumos');
+});

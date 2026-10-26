@@ -5600,50 +5600,158 @@ input[type='checkbox'] {
   }
 }
 
-.maintenance-task-picker {
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface-soft);
-  margin: 18px 0;
-}
-.maintenance-task-picker > strong {
-  font-size: 14px;
-}
-.maintenance-task-picker p,
-.entry-legacy-note {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--muted);
-  margin: 6px 0 12px;
-}
-.maintenance-task-picker > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.maintenance-task-picker .button {
-  min-height: 40px;
-  white-space: normal;
-  text-align: left;
-  line-height: 1.5;
-}
 .entry-other-supplies {
   grid-column: 1 / -1;
 }
-.entry-more-supplies {
-  min-height: 44px;
-  margin-top: 8px;
-  text-align: left;
-}
-.entry-legacy-note {
-  padding: 12px;
-  border-left: 3px solid var(--blue);
-  background: var(--surface-soft);
-}
 @media (max-width: 540px) {
-  .form-main .maintenance-vehicle-grid,
-  .form-main .form-grid.maintenance-supplies-grid {
+  .form-main .maintenance-vehicle-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.supply-items-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.supply-items-toolbar p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  flex: 1 1 220px;
+}
+.supply-items-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 12px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.supply-items-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.supply-items-table th {
+  padding: 10px 5px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.supply-items-table td {
+  padding: 12px 5px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+.supply-items-table td label > span,
+.supply-subtotal > span {
+  display: none;
+}
+.supply-items-table td label {
+  margin: 0;
+}
+.supply-items-table input,
+.supply-items-table select {
+  width: 100%;
+  min-width: 0;
+  font-size: 13px;
+  min-height: 44px;
+  padding: 8px 6px;
+}
+.supply-subtotal output {
+  display: block;
+  padding-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.supply-items-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+.supply-items-total output {
+  color: var(--blue);
+  font-size: 21px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.supply-legacy {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 1250px) {
+  .supply-items-table,
+  .supply-items-table tbody {
+    display: block;
+  }
+  .supply-items-table colgroup,
+  .supply-items-table thead {
+    display: none;
+  }
+  .supply-items-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .supply-items-table td {
+    display: block;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+  .supply-items-table td:nth-child(1),
+  .supply-items-table td:nth-child(2),
+  .supply-items-table td:last-child {
+    grid-column: 1 / -1;
+  }
+  .supply-items-table td:last-child {
+    text-align: right;
+  }
+  .supply-items-table td label > span,
+  .supply-subtotal > span {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+  .supply-items-table input,
+  .supply-items-table select {
+    font-size: 16px;
+    padding: 10px 8px;
+  }
+  .supply-subtotal output {
+    padding-top: 10px;
+    font-size: 16px;
+  }
+}
+
+.supply-items-table td label > span,
+.supply-subtotal > span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
 }

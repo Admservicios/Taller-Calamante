@@ -8,13 +8,9 @@ import {
   alignmentSummary,
   alignmentOptions,
   balancingOptions,
-  appendTask,
-  commonTasks,
-  entrySupplies,
-  saveEntrySupplies,
-  supplyLabels,
-  type SuppliesDetail,
 } from '../lib/maintenanceEntry';
+import { SupplyItemsEditor, draftItem, parsedDraft } from '../components/SupplyItemsEditor';
+import { legacySupplyText, saveSupplyItems } from '../lib/supplyItems';
 import { editableServicePlan, editServiceData } from '../lib/serviceEditing';
 import { serviceSchema, serviceFieldsSchema } from '../lib/serviceValidation';
 import { nextServiceDate } from '../lib/localDatabase';
@@ -123,24 +119,8 @@ function MaintenanceFormFields() {
   const [balancing, setBalancing] = useState(
     original ? initialAlignment.balancing : 'Las 4 ruedas',
   );
-  const [suppliesDetail, setSuppliesDetail] = useState(() => entrySupplies(original));
-  const [showAllSupplies, setShowAllSupplies] = useState(false);
-  const legacySupplies =
-    !!original &&
-    !original.suppliesDetail &&
-    !!original.supplies &&
-    original.supplies !== 'Sin insumos registrados';
-  const supplyKeys = (Object.keys(supplyLabels) as (keyof SuppliesDetail)[]).filter(
-    (key) =>
-      showAllSupplies ||
-      suppliesDetail[key] ||
-      key === 'other' ||
-      ['aceite-filtros', 'filtros'].includes(kind.key) ||
-      (kind.key === 'otro-filtro-de-habitaculo' && key === 'cabinFilter'),
-  );
-  const changeSupply = (key: keyof SuppliesDetail, value: string) => {
-    setSuppliesDetail((previous) => ({ ...previous, [key]: value }));
-  };
+  const [supplyRows, setSupplyRows] = useState(() => (original?.supplyItems ?? []).map(draftItem));
+  const [legacyText, setLegacyText] = useState(() => legacySupplyText(original));
   const chooseType = (value: string) => {
     if (isAlignment && value !== 'Alineación y balanceo') {
       setWork(alignmentSummary(work, alignment, balancing));
@@ -222,11 +202,16 @@ function MaintenanceFormFields() {
       setError('La fecha del servicio no puede ser posterior a la fecha actual de referencia.');
       return;
     }
-    const supplyData = saveEntrySupplies(suppliesDetail, original);
-    if (supplyData.supplies.length > 1000) {
-      setError('El detalle completo de insumos y repuestos no puede superar los 1000 caracteres.');
+    const parsedItems = supplyRows.map(parsedDraft);
+    if (parsedItems.some((result) => !result.success)) {
+      setError('Revisá descripción, cantidad y precio de los artículos.');
       return;
     }
+    const supplyData = saveSupplyItems(
+      parsedItems.map((result) => result.data!),
+      legacyText,
+      original,
+    );
     const service: Service = {
       id: original?.id ?? randomId(),
       vehicleId: vehicle.id,
@@ -556,35 +541,8 @@ function MaintenanceFormFields() {
                 />
               </label>
             )}
-            {!!commonTasks[kind.key]?.length && (
-              <div className="maintenance-task-picker" role="group" aria-label="Tareas frecuentes">
-                <strong>Tareas frecuentes</strong>
-                <p>Agregá solo las que realizaste. Podés corregir el detalle debajo.</p>
-                <div>
-                  {commonTasks[kind.key].map((task) => (
-                    <button
-                      type="button"
-                      className="button small"
-                      key={task}
-                      disabled={work.split('\n').some((line) => line.trim() === task)}
-                      onClick={() => {
-                        const next = appendTask(work, task);
-                        if (next.length > (isAlignment ? 1800 : 2000)) {
-                          setError('No hay espacio para agregar esta tarea. Acortá el detalle.');
-                          return;
-                        }
-                        setWork(next);
-                        setDirty(true);
-                      }}
-                    >
-                      + {task}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
             <label>
-              Trabajos realizados <span>*</span>
+              Detalle del Servicio <span>*</span>
               <textarea
                 name="work"
                 value={work}
@@ -593,7 +551,7 @@ function MaintenanceFormFields() {
                 minLength={5}
                 maxLength={isAlignment ? 1800 : 2000}
                 rows={4}
-                placeholder="Seleccioná tareas frecuentes o describí el trabajo realizado…"
+                placeholder="Describí el servicio y los trabajos realizados…"
               />
             </label>
           </Panel>
@@ -630,79 +588,24 @@ function MaintenanceFormFields() {
                 </label>
               </div>
               <p className="fine-print">
-                Detallá ajustes, vibraciones o desgaste de neumáticos en Trabajos realizados. Podés
+                Detallá ajustes, vibraciones o desgaste de neumáticos en Detalle del Servicio. Podés
                 registrar ambas tareas o solo la que se realizó.
               </p>
             </Panel>
           )}
           <Panel title="Insumos y repuestos" icon={Settings2}>
-            <p className="fine-print">
-              Completá solo lo utilizado. Cambiar el tipo de servicio conserva los insumos que ya
-              cargaste.
-            </p>
-            {legacySupplies && (
-              <p className="entry-legacy-note">
-                Este registro guardó los insumos como texto. El detalle original se conserva abajo;
-                podés distribuirlo en los campos y quitar lo que ya hayas trasladado.
-              </p>
-            )}
-            <div className="form-grid three maintenance-supplies-grid">
-              {supplyKeys.map((key) => (
-                <label key={key} className={key === 'other' ? 'entry-other-supplies' : undefined}>
-                  {key === 'other' && legacySupplies
-                    ? 'Insumos y repuestos registrados'
-                    : supplyLabels[key]}
-                  {key === 'other' ? (
-                    <textarea
-                      name="other"
-                      rows={3}
-                      maxLength={1000}
-                      value={suppliesDetail.other}
-                      onChange={(e) => changeSupply('other', e.target.value)}
-                      placeholder="Pastillas, discos, bujías, correas u otros detalles…"
-                    />
-                  ) : key === 'viscosity' ? (
-                    <input
-                      name={key}
-                      list="viscosities"
-                      maxLength={100}
-                      value={suppliesDetail[key]}
-                      onChange={(e) => changeSupply(key, e.target.value)}
-                      placeholder="Ej.: 5W-30"
-                    />
-                  ) : (
-                    <input
-                      name={key}
-                      list={key === 'oil' ? 'oils' : undefined}
-                      maxLength={100}
-                      value={suppliesDetail[key]}
-                      onChange={(e) => changeSupply(key, e.target.value)}
-                      placeholder={key === 'oil' ? 'Marca y producto' : 'Marca / código'}
-                    />
-                  )}
-                </label>
-              ))}
-            </div>
-            <datalist id="oils">
-              {['Shell Helix HX8', 'Motul 8100', 'Castrol Magnatec', 'YPF Elaion'].map((value) => (
-                <option key={value}>{value}</option>
-              ))}
-            </datalist>
-            <datalist id="viscosities">
-              {['0W-20', '5W-30', '5W-40', '10W-40', '15W-40'].map((value) => (
-                <option key={value}>{value}</option>
-              ))}
-            </datalist>
-            <button
-              type="button"
-              className="text-button entry-more-supplies"
-              aria-expanded={showAllSupplies}
-              onClick={() => setShowAllSupplies((value) => !value)}
-            >
-              {showAllSupplies
-                ? 'Mostrar insumos del servicio'
-                : 'Mostrar todos los campos de insumos'}
-            </button>
+            <SupplyItemsEditor
+              rows={supplyRows}
+              legacy={legacyText}
+              onChange={(rows) => {
+                setSupplyRows(rows);
+                setDirty(true);
+              }}
+              onLegacyChange={(value) => {
+                setLegacyText(value);
+                setDirty(true);
+              }}
+            />
           </Panel>
           <Panel title={`Próximo mantenimiento · ${kind.label}`} icon={CalendarDays}>
             {original && (

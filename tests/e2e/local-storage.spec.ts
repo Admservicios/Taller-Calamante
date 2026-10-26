@@ -79,7 +79,7 @@ test('mantenimiento y kilometraje sobreviven a una recarga; el QR local no expon
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Mantenimiento local persistente');
+  await page.getByLabel(/Detalle del Servicio/).fill('Mantenimiento local persistente');
   await page.getByLabel(/Importe total/).fill('120000');
   await page.getByLabel(/Kilometraje actual/).fill('113000');
   await page.getByLabel(/Kilometraje objetivo/).fill('123000');
@@ -120,8 +120,10 @@ test('guardar con PDF, volver a descargarlo y conservar un único mantenimiento'
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Trabajo para comprobante PDF.');
-  await page.getByLabel('Filtro de habitáculo', { exact: true }).fill('MANN CUK 2939');
+  await page.getByLabel(/Detalle del Servicio/).fill('Trabajo para comprobante PDF.');
+  await page.getByRole('button', { name: 'Agregar artículo manual', exact: true }).click();
+  await page.getByLabel('Descripción artículo 1').fill('Filtro de habitáculo: MANN CUK 2939');
+  await page.getByLabel('Precio unitario artículo 1').fill('12000');
   await page.getByLabel('Observaciones privadas', { exact: true }).fill('SECRETO-PDF-NO-INCLUIR');
   await page.getByLabel(/Importe total/).fill('58400.75');
   await page.getByLabel(/Kilometraje actual/).fill('113000');
@@ -168,11 +170,13 @@ test('fallo de generación PDF conserva el servicio y permite descargarlo despu�
   await seed(page);
   await page.route('**/*jspdf*', (route) => route.abort());
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
-  await page.getByLabel(/Trabajos realizados/).fill('Servicio guardado aunque falle el PDF.');
+  await page.getByLabel(/Detalle del Servicio/).fill('Servicio guardado aunque falle el PDF.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page.getByRole('button', { name: 'Guardar y generar PDF', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
-  await expect(page.getByRole('status')).toContainText('El mantenimiento quedó guardado');
+  await expect(page.locator('.toast[role="status"]')).toContainText(
+    'El mantenimiento quedó guardado',
+  );
   expect((await dataFromBrowser(page)).services).toHaveLength(initialServices.length + 1);
   await page.unroute('**/*jspdf*');
   await page.reload();
@@ -201,10 +205,10 @@ test('almacenamiento lleno impide guardar y generar un comprobante de un servici
       return original.call(this, k, value);
     };
   }, DATABASE_KEY);
-  await page.getByLabel(/Trabajos realizados/).fill('Este servicio no debe guardarse.');
+  await page.getByLabel(/Detalle del Servicio/).fill('Este servicio no debe guardarse.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page.getByRole('button', { name: 'Guardar y generar PDF', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('No se pudo guardar');
+  await expect(page.locator('.toast[role="status"]')).toContainText('No se pudo guardar');
   await expect(page).toHaveURL(/mantenimientos\/nuevo/);
   expect(downloads).toBe(0);
   expect(await dataFromBrowser(page)).toEqual(before);
@@ -219,11 +223,11 @@ test('alineación y balanceo: detalle, persistencia y respaldo desde el móvil',
   await expect(
     page.getByRole('heading', { name: 'Alineación y balanceo', exact: true }),
   ).toBeVisible();
-  await page.getByLabel(/Trabajos realizados/).fill('     ');
+  await page.getByLabel(/Detalle del Servicio/).fill('     ');
   await page.getByLabel(/Importe total/).fill('45000');
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
   await expect(page.getByRole('alert')).toContainText('Describí los trabajos realizados');
-  await page.getByLabel(/Trabajos realizados/).fill('Se corrigió la deriva y la vibración.');
+  await page.getByLabel(/Detalle del Servicio/).fill('Se corrigió la deriva y la vibración.');
   await page.getByLabel(/Alineación realizada/).selectOption('No realizada');
   await page.getByLabel(/Ruedas balanceadas/).selectOption('No realizado');
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
@@ -371,7 +375,7 @@ test('respaldo inválido y almacenamiento lleno no destruyen registros', async (
     .fill('No debe guardarse');
   await page.getByRole('dialog').getByRole('button', { name: 'Guardar cliente' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.getByRole('status')).toContainText('No se pudo guardar');
+  await expect(page.locator('.toast[role="status"]')).toContainText('No se pudo guardar');
   expect(await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY)).toBe(before);
 });
 

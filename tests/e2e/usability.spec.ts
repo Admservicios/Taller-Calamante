@@ -24,7 +24,7 @@ for (const width of [320, 1440]) {
     await seed(page);
     await page.goto('/mantenimientos/nuevo?vehiculo=v2');
     await page
-      .getByLabel(/Trabajos realizados/)
+      .getByLabel(/Detalle del Servicio/)
       .fill('Servicio guardado desde la barra persistente.');
     await page.getByLabel(/Importe total/).fill('12345.50');
     await page
@@ -88,7 +88,7 @@ test('celular: los campos inválidos reciben foco sin quedar debajo de Guardar; 
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
   await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
-  const work = page.getByLabel(/Trabajos realizados/);
+  const work = page.getByLabel(/Detalle del Servicio/);
   await expect(work).toBeFocused();
   await expect(work).toBeInViewport();
   const fieldBox = await work.boundingBox();

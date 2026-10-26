@@ -1,3 +1,4 @@
+import type { SupplyItem } from './supplyItems';
 import type { SuppliesDetail } from './maintenanceEntry';
 import { vehiclePlanStatus, type MaintenancePlan } from './maintenancePlans';
 
@@ -45,6 +46,8 @@ export type Service = {
   work: string;
   supplies: string;
   suppliesDetail?: SuppliesDetail;
+  supplyItems?: SupplyItem[];
+  suppliesLegacy?: string;
   amount: number;
   notes: string;
   public: boolean;
