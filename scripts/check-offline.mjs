@@ -187,6 +187,10 @@ try {
       // PDF y ZIP se abren por primera vez sin red: sus módulos deben estar preparados.
       await page.goto(`${url}#/mantenimientos`);
       await showMoreOptions(page);
+      await page
+        .getByRole('button', { name: /^Más opciones de/ })
+        .first()
+        .click();
       let pending = page.waitForEvent('download');
       await page
         .getByRole('button', { name: /^Descargar PDF/ })

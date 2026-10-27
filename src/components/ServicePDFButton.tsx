@@ -4,7 +4,7 @@ import { useData } from '../app/store';
 import { dateLabel, type Service } from '../lib/demo';
 import { downloadServicePDF } from '../lib/servicePDF';
 
-export function ServicePDFButton({ service }: { service: Service }) {
+export function ServicePDFButton({ service, label = 'PDF' }: { service: Service; label?: string }) {
   const { vehicles, customers, workshop, mode, notify } = useData();
   const [busy, setBusy] = useState(false);
   const vehicle = vehicles.find((v) => v.id === service.vehicleId);
@@ -31,7 +31,7 @@ export function ServicePDFButton({ service }: { service: Service }) {
       }}
     >
       <FileDown size={15} />
-      {busy ? 'Generando…' : 'PDF'}
+      {busy ? 'Generando…' : label}
     </button>
   );
 }

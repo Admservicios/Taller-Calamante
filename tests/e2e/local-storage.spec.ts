@@ -173,6 +173,10 @@ test('guardar con PDF, volver a descargarlo y conservar un único mantenimiento'
   expect(await dataFromBrowser(page)).toEqual(before);
   await page.goto('/mantenimientos');
   await showMoreOptions(page);
+  await page
+    .getByRole('button', { name: /^Más opciones de/ })
+    .first()
+    .click();
   const third = page.waitForEvent('download');
   await page
     .getByRole('button', { name: /^Descargar PDF/ })

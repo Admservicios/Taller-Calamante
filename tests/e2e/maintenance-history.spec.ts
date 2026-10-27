@@ -82,6 +82,9 @@ async function data(page: Page): Promise<LocalData> {
 }
 async function annul(page: Page) {
   await row(page)
+    .getByRole('button', { name: /Más opciones de/ })
+    .click();
+  await row(page)
     .getByRole('button', { name: /Anular servicio/ })
     .click();
   await page.getByLabel('Motivo de anulación').fill('Carga duplicada de prueba');
@@ -177,6 +180,9 @@ test('anula, conserva fotos y auditoría en ZIP y recupera el mantenimiento con 
   await expect(row(page)).toBeVisible();
   await expect(row(page).getByRole('link', { name: /Editar servicio/ })).toHaveCount(0);
   await row(page)
+    .getByRole('button', { name: /Más opciones de/ })
+    .click();
+  await row(page)
     .getByRole('button', { name: /Ver cambios/ })
     .click();
   const dialog = page.getByRole('dialog');
@@ -211,6 +217,9 @@ test('una anulación fallida conserva la base y el motivo para volver a guardar'
   await seed(page);
   await page.goto('/mantenimientos');
   await showMoreOptions(page);
+  await row(page)
+    .getByRole('button', { name: /Más opciones de/ })
+    .click();
   await row(page)
     .getByRole('button', { name: /Anular servicio/ })
     .click();
@@ -247,6 +256,9 @@ test('en celular los filtros y los diálogos no desbordan y un motivo sin guarda
   await page.goto('/mantenimientos');
   await showMoreOptions(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await row(page)
+    .getByRole('button', { name: /Más opciones de/ })
+    .click();
   await row(page)
     .getByRole('button', { name: /Anular servicio/ })
     .click();

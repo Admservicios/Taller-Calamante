@@ -1,13 +1,14 @@
+import { ServiceActions } from '../components/ServiceActions';
+import { ServiceSupplies } from '../components/ServiceSupplies';
 import { MoreOptions } from '../components/MoreOptions';
 import { changeServiceStatus } from '../lib/serviceHistory';
 import { CustomerFilter } from '../components/CustomerFilter';
 import { useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Download, History, Plus, Search, Wrench } from 'lucide-react';
+import { Download, Plus, Search, Wrench } from 'lucide-react';
 import { useData } from '../app/store';
 import { Empty, Modal, ModalCancelButton, PageTitle, Panel } from '../components/ui';
 import { PhotoGallery } from '../components/MaintenancePhotos';
-import { ServicePDFButton } from '../components/ServicePDFButton';
 import { dateLabel, download, number, type Service } from '../lib/demo';
 import { maintenanceKind } from '../lib/maintenancePlans';
 import { maintenanceCSV, maintenanceSummary, reportMoney as money } from '../lib/maintenanceReport';
@@ -70,13 +71,16 @@ function ServiceHistory({ service, close }: { service: Service; close: () => voi
           </div>
         )}
         <dl>
-          <dt>Trabajos realizados</dt>
+          <dt>Detalle del servicio</dt>
           <dd>{service.work || 'Sin detalle'}</dd>
-          <dt>Insumos</dt>
-          <dd>{service.supplies || 'Sin insumos'}</dd>
-          <dt>Observaciones privadas</dt>
-          <dd>{service.notes || 'Sin observaciones'}</dd>
         </dl>
+        <ServiceSupplies service={service} />
+        {service.notes && (
+          <section className="service-private-notes">
+            <h3>Observaciones privadas</h3>
+            <p>{service.notes}</p>
+          </section>
+        )}
         <PhotoGallery services={[service]} />
         <h3>Historial de cambios</h3>
         <p className="fineprint">
@@ -442,35 +446,12 @@ export function MaintenanceList() {
                     <td data-label="Kilometraje">{number(service.km)} km</td>
                     <td data-label="Importe">{money(service.amount)}</td>
                     <td data-label="Acciones">
-                      <div className="history-row-actions">
-                        {!service.annulment && (
-                          <>
-                            <Link
-                              className="button small"
-                              to={`/mantenimientos/${service.id}/editar`}
-                              aria-label={`Editar servicio de ${v?.plate} del ${service.date}`}
-                            >
-                              Editar
-                            </Link>
-                            <ServicePDFButton service={service} />
-                          </>
-                        )}
-                        <button
-                          className="button small"
-                          aria-label={`Ver cambios de ${v?.plate} del ${service.date}`}
-                          onClick={() => setDialog({ service, kind: 'history' })}
-                        >
-                          <History size={14} />
-                          Detalle y cambios
-                        </button>
-                        <button
-                          className="button small"
-                          aria-label={`${service.annulment ? 'Recuperar' : 'Anular'} servicio de ${v?.plate} del ${service.date}`}
-                          onClick={() => setDialog({ service, kind: 'status' })}
-                        >
-                          {service.annulment ? 'Recuperar' : 'Anular'}
-                        </button>
-                      </div>
+                      <ServiceActions
+                        service={service}
+                        plate={v?.plate}
+                        onHistory={() => setDialog({ service, kind: 'history' })}
+                        onStatus={() => setDialog({ service, kind: 'status' })}
+                      />
                     </td>
                   </tr>
                 );

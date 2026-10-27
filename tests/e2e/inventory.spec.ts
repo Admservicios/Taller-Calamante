@@ -115,6 +115,7 @@ test('consume al guardar, corrige la diferencia, anula y recupera; ZIP conserva 
   await page.goto('/mantenimientos');
   await showMoreOptions(page);
   let row = page.locator(`tr[data-service-id="${service.id}"]`);
+  await row.getByRole('button', { name: /Más opciones de/ }).click();
   await row.getByRole('button', { name: /Anular servicio/ }).click();
   await page.getByLabel('Motivo de anulación').fill('Anulación para verificar devolución');
   await page.getByRole('button', { name: 'Confirmar anulación', exact: true }).click();
@@ -241,6 +242,10 @@ test('recuperación sin existencias explica el error dentro del diálogo y conse
   )!;
   await page.goto('/mantenimientos');
   await showMoreOptions(page);
+  await page
+    .locator(`tr[data-service-id="${service.id}"]`)
+    .getByRole('button', { name: /Más opciones de/ })
+    .click();
   await page
     .locator(`tr[data-service-id="${service.id}"]`)
     .getByRole('button', { name: /Anular servicio/ })

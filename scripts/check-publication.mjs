@@ -153,6 +153,10 @@ try {
       await stockDialog.waitFor({ state: 'hidden' });
       await page.goto(`${url}#/mantenimientos`);
       await showMoreOptions(page);
+      await page
+        .getByRole('button', { name: /^Más opciones de/ })
+        .first()
+        .click();
       const pending = page.waitForEvent('download');
       await page
         .getByRole('button', { name: /^Descargar PDF/ })
@@ -263,6 +267,7 @@ try {
       assert.match(report, /Mantenimiento estático con foto/);
       assert.ok(report.includes('"45000,00";"Activo"'));
 
+      await page.getByRole('button', { name: /^Más opciones de/ }).click();
       await page.getByRole('button', { name: /^Anular servicio/ }).click();
       await page.getByLabel('Motivo de anulación').fill('Prueba estática de anulación');
       await page.getByRole('button', { name: 'Confirmar anulación', exact: true }).click();

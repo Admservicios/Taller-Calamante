@@ -186,3 +186,9 @@ Entrega anterior. La lista de artículos de la primera etapa, descrita debajo, r
 - Selector visible de Tarjetas y Lista. Ambas vistas comparten búsqueda, estado, paginación, precios, existencias y acciones de edición y stock. Cambiar la vista conserva la página; cambiar los filtros vuelve a la primera como antes.
 - La vista elegida se conserva en la dirección al recargar y al limpiar los filtros. Tarjetas sigue siendo la presentación predeterminada. La lista se adapta al celular con datos etiquetados y acciones visibles sin desplazamiento horizontal.
 - Se reutilizan los mismos editores y reglas de catálogo y stock; cambiar la presentación no modifica registros ni requiere migración.
+
+## Acciones e insumos del historial
+
+- El listado deja Editar como acción principal y reúne PDF, detalle y anulación en Más opciones. Los anulados muestran Recuperar directamente. El desplegable se cierra con Escape o clic fuera, se posiciona dentro de la ventana y evita recortes por la tabla. Las confirmaciones, motivos y reglas de stock permanecen iguales.
+- El detalle privado muestra los artículos guardados en columnas de descripción/código, cantidad, precio unitario y subtotal, con total de insumos destacado. Usa las cantidades y los precios históricos del servicio, con el mismo redondeo de sus cálculos existentes.
+- En celular los artículos se distribuyen en bloques etiquetados sin desplazamiento horizontal. Los insumos antiguos se conservan como texto; los detalles anteriores sin valorizar no se suman al total de los artículos. Observaciones privadas se agrupan aparte y el espacio sin fotos se reduce. No hay migración ni cambios en registros o PDF.
