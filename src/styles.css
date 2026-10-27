@@ -5420,12 +5420,14 @@ input[type='checkbox'] {
   min-width: 0;
   max-width: 100%;
 }
-.vehicle-view-options {
+.vehicle-view-options,
+.product-view-options {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
-.vehicle-view-options button[aria-pressed='true'] {
+.vehicle-view-options button[aria-pressed='true'],
+.product-view-options button[aria-pressed='true'] {
   background: var(--blue-soft);
   border-color: var(--blue);
   color: var(--blue);
@@ -6149,5 +6151,76 @@ input[type='checkbox'] {
   }
   .maintenance-history-table .service-type {
     white-space: normal;
+  }
+}
+
+.product-view-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 16px;
+}
+.product-view-options .button {
+  min-height: 44px;
+}
+.product-list td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.product-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+@media (max-width: 760px) {
+  .product-list table,
+  .product-list tbody {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+  .product-list thead {
+    display: none;
+  }
+  .product-list tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: 'code status' 'description description' 'brand price' 'stock stock' 'actions actions';
+    gap: 14px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .product-list td {
+    display: block;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+  .product-list td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .product-list td:nth-child(1) {
+    grid-area: code;
+  }
+  .product-list td:nth-child(2) {
+    grid-area: description;
+  }
+  .product-list td:nth-child(3) {
+    grid-area: brand;
+  }
+  .product-list td:nth-child(4) {
+    grid-area: stock;
+  }
+  .product-list td:nth-child(5) {
+    grid-area: price;
+  }
+  .product-list td:nth-child(6) {
+    grid-area: status;
+  }
+  .product-list td:nth-child(7) {
+    grid-area: actions;
   }
 }

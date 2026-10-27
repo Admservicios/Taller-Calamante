@@ -180,3 +180,9 @@ Entrega anterior. La lista de artículos de la primera etapa, descrita debajo, r
 - Clientes deja de abrir automáticamente la primera ficha. En celular, el historial de mantenimientos utiliza tarjetas con fecha, vehículo, cliente, trabajo, kilómetros, importe y acciones accesibles sin desplazamiento horizontal.
 - Las instrucciones extensas sobre correcciones y vencimientos y el historial de movimientos de stock se despliegan al solicitarlos. Se mantienen a la vista campos, importes, existencias, errores y confirmaciones. Se retira del modo local la casilla deshabilitada de publicación de historial todavía no implementada.
 - No hay cambios de esquema, migraciones ni modificaciones de registros. Se conservan las reglas de kilómetros, planes independientes por servicio, anulación, stock, respaldos y modalidad PC.
+
+## Dos vistas del catálogo de productos
+
+- Selector visible de Tarjetas y Lista. Ambas vistas comparten búsqueda, estado, paginación, precios, existencias y acciones de edición y stock. Cambiar la vista conserva la página; cambiar los filtros vuelve a la primera como antes.
+- La vista elegida se conserva en la dirección al recargar y al limpiar los filtros. Tarjetas sigue siendo la presentación predeterminada. La lista se adapta al celular con datos etiquetados y acciones visibles sin desplazamiento horizontal.
+- Se reutilizan los mismos editores y reglas de catálogo y stock; cambiar la presentación no modifica registros ni requiere migración.

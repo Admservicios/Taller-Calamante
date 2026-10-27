@@ -221,3 +221,80 @@ test('buscar y cerrar el catálogo no guarda ni marca cambios pendientes; Enter 
   await expect(page).toHaveURL(/mantenimientos$/);
   expect(await read(page)).toEqual(before);
 });
+
+test('lista y tarjetas conservan productos, filtros y página sin modificar la base', async ({
+  page,
+}) => {
+  await seed(page, true);
+  await page.goto('/productos');
+  const views = page.getByRole('group', { name: 'Vista de productos' });
+  await expect(views.getByRole('button', { name: 'Tarjetas', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
+  await expect(page.getByText('Página 2 de 3', { exact: true })).toBeVisible();
+  const codes = await page.locator('.product-card .product-code').allTextContents();
+  const before = await read(page);
+  await views.getByRole('button', { name: 'Lista', exact: true }).click();
+  await expect(page.getByRole('table', { name: 'Lista de productos' })).toBeVisible();
+  await expect(page.locator('.product-list tbody tr')).toHaveCount(20);
+  expect(await page.locator('.product-list .product-code').allTextContents()).toEqual(codes);
+  await expect(page.getByText('Página 2 de 3', { exact: true })).toBeVisible();
+  await page.reload();
+  await expect(views.getByRole('button', { name: 'Lista', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(page.getByText('Página 2 de 3', { exact: true })).toBeVisible();
+  await page.getByLabel('Buscar productos').fill('ace001');
+  await expect(page.locator('.product-list tbody tr')).toHaveCount(1);
+  await views.getByRole('button', { name: 'Tarjetas', exact: true }).click();
+  await expect(page.locator('.product-card')).toHaveCount(1);
+  await expect(page.locator('.product-card')).toContainText('ACE-001');
+  await expect(page.getByLabel('Buscar productos')).toHaveValue('ace001');
+  await views.getByRole('button', { name: 'Lista', exact: true }).click();
+  await page.getByRole('button', { name: 'Limpiar filtros', exact: true }).click();
+  await expect(views.getByRole('button', { name: 'Lista', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(page.locator('.product-list tbody tr')).toHaveCount(20);
+  await page.getByLabel('Buscar productos').fill('Producto inexistente 987654');
+  await expect(page.getByText('No encontramos productos', { exact: true })).toBeVisible();
+  expect(await read(page)).toEqual(before);
+});
+
+test('lista de productos: editar y consultar stock desde celular, sin desbordamiento', async ({
+  page,
+}) => {
+  await seed(page);
+  await page.goto('/productos?vista=lista&buscar=ace001');
+  const row = page.locator('.product-list tbody tr');
+  await expect(row).toHaveCount(1);
+  const before = await read(page);
+  await page.getByRole('button', { name: 'Editar producto ACE-001', exact: true }).click();
+  await page.getByRole('dialog').getByLabel('Precio sugerido').fill('12345.67');
+  await page.getByRole('button', { name: 'Guardar producto', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(row).toContainText('12.345,67');
+  expect((await read(page)).stockMovements).toEqual(before.stockMovements);
+  await page.setViewportSize({ width: 320, height: 800 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page
+      .locator('.product-list .table-scroll')
+      .evaluate((node) => node.scrollWidth <= node.clientWidth),
+  ).toBe(true);
+  await expect(
+    row.getByRole('button', { name: 'Editar producto ACE-001', exact: true }),
+  ).toBeVisible();
+  await row.getByRole('button', { name: 'Stock y movimientos ACE-001', exact: true }).click();
+  await expect(page.getByRole('dialog').locator('.stock-balance')).toContainText('100');
+  await page.getByRole('button', { name: 'Cerrar diálogo', exact: true }).click();
+  await page.screenshot({ path: '/tmp/calamante-productos-lista-mobile.png', fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole('button', { name: 'Activar modo oscuro', exact: true }).click();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: '/tmp/calamante-productos-lista-desktop.png', fullPage: true });
+});

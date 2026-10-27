@@ -2,7 +2,7 @@ import { StockDialog } from '../components/StockDialog';
 import { stockBalance, stockQuantity } from '../lib/inventory';
 import { useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Package, Pencil, Plus, Search, Check } from 'lucide-react';
+import { Package, Pencil, Plus, Search, Check, LayoutGrid, List } from 'lucide-react';
 import { useData } from '../app/store';
 import { Modal, ModalCancelButton, PageTitle, Empty, Badge } from '../components/ui';
 import { productSchema, saveProductData, searchProducts, type Product } from '../lib/products';
@@ -137,6 +137,7 @@ export function Products() {
   const [stockProduct, setStockProduct] = useState<Product | null>(null);
   const [params, setParams] = useSearchParams();
   const [editing, setEditing] = useState<Product | 'new' | null>(null);
+  const list = params.get('vista') === 'lista';
   const search = params.get('buscar') ?? '';
   const status = ['todos', 'inactivos'].includes(params.get('estado') ?? '')
     ? params.get('estado')!
@@ -149,7 +150,7 @@ export function Products() {
       (current) => {
         const next = new URLSearchParams(current);
         value ? next.set(key, value) : next.delete(key);
-        if (key !== 'pagina') next.delete('pagina');
+        if (key !== 'pagina' && key !== 'vista') next.delete('pagina');
         return next;
       },
       { replace: true, flushSync: true },
@@ -158,6 +159,7 @@ export function Products() {
   const pages = Math.max(1, Math.ceil(filtered.length / size));
   const requested = Number(params.get('pagina') ?? 1);
   const page = Math.min(pages, Math.max(1, Number.isSafeInteger(requested) ? requested : 1));
+  const visible = filtered.slice((page - 1) * size, page * size);
   return (
     <>
       <PageTitle
@@ -204,47 +206,124 @@ export function Products() {
           Limpiar filtros
         </button>
       </div>
-      <div className="product-grid">
-        {filtered.slice((page - 1) * size, page * size).map((product) => (
-          <article key={product.id} className="panel product-card">
-            <div>
-              <span className="product-code">
-                <Package size={16} />
-                {product.code}
-              </span>
-              <Badge>{product.active ? 'Activo' : 'Inactivo'}</Badge>
-            </div>
-            <h2>{product.description}</h2>
-            <p className="muted">{product.brand || 'Sin marca especificada'}</p>
-            <p className="product-stock">
-              Existencias:{' '}
-              <strong>
-                {stockQuantity(stockBalance(store, product.id))} {product.unit}
-              </strong>
-            </p>
-            <button
-              className="button small"
-              aria-label={`Stock y movimientos ${product.code}`}
-              onClick={() => setStockProduct(product)}
-            >
-              Stock y movimientos
-            </button>
-            <div>
-              <strong>
-                {itemMoney(Math.round(product.unitPrice * 100))}{' '}
-                <small>/ {product.unit.toLocaleLowerCase('es')}</small>
-              </strong>
+      <div className="product-view-bar">
+        <div className="product-view-options" role="group" aria-label="Vista de productos">
+          <button className="button small" aria-pressed={!list} onClick={() => change('vista', '')}>
+            <LayoutGrid size={16} /> Tarjetas
+          </button>
+          <button
+            className="button small"
+            aria-pressed={list}
+            onClick={() => change('vista', 'lista')}
+          >
+            <List size={16} /> Lista
+          </button>
+        </div>
+      </div>
+      {list && visible.length > 0 ? (
+        <div className="panel table-panel product-list">
+          <div className="table-scroll">
+            <table aria-label="Lista de productos">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Producto</th>
+                  <th>Marca</th>
+                  <th>Existencias</th>
+                  <th>Precio sugerido</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((product) => (
+                  <tr key={product.id} data-product-id={product.id}>
+                    <td data-label="Código">
+                      <strong className="product-code">{product.code}</strong>
+                    </td>
+                    <td data-label="Producto">
+                      <strong>{product.description}</strong>
+                    </td>
+                    <td data-label="Marca">{product.brand || 'Sin marca especificada'}</td>
+                    <td data-label="Existencias">
+                      {stockQuantity(stockBalance(store, product.id))} {product.unit}
+                    </td>
+                    <td data-label="Precio sugerido">
+                      <strong>{itemMoney(Math.round(product.unitPrice * 100))}</strong>
+                      <small className="block muted">
+                        / {product.unit.toLocaleLowerCase('es')}
+                      </small>
+                    </td>
+                    <td data-label="Estado">
+                      <Badge>{product.active ? 'Activo' : 'Inactivo'}</Badge>
+                    </td>
+                    <td data-label="Acciones">
+                      <div className="product-list-actions">
+                        <button
+                          className="button small"
+                          aria-label={`Editar producto ${product.code}`}
+                          onClick={() => setEditing(product)}
+                        >
+                          <Pencil size={15} /> Editar
+                        </button>
+                        <button
+                          className="button small"
+                          aria-label={`Stock y movimientos ${product.code}`}
+                          onClick={() => setStockProduct(product)}
+                        >
+                          Stock y movimientos
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : !list ? (
+        <div className="product-grid">
+          {visible.map((product) => (
+            <article key={product.id} className="panel product-card">
+              <div>
+                <span className="product-code">
+                  <Package size={16} />
+                  {product.code}
+                </span>
+                <Badge>{product.active ? 'Activo' : 'Inactivo'}</Badge>
+              </div>
+              <h2>{product.description}</h2>
+              <p className="muted">{product.brand || 'Sin marca especificada'}</p>
+              <p className="product-stock">
+                Existencias:{' '}
+                <strong>
+                  {stockQuantity(stockBalance(store, product.id))} {product.unit}
+                </strong>
+              </p>
               <button
                 className="button small"
-                aria-label={`Editar producto ${product.code}`}
-                onClick={() => setEditing(product)}
+                aria-label={`Stock y movimientos ${product.code}`}
+                onClick={() => setStockProduct(product)}
               >
-                <Pencil size={15} /> Editar
+                Stock y movimientos
               </button>
-            </div>
-          </article>
-        ))}
-      </div>
+              <div>
+                <strong>
+                  {itemMoney(Math.round(product.unitPrice * 100))}{' '}
+                  <small>/ {product.unit.toLocaleLowerCase('es')}</small>
+                </strong>
+                <button
+                  className="button small"
+                  aria-label={`Editar producto ${product.code}`}
+                  onClick={() => setEditing(product)}
+                >
+                  <Pencil size={15} /> Editar
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : null}
       {!filtered.length && (
         <Empty
           text={
