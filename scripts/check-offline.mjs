@@ -214,10 +214,12 @@ try {
       await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
       await page.getByLabel('Buscar producto', { exact: true }).fill('haboff');
       await page.getByRole('button', { name: 'Agregar HAB-OFF', exact: true }).click();
+      await page.getByRole('dialog').waitFor({ state: 'hidden' });
       await expect(page.getByLabel('Precio unitario artículo 1', { exact: true })).toHaveValue(
         '12000',
       );
       await page.getByLabel(/Importe total/).fill('35000');
+      await expect(page.getByLabel(/Importe total/)).toHaveValue('35000');
       await page
         .getByLabel('Seleccionar fotos')
         .setInputFiles(resolve(root, 'tests/fixtures/foto-prueba.jpg'));

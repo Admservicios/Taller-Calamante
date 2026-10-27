@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialServices, initialVehicles } from '../../src/lib/demo';
-import practiceBackup from '../../src/data/taller-calamante-practica.json' with { type: 'json' };
+import practiceBackup from '../../src/data/taller-calamante-practica-stock.json' with { type: 'json' };
 import {
   DATABASE_KEY,
   SAFETY_COPY_KEY,
@@ -314,7 +314,7 @@ test('descargar la base de práctica e importarla conserva las relaciones y pers
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar datos de práctica', exact: true }).click();
   const downloaded = await pending;
-  expect(downloaded.suggestedFilename()).toBe('taller-calamante-practica.json');
+  expect(downloaded.suggestedFilename()).toBe('taller-calamante-practica-stock.json');
   const content = await readFile((await downloaded.path())!, 'utf8');
   expect(JSON.parse(content)).toEqual(practiceBackup);
   expect(await dataFromBrowser(page)).toEqual(before);

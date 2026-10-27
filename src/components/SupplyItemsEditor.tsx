@@ -43,6 +43,16 @@ export function SupplyItemsEditor({
   const addButton = useRef<HTMLButtonElement>(null);
   const hadLegacy = useRef(!!legacy);
   const descriptions = useRef(new Map<string, HTMLInputElement>());
+  const focusWhenIdle = (target?: HTMLElement | null) => {
+    const active = document.activeElement;
+    if (
+      !active ||
+      active === document.body ||
+      active === catalogueButton.current ||
+      active === addButton.current
+    )
+      target?.focus();
+  };
   const valid = rows.map(parsedDraft);
   const complete = valid.every((result) => result.success);
   const update = (id: string, key: keyof SupplyDraft, value: string) =>
@@ -53,7 +63,7 @@ export function SupplyItemsEditor({
       ...rows,
       { id, code: '', description: '', quantity: '1', unit: 'Unidad', unitPrice: '' },
     ]);
-    requestAnimationFrame(() => descriptions.current.get(id)?.focus());
+    requestAnimationFrame(() => focusWhenIdle(descriptions.current.get(id)));
   };
   return (
     <div className="supply-items-editor">
@@ -61,14 +71,14 @@ export function SupplyItemsEditor({
         <ProductPicker
           close={() => {
             setPicking(false);
-            requestAnimationFrame(() => catalogueButton.current?.focus());
+            requestAnimationFrame(() => focusWhenIdle(catalogueButton.current));
           }}
           choose={(product) => {
             if (rows.length >= 30) return;
             const item = productServiceItem(product, randomId());
             onChange([...rows, draftItem(item)]);
             setPicking(false);
-            requestAnimationFrame(() => descriptions.current.get(item.id)?.focus());
+            requestAnimationFrame(() => focusWhenIdle(descriptions.current.get(item.id)));
           }}
         />
       )}
@@ -241,8 +251,8 @@ export function SupplyItemsEditor({
                       onChange(rows.filter((item) => item.id !== row.id));
                       requestAnimationFrame(() => {
                         const next = rows[index + 1] ?? rows[index - 1];
-                        if (next) descriptions.current.get(next.id)?.focus();
-                        else addButton.current?.focus();
+                        if (next) focusWhenIdle(descriptions.current.get(next.id));
+                        else focusWhenIdle(addButton.current);
                       });
                     }}
                   >

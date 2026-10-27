@@ -5936,3 +5936,7 @@ input[type='checkbox'] {
 [data-theme='dark'] .stock-out {
   color: #ff9aa5;
 }
+
+.practice-stock-download {
+  margin-top: 10px;
+}

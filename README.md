@@ -77,9 +77,11 @@ El CSV solo exporta clientes; no sirve para restaurar todo el sistema. Los respa
 
 ### Base de práctica importable
 
-En **Backups → Datos de práctica → Descargar datos de práctica** se obtiene un JSON compatible con la restauración local: **12 clientes, 16 vehículos y 48 mantenimientos ficticios**. Incluye alineación y balanceo, frenos, aceite, filtros y neumáticos. Los vencimientos de ejemplo toman como referencia el 22 de octubre de 2026.
+En **Backups → Datos de práctica** se descarga una base nueva en JSON o ZIP: **12 clientes, 16 vehículos, 48 mantenimientos ficticios, 24 productos y 128 movimientos de stock**. Incluye cantidades fraccionadas, precios históricos, una corrección, una anulación con devolución, artículos manuales, servicios anteriores sin consumo retroactivo y ejemplos de stock disponible, bajo y agotado. La referencia del ejemplo es el **27 de octubre de 2026**. El ZIP no contiene fotos ni documentos; los registros son completamente inventados.
 
-Para cargarlo, volver al modo local si se está explorando la demo, seleccionar el archivo en **Restaurar un respaldo**, revisar los conteos y confirmar. **Reemplaza la base actual; no combina registros.** Descargar primero un respaldo propio si ya existen datos. La descarga del ejemplo no modifica la base. El archivo editable está en [src/data/taller-calamante-practica.json](src/data/taller-calamante-practica.json); solo contiene información inventada.
+Descarga directa del ZIP: [taller-calamante-practica-stock.zip](examples/taller-calamante-practica-stock.zip). Se puede regenerar con `node scripts/generate-practice-stock.mjs`; el script valida las relaciones, los planes y todo el historial de stock antes de escribir los archivos.
+
+Para cargarlo, volver al modo local si se está explorando la demo, seleccionar el archivo en **Restaurar un respaldo**, revisar los conteos y confirmar. **Reemplaza la base actual; no combina registros.** Descargar primero un respaldo propio si ya existen datos. La descarga del ejemplo no modifica la base. No hace falta borrar la base primero: la restauración confirmada la reemplaza, incluyendo catálogo y stock. El archivo editable está en [src/data/taller-calamante-practica-stock.json](src/data/taller-calamante-practica-stock.json); solo contiene información inventada.
 
 **Borrar los datos del sitio, usar navegación privada o cambiar de navegador/dirección web puede impedir recuperar los registros sin un respaldo.** Trabajar desde una dirección estable y descargar una copia antes de cambiar de servidor o alojamiento. `localStorage` tiene una capacidad limitada y no sustituye un sistema de base de datos con respaldo independiente.
 

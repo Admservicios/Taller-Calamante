@@ -1,0 +1,4784 @@
+{
+  "format": "motortrack-backup",
+  "version": 1,
+  "exportedAt": "2026-10-27T12:00:00.000Z",
+  "data": {
+    "stockMovements": [
+      {
+        "id": "practica-inicial-ACE-001",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ACE-002",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ACE-003",
+        "productId": "practica-p03",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ACE-004",
+        "productId": "practica-p04",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ACE-099",
+        "productId": "practica-p24",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ALI-001",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 6000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ALI-002",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-ARR-001",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-BUJ-001",
+        "productId": "practica-p20",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-COR-001",
+        "productId": "practica-p19",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FIL-001",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FIL-002",
+        "productId": "practica-p06",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FIL-003",
+        "productId": "practica-p07",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FIL-004",
+        "productId": "practica-p08",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FRE-001",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 25000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FRE-002",
+        "productId": "practica-p12",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-FRE-003",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-HAB-001",
+        "productId": "practica-p09",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-HAB-002",
+        "productId": "practica-p10",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-LIM-001",
+        "productId": "practica-p22",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-NEU-001",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-NEU-002",
+        "productId": "practica-p15",
+        "unit": "Unidad",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 60000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-inicial-REF-001",
+        "productId": "practica-p18",
+        "unit": "Litro",
+        "at": "2025-01-02T12:00:00.000Z",
+        "deltaMilli": 180000,
+        "kind": "opening",
+        "reason": "Saldo inicial ficticio para practicar el inventario"
+      },
+      {
+        "id": "practica-stock-practica-s010-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2025-12-11T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s010"
+      },
+      {
+        "id": "practica-stock-practica-s010-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2025-12-11T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s010"
+      },
+      {
+        "id": "practica-stock-practica-s010-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2025-12-11T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s010"
+      },
+      {
+        "id": "practica-stock-practica-s013-1-consumo",
+        "productId": "practica-p09",
+        "unit": "Unidad",
+        "at": "2025-12-16T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s013"
+      },
+      {
+        "id": "practica-stock-practica-s016-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2025-12-21T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s016"
+      },
+      {
+        "id": "practica-stock-practica-s016-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2025-12-21T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s016"
+      },
+      {
+        "id": "practica-stock-practica-s019-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2025-12-26T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s019"
+      },
+      {
+        "id": "practica-stock-practica-s019-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2025-12-26T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s019"
+      },
+      {
+        "id": "practica-stock-practica-s019-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2025-12-26T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s019"
+      },
+      {
+        "id": "practica-stock-practica-s022-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2025-12-31T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s022"
+      },
+      {
+        "id": "practica-stock-practica-s022-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2025-12-31T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s022"
+      },
+      {
+        "id": "practica-stock-practica-s025-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-01-05T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s025"
+      },
+      {
+        "id": "practica-stock-practica-s025-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-01-05T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s025"
+      },
+      {
+        "id": "practica-stock-practica-s028-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-01-10T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s028"
+      },
+      {
+        "id": "practica-stock-practica-s028-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-01-10T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s028"
+      },
+      {
+        "id": "practica-stock-practica-s028-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-01-10T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s028"
+      },
+      {
+        "id": "practica-stock-practica-s031-1-consumo",
+        "productId": "practica-p09",
+        "unit": "Unidad",
+        "at": "2026-01-15T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s031"
+      },
+      {
+        "id": "practica-stock-practica-s034-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-01-20T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s034"
+      },
+      {
+        "id": "practica-stock-practica-s034-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-01-20T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s034"
+      },
+      {
+        "id": "practica-stock-practica-s037-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-01-25T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s037"
+      },
+      {
+        "id": "practica-stock-practica-s037-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-01-25T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s037"
+      },
+      {
+        "id": "practica-stock-practica-s037-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-01-25T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s037"
+      },
+      {
+        "id": "practica-stock-practica-s040-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2026-01-30T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s040"
+      },
+      {
+        "id": "practica-stock-practica-s040-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-01-30T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s040"
+      },
+      {
+        "id": "practica-stock-practica-s043-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-02-04T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s043"
+      },
+      {
+        "id": "practica-stock-practica-s043-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-02-04T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s043"
+      },
+      {
+        "id": "practica-stock-practica-s046-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-02-09T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s046"
+      },
+      {
+        "id": "practica-stock-practica-s046-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-02-09T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s046"
+      },
+      {
+        "id": "practica-stock-practica-s046-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-02-09T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s046"
+      },
+      {
+        "id": "practica-stock-practica-s002-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-04-25T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s002"
+      },
+      {
+        "id": "practica-stock-practica-s002-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-04-25T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s002"
+      },
+      {
+        "id": "practica-stock-practica-s005-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-04-29T15:00:00.000Z",
+        "deltaMilli": -5000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s005"
+      },
+      {
+        "id": "practica-stock-practica-s005-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-04-29T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s005"
+      },
+      {
+        "id": "practica-stock-practica-s005-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-04-29T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s005"
+      },
+      {
+        "id": "practica-stock-practica-s005-correccion-aceite",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-04-29T16:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Corrección ficticia: se registran 0,5 litros adicionales de aceite",
+        "serviceId": "practica-s005"
+      },
+      {
+        "id": "practica-stock-practica-s008-1-consumo",
+        "productId": "practica-p07",
+        "unit": "Unidad",
+        "at": "2026-05-03T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s008"
+      },
+      {
+        "id": "practica-stock-practica-s008-2-consumo",
+        "productId": "practica-p08",
+        "unit": "Unidad",
+        "at": "2026-05-03T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s008"
+      },
+      {
+        "id": "practica-stock-practica-s011-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-05-07T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s011"
+      },
+      {
+        "id": "practica-stock-practica-s011-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-05-07T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s011"
+      },
+      {
+        "id": "practica-stock-practica-s014-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-05-11T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s014"
+      },
+      {
+        "id": "practica-stock-practica-s014-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-05-11T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s014"
+      },
+      {
+        "id": "practica-stock-practica-s014-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-05-11T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s014"
+      },
+      {
+        "id": "practica-stock-practica-s017-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2026-05-15T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s017"
+      },
+      {
+        "id": "practica-stock-practica-s017-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-05-15T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s017"
+      },
+      {
+        "id": "practica-stock-practica-s020-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-05-19T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s020"
+      },
+      {
+        "id": "practica-stock-practica-s020-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-05-19T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s020"
+      },
+      {
+        "id": "practica-stock-practica-s023-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-05-23T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s023"
+      },
+      {
+        "id": "practica-stock-practica-s023-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-05-23T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s023"
+      },
+      {
+        "id": "practica-stock-practica-s023-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-05-23T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s023"
+      },
+      {
+        "id": "practica-stock-practica-s026-1-consumo",
+        "productId": "practica-p07",
+        "unit": "Unidad",
+        "at": "2026-05-27T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s026"
+      },
+      {
+        "id": "practica-stock-practica-s026-2-consumo",
+        "productId": "practica-p08",
+        "unit": "Unidad",
+        "at": "2026-05-27T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s026"
+      },
+      {
+        "id": "practica-stock-practica-s029-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-05-31T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s029"
+      },
+      {
+        "id": "practica-stock-practica-s029-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-05-31T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s029"
+      },
+      {
+        "id": "practica-stock-practica-s032-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-06-04T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s032"
+      },
+      {
+        "id": "practica-stock-practica-s032-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-06-04T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s032"
+      },
+      {
+        "id": "practica-stock-practica-s032-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-06-04T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s032"
+      },
+      {
+        "id": "practica-stock-practica-s035-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2026-06-08T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s035"
+      },
+      {
+        "id": "practica-stock-practica-s035-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-06-08T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s035"
+      },
+      {
+        "id": "practica-stock-practica-s038-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-06-12T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s038"
+      },
+      {
+        "id": "practica-stock-practica-s038-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-06-12T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s038"
+      },
+      {
+        "id": "practica-stock-practica-s041-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-06-16T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s041"
+      },
+      {
+        "id": "practica-stock-practica-s041-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-06-16T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s041"
+      },
+      {
+        "id": "practica-stock-practica-s041-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-06-16T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s041"
+      },
+      {
+        "id": "practica-stock-practica-s044-1-consumo",
+        "productId": "practica-p07",
+        "unit": "Unidad",
+        "at": "2026-06-20T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s044"
+      },
+      {
+        "id": "practica-stock-practica-s044-2-consumo",
+        "productId": "practica-p08",
+        "unit": "Unidad",
+        "at": "2026-06-20T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s044"
+      },
+      {
+        "id": "practica-stock-practica-s047-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-06-24T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s047"
+      },
+      {
+        "id": "practica-stock-practica-s047-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-06-24T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s047"
+      },
+      {
+        "id": "practica-stock-practica-s048-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2026-09-19T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s048"
+      },
+      {
+        "id": "practica-stock-practica-s048-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-09-19T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s048"
+      },
+      {
+        "id": "practica-stock-practica-s045-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-09-21T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s045"
+      },
+      {
+        "id": "practica-stock-practica-s045-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-09-21T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s045"
+      },
+      {
+        "id": "practica-stock-practica-s045-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-09-21T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s045"
+      },
+      {
+        "id": "practica-stock-practica-s006-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-09-22T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s006"
+      },
+      {
+        "id": "practica-stock-practica-s006-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-09-22T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s006"
+      },
+      {
+        "id": "practica-stock-practica-s042-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-09-23T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s042"
+      },
+      {
+        "id": "practica-stock-practica-s042-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-09-23T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s042"
+      },
+      {
+        "id": "practica-stock-practica-s039-1-consumo",
+        "productId": "practica-p09",
+        "unit": "Unidad",
+        "at": "2026-09-25T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s039"
+      },
+      {
+        "id": "practica-stock-practica-s009-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-09-27T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s009"
+      },
+      {
+        "id": "practica-stock-practica-s009-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-09-27T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s009"
+      },
+      {
+        "id": "practica-stock-practica-s009-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-09-27T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s009"
+      },
+      {
+        "id": "practica-stock-practica-s036-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-09-27T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s036"
+      },
+      {
+        "id": "practica-stock-practica-s036-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-09-27T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s036"
+      },
+      {
+        "id": "practica-stock-practica-s036-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-09-27T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s036"
+      },
+      {
+        "id": "practica-stock-practica-s033-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-09-29T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s033"
+      },
+      {
+        "id": "practica-stock-practica-s033-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-09-29T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s033"
+      },
+      {
+        "id": "practica-stock-practica-s012-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2026-09-30T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s012"
+      },
+      {
+        "id": "practica-stock-practica-s012-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-09-30T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s012"
+      },
+      {
+        "id": "practica-stock-practica-s030-1-consumo",
+        "productId": "practica-p16",
+        "unit": "Kilogramo",
+        "at": "2026-10-01T15:00:00.000Z",
+        "deltaMilli": -75,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s030"
+      },
+      {
+        "id": "practica-stock-practica-s030-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-10-01T15:00:00.000Z",
+        "deltaMilli": -4000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s030"
+      },
+      {
+        "id": "practica-stock-practica-s027-1-consumo",
+        "productId": "practica-p02",
+        "unit": "Litro",
+        "at": "2026-10-03T15:00:00.000Z",
+        "deltaMilli": -5500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s027"
+      },
+      {
+        "id": "practica-stock-practica-s027-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-10-03T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s027"
+      },
+      {
+        "id": "practica-stock-practica-s027-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-10-03T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s027"
+      },
+      {
+        "id": "practica-stock-practica-s015-1-consumo",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-10-05T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s015"
+      },
+      {
+        "id": "practica-stock-practica-s015-2-consumo",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-10-05T15:00:00.000Z",
+        "deltaMilli": -500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s015"
+      },
+      {
+        "id": "practica-stock-practica-s024-1-consumo",
+        "productId": "practica-p14",
+        "unit": "Unidad",
+        "at": "2026-10-05T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s024"
+      },
+      {
+        "id": "practica-stock-practica-s024-2-consumo",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-10-05T15:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s024"
+      },
+      {
+        "id": "practica-stock-practica-s021-1-consumo",
+        "productId": "practica-p09",
+        "unit": "Unidad",
+        "at": "2026-10-07T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s021"
+      },
+      {
+        "id": "practica-stock-practica-s018-1-consumo",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-10-09T15:00:00.000Z",
+        "deltaMilli": -4500,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s018"
+      },
+      {
+        "id": "practica-stock-practica-s018-2-consumo",
+        "productId": "practica-p05",
+        "unit": "Unidad",
+        "at": "2026-10-09T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s018"
+      },
+      {
+        "id": "practica-stock-practica-s018-3-consumo",
+        "productId": "practica-p21",
+        "unit": "Unidad",
+        "at": "2026-10-09T15:00:00.000Z",
+        "deltaMilli": -1000,
+        "kind": "service",
+        "reason": "Consumo ficticio de mantenimiento",
+        "serviceId": "practica-s018"
+      },
+      {
+        "id": "practica-stock-practica-s033-1-devolucion",
+        "productId": "practica-p11",
+        "unit": "Juego",
+        "at": "2026-10-26T16:00:00.000Z",
+        "deltaMilli": 1000,
+        "kind": "service",
+        "reason": "Devolución ficticia por anulación del servicio",
+        "serviceId": "practica-s033"
+      },
+      {
+        "id": "practica-stock-practica-s033-2-devolucion",
+        "productId": "practica-p13",
+        "unit": "Litro",
+        "at": "2026-10-26T16:00:00.000Z",
+        "deltaMilli": 500,
+        "kind": "service",
+        "reason": "Devolución ficticia por anulación del servicio",
+        "serviceId": "practica-s033"
+      },
+      {
+        "id": "practica-extra-ACE-001",
+        "productId": "practica-p01",
+        "unit": "Litro",
+        "at": "2026-10-27T10:00:00.000Z",
+        "deltaMilli": 20000,
+        "kind": "receipt",
+        "reason": "Ingreso ficticio de compra: 20 litros de aceite"
+      },
+      {
+        "id": "practica-extra-ALI-002",
+        "productId": "practica-p17",
+        "unit": "Unidad",
+        "at": "2026-10-27T10:00:00.000Z",
+        "deltaMilli": -2000,
+        "kind": "adjustment",
+        "reason": "Ajuste ficticio por diferencia de conteo: dos válvulas"
+      },
+      {
+        "id": "practica-ajuste-stock-bajo",
+        "productId": "practica-p09",
+        "unit": "Unidad",
+        "at": "2026-10-27T11:00:00.000Z",
+        "deltaMilli": -54000,
+        "kind": "adjustment",
+        "reason": "Ajuste ficticio de conteo para practicar con stock bajo: quedan dos unidades"
+      }
+    ],
+    "products": [
+      {
+        "id": "practica-p01",
+        "code": "ACE-001",
+        "description": "Helix HX8 5W-30",
+        "brand": "Shell",
+        "unit": "Litro",
+        "unitPrice": 10000,
+        "active": true
+      },
+      {
+        "id": "practica-p02",
+        "code": "ACE-002",
+        "description": "8100 X-clean 5W-40",
+        "brand": "Motul",
+        "unit": "Litro",
+        "unitPrice": 14500,
+        "active": true
+      },
+      {
+        "id": "practica-p03",
+        "code": "ACE-003",
+        "description": "Elaion 10W-40",
+        "brand": "YPF",
+        "unit": "Litro",
+        "unitPrice": 8500,
+        "active": true
+      },
+      {
+        "id": "practica-p04",
+        "code": "ACE-004",
+        "description": "Magnatec 0W-20",
+        "brand": "Castrol",
+        "unit": "Litro",
+        "unitPrice": 13000,
+        "active": true
+      },
+      {
+        "id": "practica-p05",
+        "code": "FIL-001",
+        "description": "Filtro de aceite W712/95",
+        "brand": "MANN",
+        "unit": "Unidad",
+        "unitPrice": 12000,
+        "active": true
+      },
+      {
+        "id": "practica-p06",
+        "code": "FIL-002",
+        "description": "Filtro de aceite PH3614",
+        "brand": "Fram",
+        "unit": "Unidad",
+        "unitPrice": 10500,
+        "active": true
+      },
+      {
+        "id": "practica-p07",
+        "code": "FIL-003",
+        "description": "Filtro de aire C2287",
+        "brand": "MANN",
+        "unit": "Unidad",
+        "unitPrice": 16500,
+        "active": true
+      },
+      {
+        "id": "practica-p08",
+        "code": "FIL-004",
+        "description": "Filtro de combustible WK69",
+        "brand": "MANN",
+        "unit": "Unidad",
+        "unitPrice": 21000,
+        "active": true
+      },
+      {
+        "id": "practica-p09",
+        "code": "HAB-001",
+        "description": "Filtro de habitáculo CUK2939",
+        "brand": "MANN",
+        "unit": "Unidad",
+        "unitPrice": 18500,
+        "active": true
+      },
+      {
+        "id": "practica-p10",
+        "code": "HAB-002",
+        "description": "Filtro de habitáculo con carbón",
+        "brand": "Bosch",
+        "unit": "Unidad",
+        "unitPrice": 22500,
+        "active": true
+      },
+      {
+        "id": "practica-p11",
+        "code": "FRE-001",
+        "description": "Juego de pastillas delanteras",
+        "brand": "Bosch",
+        "unit": "Juego",
+        "unitPrice": 45000,
+        "active": true
+      },
+      {
+        "id": "practica-p12",
+        "code": "FRE-002",
+        "description": "Disco de freno delantero",
+        "brand": "Brembo",
+        "unit": "Unidad",
+        "unitPrice": 68000,
+        "active": true
+      },
+      {
+        "id": "practica-p13",
+        "code": "FRE-003",
+        "description": "Líquido de frenos DOT4",
+        "brand": "Bosch",
+        "unit": "Litro",
+        "unitPrice": 16500,
+        "active": true
+      },
+      {
+        "id": "practica-p14",
+        "code": "NEU-001",
+        "description": "Neumático 185/65 R15",
+        "brand": "Fate",
+        "unit": "Unidad",
+        "unitPrice": 115000,
+        "active": true
+      },
+      {
+        "id": "practica-p15",
+        "code": "NEU-002",
+        "description": "Neumático 215/65 R16",
+        "brand": "Pirelli",
+        "unit": "Unidad",
+        "unitPrice": 180000,
+        "active": true
+      },
+      {
+        "id": "practica-p16",
+        "code": "ALI-001",
+        "description": "Contrapesos de balanceo",
+        "brand": "Genérico",
+        "unit": "Kilogramo",
+        "unitPrice": 18000,
+        "active": true
+      },
+      {
+        "id": "practica-p17",
+        "code": "ALI-002",
+        "description": "Válvula para neumático",
+        "brand": "Genérico",
+        "unit": "Unidad",
+        "unitPrice": 1500,
+        "active": true
+      },
+      {
+        "id": "practica-p18",
+        "code": "REF-001",
+        "description": "Refrigerante concentrado",
+        "brand": "Total",
+        "unit": "Litro",
+        "unitPrice": 12500,
+        "active": true
+      },
+      {
+        "id": "practica-p19",
+        "code": "COR-001",
+        "description": "Correa de accesorios",
+        "brand": "Gates",
+        "unit": "Unidad",
+        "unitPrice": 38000,
+        "active": true
+      },
+      {
+        "id": "practica-p20",
+        "code": "BUJ-001",
+        "description": "Bujía convencional",
+        "brand": "NGK",
+        "unit": "Unidad",
+        "unitPrice": 9500,
+        "active": true
+      },
+      {
+        "id": "practica-p21",
+        "code": "ARR-001",
+        "description": "Arandela de tapón de cárter",
+        "brand": "Genérico",
+        "unit": "Unidad",
+        "unitPrice": 850.5,
+        "active": true
+      },
+      {
+        "id": "practica-p22",
+        "code": "LIM-001",
+        "description": "Limpiador de contactos",
+        "brand": "Würth",
+        "unit": "Unidad",
+        "unitPrice": 8200,
+        "active": true
+      },
+      {
+        "id": "practica-p23",
+        "code": "REP-099",
+        "description": "Tensor de correa · ejemplo sin stock",
+        "brand": "SKF",
+        "unit": "Unidad",
+        "unitPrice": 54000,
+        "active": true
+      },
+      {
+        "id": "practica-p24",
+        "code": "ACE-099",
+        "description": "Aceite discontinuado · ejemplo inactivo",
+        "brand": "Prueba",
+        "unit": "Litro",
+        "unitPrice": 7000,
+        "active": false
+      }
+    ],
+    "customers": [
+      {
+        "id": "practica-c01",
+        "name": "Julián Acosta",
+        "document": "FICT-0001",
+        "phone": "0000 000-0001",
+        "email": "cliente01@example.com",
+        "address": "Pasaje de Prueba 100, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Prefiere contacto por la tarde."
+      },
+      {
+        "id": "practica-c02",
+        "name": "Valentina Suárez",
+        "document": "FICT-0002",
+        "phone": "0000 000-0002",
+        "email": "cliente02@example.com",
+        "address": "Pasaje de Prueba 125, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Solicita presupuesto antes de reparar."
+      },
+      {
+        "id": "practica-c03",
+        "name": "Pablo Benítez",
+        "document": "FICT-0003",
+        "phone": "0000 000-0003",
+        "email": "cliente03@example.com",
+        "address": "Pasaje de Prueba 150, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Prefiere contacto por la tarde."
+      },
+      {
+        "id": "practica-c04",
+        "name": "Camila Ríos",
+        "document": "FICT-0004",
+        "phone": "0000 000-0004",
+        "email": "cliente04@example.com",
+        "address": "Pasaje de Prueba 175, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Solicita presupuesto antes de reparar."
+      },
+      {
+        "id": "practica-c05",
+        "name": "Nicolás Herrera",
+        "document": "FICT-0005",
+        "phone": "0000 000-0005",
+        "email": "cliente05@example.com",
+        "address": "Pasaje de Prueba 200, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Prefiere contacto por la tarde."
+      },
+      {
+        "id": "practica-c06",
+        "name": "Florencia Medina",
+        "document": "FICT-0006",
+        "phone": "0000 000-0006",
+        "email": "cliente06@example.com",
+        "address": "Pasaje de Prueba 225, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Solicita presupuesto antes de reparar."
+      },
+      {
+        "id": "practica-c07",
+        "name": "Sebastián Molina",
+        "document": "FICT-0007",
+        "phone": "0000 000-0007",
+        "email": "cliente07@example.com",
+        "address": "Pasaje de Prueba 250, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Prefiere contacto por la tarde."
+      },
+      {
+        "id": "practica-c08",
+        "name": "Carolina Castro",
+        "document": "FICT-0008",
+        "phone": "0000 000-0008",
+        "email": "cliente08@example.com",
+        "address": "Pasaje de Prueba 275, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Solicita presupuesto antes de reparar."
+      },
+      {
+        "id": "practica-c09",
+        "name": "Gustavo Pereyra",
+        "document": "FICT-0009",
+        "phone": "0000 000-0009",
+        "email": "cliente09@example.com",
+        "address": "Pasaje de Prueba 300, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Prefiere contacto por la tarde."
+      },
+      {
+        "id": "practica-c10",
+        "name": "Daniela Sosa",
+        "document": "FICT-0010",
+        "phone": "0000 000-0010",
+        "email": "cliente10@example.com",
+        "address": "Pasaje de Prueba 325, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Solicita presupuesto antes de reparar."
+      },
+      {
+        "id": "practica-c11",
+        "name": "Marcos Cabrera",
+        "document": "FICT-0011",
+        "phone": "0000 000-0011",
+        "email": "cliente11@example.com",
+        "address": "Pasaje de Prueba 350, Ciudad de Ejemplo",
+        "active": false,
+        "notes": "Registro ficticio para practicar. Prefiere contacto por la tarde."
+      },
+      {
+        "id": "practica-c12",
+        "name": "Elena Navarro",
+        "document": "FICT-0012",
+        "phone": "0000 000-0012",
+        "email": "cliente12@example.com",
+        "address": "Pasaje de Prueba 375, Ciudad de Ejemplo",
+        "active": true,
+        "notes": "Registro ficticio para practicar. Solicita presupuesto antes de reparar."
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "practica-v01",
+        "customerId": "practica-c01",
+        "plate": "AE 610 ZZ",
+        "brand": "Volkswagen",
+        "model": "Gol Trend",
+        "year": 2019,
+        "fuel": "Nafta",
+        "engine": "1.6 MSI",
+        "km": 58400,
+        "color": "silver",
+        "nextDate": "2026-10-22",
+        "nextKm": 80400,
+        "recommendation": "Revisión de frenos",
+        "maintenancePlans": [
+          {
+            "category": "frenos",
+            "label": "Frenos",
+            "nextDate": "2026-10-22",
+            "nextKm": 80400,
+            "recommendation": "Revisión de frenos",
+            "lastDate": "2026-04-25",
+            "lastKm": 50400,
+            "sourceServiceId": "practica-s002"
+          },
+          {
+            "category": "otro-filtro-de-habitaculo",
+            "label": "Filtro de habitáculo",
+            "nextDate": "2027-03-10",
+            "nextKm": 67200,
+            "recommendation": "Cambio de filtro de habitáculo",
+            "lastDate": "2026-09-11",
+            "lastKm": 57200,
+            "sourceServiceId": "practica-s003"
+          }
+        ],
+        "manualKm": 58400
+      },
+      {
+        "id": "practica-v02",
+        "customerId": "practica-c02",
+        "plate": "AE 611 ZZ",
+        "brand": "Toyota",
+        "model": "Hilux SRX",
+        "year": 2021,
+        "fuel": "Diésel",
+        "engine": "2.8 TD 4x4",
+        "km": 112300,
+        "color": "white",
+        "nextDate": "2026-10-26",
+        "nextKm": 114300,
+        "recommendation": "Cambio de aceite y filtros",
+        "maintenancePlans": [
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-10-26",
+            "nextKm": 114300,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-04-29",
+            "lastKm": 104300,
+            "sourceServiceId": "practica-s005"
+          },
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2027-03-21",
+            "nextKm": 121100,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-09-22",
+            "lastKm": 111100,
+            "sourceServiceId": "practica-s006"
+          }
+        ],
+        "manualKm": 112300
+      },
+      {
+        "id": "practica-v03",
+        "customerId": "practica-c03",
+        "plate": "AE 612 ZZ",
+        "brand": "Ford",
+        "model": "Ranger XLT",
+        "year": 2020,
+        "fuel": "Diésel",
+        "engine": "3.2 TDCi",
+        "km": 89200,
+        "color": "blue",
+        "nextDate": "2026-10-30",
+        "nextKm": 91200,
+        "recommendation": "Cambio de filtros",
+        "maintenancePlans": [
+          {
+            "category": "filtros",
+            "label": "Filtros",
+            "nextDate": "2026-10-30",
+            "nextKm": 91200,
+            "recommendation": "Cambio de filtros",
+            "lastDate": "2026-05-03",
+            "lastKm": 81200,
+            "sourceServiceId": "practica-s008"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2027-03-26",
+            "nextKm": 98000,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-09-27",
+            "lastKm": 88000,
+            "sourceServiceId": "practica-s009"
+          }
+        ],
+        "manualKm": 89200
+      },
+      {
+        "id": "practica-v04",
+        "customerId": "practica-c04",
+        "plate": "AE 613 ZZ",
+        "brand": "Chevrolet",
+        "model": "Onix LT",
+        "year": 2022,
+        "fuel": "Nafta",
+        "engine": "1.0 Turbo",
+        "km": 45600,
+        "color": "red",
+        "nextDate": "2026-06-09",
+        "nextKm": 39600,
+        "recommendation": "Cambio de aceite y filtros",
+        "maintenancePlans": [
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-06-09",
+            "nextKm": 39600,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2025-12-11",
+            "lastKm": 29600,
+            "sourceServiceId": "practica-s010"
+          },
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2026-11-03",
+            "nextKm": 47600,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-05-07",
+            "lastKm": 37600,
+            "sourceServiceId": "practica-s011"
+          },
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-12-29",
+            "nextKm": 54400,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2026-09-30",
+            "lastKm": 44400,
+            "sourceServiceId": "practica-s012"
+          }
+        ],
+        "manualKm": 45600
+      },
+      {
+        "id": "practica-v05",
+        "customerId": "practica-c05",
+        "plate": "AE 614 ZZ",
+        "brand": "Renault",
+        "model": "Duster",
+        "year": 2020,
+        "fuel": "Nafta",
+        "engine": "1.6 16V",
+        "km": 76800,
+        "color": "silver",
+        "nextDate": "2026-06-14",
+        "nextKm": 70800,
+        "recommendation": "Cambio de filtro de habitáculo",
+        "maintenancePlans": [
+          {
+            "category": "otro-filtro-de-habitaculo",
+            "label": "Filtro de habitáculo",
+            "nextDate": "2026-06-14",
+            "nextKm": 70800,
+            "recommendation": "Cambio de filtro de habitáculo",
+            "lastDate": "2025-12-16",
+            "lastKm": 60800,
+            "sourceServiceId": "practica-s013"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-11-07",
+            "nextKm": 78800,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-05-11",
+            "lastKm": 68800,
+            "sourceServiceId": "practica-s014"
+          },
+          {
+            "category": "frenos",
+            "label": "Frenos",
+            "nextDate": "2027-04-03",
+            "nextKm": 105600,
+            "recommendation": "Revisión de frenos",
+            "lastDate": "2026-10-05",
+            "lastKm": 75600,
+            "sourceServiceId": "practica-s015"
+          }
+        ],
+        "manualKm": 76800
+      },
+      {
+        "id": "practica-v06",
+        "customerId": "practica-c06",
+        "plate": "AE 615 ZZ",
+        "brand": "Peugeot",
+        "model": "208 Allure",
+        "year": 2023,
+        "fuel": "Nafta",
+        "engine": "1.6 VTi",
+        "km": 23400,
+        "color": "blue",
+        "nextDate": "2026-06-19",
+        "nextKm": 17400,
+        "recommendation": "Control de neumáticos",
+        "maintenancePlans": [
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2026-06-19",
+            "nextKm": 17400,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2025-12-21",
+            "lastKm": 7400,
+            "sourceServiceId": "practica-s016"
+          },
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-08-13",
+            "nextKm": 25400,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2026-05-15",
+            "lastKm": 15400,
+            "sourceServiceId": "practica-s017"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2027-04-07",
+            "nextKm": 32200,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-10-09",
+            "lastKm": 22200,
+            "sourceServiceId": "practica-s018"
+          }
+        ],
+        "manualKm": 23400
+      },
+      {
+        "id": "practica-v07",
+        "customerId": "practica-c07",
+        "plate": "AE 616 ZZ",
+        "brand": "Fiat",
+        "model": "Cronos",
+        "year": 2022,
+        "fuel": "Nafta",
+        "engine": "1.3 Firefly",
+        "km": 42700,
+        "color": "white",
+        "nextDate": "2026-06-24",
+        "nextKm": 36700,
+        "recommendation": "Cambio de aceite y filtros",
+        "maintenancePlans": [
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-06-24",
+            "nextKm": 36700,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2025-12-26",
+            "lastKm": 26700,
+            "sourceServiceId": "practica-s019"
+          },
+          {
+            "category": "frenos",
+            "label": "Frenos",
+            "nextDate": "2026-11-15",
+            "nextKm": 64700,
+            "recommendation": "Revisión de frenos",
+            "lastDate": "2026-05-19",
+            "lastKm": 34700,
+            "sourceServiceId": "practica-s020"
+          },
+          {
+            "category": "otro-filtro-de-habitaculo",
+            "label": "Filtro de habitáculo",
+            "nextDate": "2027-04-05",
+            "nextKm": 51500,
+            "recommendation": "Cambio de filtro de habitáculo",
+            "lastDate": "2026-10-07",
+            "lastKm": 41500,
+            "sourceServiceId": "practica-s021"
+          }
+        ],
+        "manualKm": 42700
+      },
+      {
+        "id": "practica-v08",
+        "customerId": "practica-c08",
+        "plate": "AE 617 ZZ",
+        "brand": "Toyota",
+        "model": "Corolla XEI",
+        "year": 2021,
+        "fuel": "Nafta",
+        "engine": "2.0",
+        "km": 65000,
+        "color": "silver",
+        "nextDate": "2026-03-31",
+        "nextKm": 59000,
+        "recommendation": "Alineación y balanceo",
+        "maintenancePlans": [
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-03-31",
+            "nextKm": 59000,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2025-12-31",
+            "lastKm": 49000,
+            "sourceServiceId": "practica-s022"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-11-19",
+            "nextKm": 67000,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-05-23",
+            "lastKm": 57000,
+            "sourceServiceId": "practica-s023"
+          },
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2027-04-03",
+            "nextKm": 73800,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-10-05",
+            "lastKm": 63800,
+            "sourceServiceId": "practica-s024"
+          }
+        ],
+        "manualKm": 65000
+      },
+      {
+        "id": "practica-v09",
+        "customerId": "practica-c09",
+        "plate": "AE 618 ZZ",
+        "brand": "Volkswagen",
+        "model": "Amarok",
+        "year": 2018,
+        "fuel": "Diésel",
+        "engine": "2.0 TDI",
+        "km": 148500,
+        "color": "white",
+        "nextDate": "2026-07-04",
+        "nextKm": 162500,
+        "recommendation": "Revisión de frenos",
+        "maintenancePlans": [
+          {
+            "category": "frenos",
+            "label": "Frenos",
+            "nextDate": "2026-07-04",
+            "nextKm": 162500,
+            "recommendation": "Revisión de frenos",
+            "lastDate": "2026-01-05",
+            "lastKm": 132500,
+            "sourceServiceId": "practica-s025"
+          },
+          {
+            "category": "filtros",
+            "label": "Filtros",
+            "nextDate": "2026-11-23",
+            "nextKm": 150500,
+            "recommendation": "Cambio de filtros",
+            "lastDate": "2026-05-27",
+            "lastKm": 140500,
+            "sourceServiceId": "practica-s026"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2027-04-01",
+            "nextKm": 157300,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-10-03",
+            "lastKm": 147300,
+            "sourceServiceId": "practica-s027"
+          }
+        ],
+        "manualKm": 148500
+      },
+      {
+        "id": "practica-v10",
+        "customerId": "practica-c10",
+        "plate": "AE 619 ZZ",
+        "brand": "Ford",
+        "model": "EcoSport",
+        "year": 2019,
+        "fuel": "Nafta",
+        "engine": "1.5",
+        "km": 83500,
+        "color": "red",
+        "nextDate": "2026-07-09",
+        "nextKm": 77500,
+        "recommendation": "Cambio de aceite y filtros",
+        "maintenancePlans": [
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-07-09",
+            "nextKm": 77500,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-01-10",
+            "lastKm": 67500,
+            "sourceServiceId": "practica-s028"
+          },
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2026-11-27",
+            "nextKm": 85500,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-05-31",
+            "lastKm": 75500,
+            "sourceServiceId": "practica-s029"
+          },
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-12-30",
+            "nextKm": 92300,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2026-10-01",
+            "lastKm": 82300,
+            "sourceServiceId": "practica-s030"
+          }
+        ],
+        "manualKm": 83500
+      },
+      {
+        "id": "practica-v11",
+        "customerId": "practica-c11",
+        "plate": "AE 620 ZZ",
+        "brand": "Chevrolet",
+        "model": "Tracker",
+        "year": 2024,
+        "fuel": "Nafta",
+        "engine": "1.2 Turbo",
+        "km": 18000,
+        "color": "blue",
+        "nextDate": "2026-07-14",
+        "nextKm": 12000,
+        "recommendation": "Cambio de filtro de habitáculo",
+        "maintenancePlans": [
+          {
+            "category": "otro-filtro-de-habitaculo",
+            "label": "Filtro de habitáculo",
+            "nextDate": "2026-07-14",
+            "nextKm": 12000,
+            "recommendation": "Cambio de filtro de habitáculo",
+            "lastDate": "2026-01-15",
+            "lastKm": 2000,
+            "sourceServiceId": "practica-s031"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-12-01",
+            "nextKm": 20000,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-06-04",
+            "lastKm": 10000,
+            "sourceServiceId": "practica-s032"
+          }
+        ],
+        "manualKm": 18000
+      },
+      {
+        "id": "practica-v12",
+        "customerId": "practica-c12",
+        "plate": "AE 621 ZZ",
+        "brand": "Renault",
+        "model": "Sandero",
+        "year": 2017,
+        "fuel": "Nafta / GNC",
+        "engine": "1.6",
+        "km": 126000,
+        "color": "silver",
+        "nextDate": "2026-07-19",
+        "nextKm": 120000,
+        "recommendation": "Control de neumáticos",
+        "maintenancePlans": [
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2026-07-19",
+            "nextKm": 120000,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-01-20",
+            "lastKm": 110000,
+            "sourceServiceId": "practica-s034"
+          },
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-09-06",
+            "nextKm": 128000,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2026-06-08",
+            "lastKm": 118000,
+            "sourceServiceId": "practica-s035"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2027-03-26",
+            "nextKm": 134800,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-09-27",
+            "lastKm": 124800,
+            "sourceServiceId": "practica-s036"
+          }
+        ],
+        "manualKm": 126000
+      },
+      {
+        "id": "practica-v13",
+        "customerId": "practica-c01",
+        "plate": "AE 622 ZZ",
+        "brand": "Nissan",
+        "model": "Frontier",
+        "year": 2022,
+        "fuel": "Diésel",
+        "engine": "2.3 TD",
+        "km": 92000,
+        "color": "white",
+        "nextDate": "2026-07-24",
+        "nextKm": 86000,
+        "recommendation": "Cambio de aceite y filtros",
+        "maintenancePlans": [
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-07-24",
+            "nextKm": 86000,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-01-25",
+            "lastKm": 76000,
+            "sourceServiceId": "practica-s037"
+          },
+          {
+            "category": "frenos",
+            "label": "Frenos",
+            "nextDate": "2026-12-09",
+            "nextKm": 114000,
+            "recommendation": "Revisión de frenos",
+            "lastDate": "2026-06-12",
+            "lastKm": 84000,
+            "sourceServiceId": "practica-s038"
+          },
+          {
+            "category": "otro-filtro-de-habitaculo",
+            "label": "Filtro de habitáculo",
+            "nextDate": "2027-03-24",
+            "nextKm": 100800,
+            "recommendation": "Cambio de filtro de habitáculo",
+            "lastDate": "2026-09-25",
+            "lastKm": 90800,
+            "sourceServiceId": "practica-s039"
+          }
+        ],
+        "manualKm": 92000
+      },
+      {
+        "id": "practica-v14",
+        "customerId": "practica-c02",
+        "plate": "AE 623 ZZ",
+        "brand": "Citroën",
+        "model": "C3",
+        "year": 2020,
+        "fuel": "Nafta",
+        "engine": "1.6 VTi",
+        "km": 68700,
+        "color": "red",
+        "nextDate": "2026-04-30",
+        "nextKm": 62700,
+        "recommendation": "Alineación y balanceo",
+        "maintenancePlans": [
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-04-30",
+            "nextKm": 62700,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2026-01-30",
+            "lastKm": 52700,
+            "sourceServiceId": "practica-s040"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-12-13",
+            "nextKm": 70700,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-06-16",
+            "lastKm": 60700,
+            "sourceServiceId": "practica-s041"
+          },
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2027-03-22",
+            "nextKm": 77500,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-09-23",
+            "lastKm": 67500,
+            "sourceServiceId": "practica-s042"
+          }
+        ],
+        "manualKm": 68700
+      },
+      {
+        "id": "practica-v15",
+        "customerId": "practica-c03",
+        "plate": "AE 624 ZZ",
+        "brand": "Fiat",
+        "model": "Strada",
+        "year": 2023,
+        "fuel": "Nafta",
+        "engine": "1.4",
+        "km": 36500,
+        "color": "silver",
+        "nextDate": "2026-08-03",
+        "nextKm": 50500,
+        "recommendation": "Revisión de frenos",
+        "maintenancePlans": [
+          {
+            "category": "frenos",
+            "label": "Frenos",
+            "nextDate": "2026-08-03",
+            "nextKm": 50500,
+            "recommendation": "Revisión de frenos",
+            "lastDate": "2026-02-04",
+            "lastKm": 20500,
+            "sourceServiceId": "practica-s043"
+          },
+          {
+            "category": "filtros",
+            "label": "Filtros",
+            "nextDate": "2026-12-17",
+            "nextKm": 38500,
+            "recommendation": "Cambio de filtros",
+            "lastDate": "2026-06-20",
+            "lastKm": 28500,
+            "sourceServiceId": "practica-s044"
+          },
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2027-03-20",
+            "nextKm": 45300,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-09-21",
+            "lastKm": 35300,
+            "sourceServiceId": "practica-s045"
+          }
+        ],
+        "manualKm": 36500
+      },
+      {
+        "id": "practica-v16",
+        "customerId": "practica-c04",
+        "plate": "AE 625 ZZ",
+        "brand": "Honda",
+        "model": "HR-V",
+        "year": 2021,
+        "fuel": "Nafta",
+        "engine": "1.8",
+        "km": 72400,
+        "color": "blue",
+        "nextDate": "2026-08-08",
+        "nextKm": 66400,
+        "recommendation": "Cambio de aceite y filtros",
+        "maintenancePlans": [
+          {
+            "category": "aceite-filtros",
+            "label": "Service de aceite y filtros",
+            "nextDate": "2026-08-08",
+            "nextKm": 66400,
+            "recommendation": "Cambio de aceite y filtros",
+            "lastDate": "2026-02-09",
+            "lastKm": 56400,
+            "sourceServiceId": "practica-s046"
+          },
+          {
+            "category": "neumaticos",
+            "label": "Neumáticos",
+            "nextDate": "2026-12-21",
+            "nextKm": 74400,
+            "recommendation": "Control de neumáticos",
+            "lastDate": "2026-06-24",
+            "lastKm": 64400,
+            "sourceServiceId": "practica-s047"
+          },
+          {
+            "category": "alineacion-balanceo",
+            "label": "Alineación y balanceo",
+            "nextDate": "2026-12-18",
+            "nextKm": 81200,
+            "recommendation": "Alineación y balanceo",
+            "lastDate": "2026-09-19",
+            "lastKm": 71200,
+            "sourceServiceId": "practica-s048"
+          }
+        ],
+        "manualKm": 72400
+      }
+    ],
+    "services": [
+      {
+        "id": "practica-s001",
+        "vehicleId": "practica-v01",
+        "date": "2025-11-26",
+        "km": 42400,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "Aceite 5W-30 · Filtros de aceite y aire",
+        "amount": 95000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false
+      },
+      {
+        "id": "practica-s002",
+        "stockManaged": true,
+        "vehicleId": "practica-v01",
+        "date": "2026-04-25",
+        "km": 50400,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 38.250,00 = $ 38.250,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 14.025,00 = $ 7.012,50\nTotal de insumos y repuestos: $ 45.262,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-2-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 38250
+          },
+          {
+            "id": "practica-art-2-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 14025
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 73263,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2026-10-22",
+          "nextKm": 80400,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-04-25",
+          "lastKm": 50400,
+          "sourceServiceId": "practica-s002"
+        },
+        "changes": [
+          {
+            "at": "2026-04-25T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s003",
+        "stockManaged": true,
+        "vehicleId": "practica-v01",
+        "date": "2026-09-11",
+        "km": 57200,
+        "type": "Filtro de habitáculo",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "EXTERNO · Limpiador aportado por el cliente · artículo manual | 1 Unidad × $ 0,00 = $ 0,00\nTotal de insumos y repuestos: $ 0,00",
+        "supplyItems": [
+          {
+            "id": "practica-manual-externo",
+            "code": "EXTERNO",
+            "description": "Limpiador aportado por el cliente · artículo manual",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 0
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 28000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "otro-filtro-de-habitaculo",
+          "label": "Filtro de habitáculo",
+          "nextDate": "2027-03-10",
+          "nextKm": 67200,
+          "recommendation": "Cambio de filtro de habitáculo",
+          "lastDate": "2026-09-11",
+          "lastKm": 57200,
+          "sourceServiceId": "practica-s003"
+        },
+        "changes": [
+          {
+            "at": "2026-09-11T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s004",
+        "vehicleId": "practica-v02",
+        "date": "2025-12-01",
+        "km": 96300,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: Las 4 ruedas. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "Contrapesos de balanceo · Válvulas",
+        "amount": 46000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false
+      },
+      {
+        "id": "practica-s005",
+        "stockManaged": true,
+        "vehicleId": "practica-v02",
+        "date": "2026-04-29",
+        "km": 104300,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 12.325,00 = $ 67.787,50\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 10.200,00 = $ 10.200,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 722,93 = $ 722,93\nTotal de insumos y repuestos: $ 78.710,43",
+        "supplyItems": [
+          {
+            "id": "practica-art-5-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 12325
+          },
+          {
+            "id": "practica-art-5-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 10200
+          },
+          {
+            "id": "practica-art-5-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 722.93
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 106710,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-10-26",
+          "nextKm": 114300,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-04-29",
+          "lastKm": 104300,
+          "sourceServiceId": "practica-s005"
+        },
+        "changes": [
+          {
+            "at": "2026-04-29T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          },
+          {
+            "at": "2026-04-29T16:00:00.000Z",
+            "action": "edited",
+            "changes": [
+              {
+                "field": "Cantidad de aceite (Litro)",
+                "before": "5",
+                "after": "5.5"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "practica-s006",
+        "stockManaged": true,
+        "vehicleId": "practica-v02",
+        "date": "2026-09-22",
+        "km": 111100,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 115.000,00 = $ 230.000,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.500,00 = $ 3.000,00\nTotal de insumos y repuestos: $ 233.000,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-6-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 115000
+          },
+          {
+            "id": "practica-art-6-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 261000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2027-03-21",
+          "nextKm": 121100,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-09-22",
+          "lastKm": 111100,
+          "sourceServiceId": "practica-s006"
+        },
+        "changes": [
+          {
+            "at": "2026-09-22T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s007",
+        "vehicleId": "practica-v03",
+        "date": "2025-12-06",
+        "km": 73200,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "Pastillas delanteras · Limpiador de frenos",
+        "amount": 124000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false
+      },
+      {
+        "id": "practica-s008",
+        "stockManaged": true,
+        "vehicleId": "practica-v03",
+        "date": "2026-05-03",
+        "km": 81200,
+        "type": "Filtros",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "FIL-003 · Filtro de aire C2287 · MANN | 1 Unidad × $ 16.500,00 = $ 16.500,00\nFIL-004 · Filtro de combustible WK69 · MANN | 1 Unidad × $ 21.000,00 = $ 21.000,00\nTotal de insumos y repuestos: $ 37.500,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-8-1",
+            "productId": "practica-p07",
+            "code": "FIL-003",
+            "description": "Filtro de aire C2287 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 16500
+          },
+          {
+            "id": "practica-art-8-2",
+            "productId": "practica-p08",
+            "code": "FIL-004",
+            "description": "Filtro de combustible WK69 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 21000
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 65500,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "filtros",
+          "label": "Filtros",
+          "nextDate": "2026-10-30",
+          "nextKm": 91200,
+          "recommendation": "Cambio de filtros",
+          "lastDate": "2026-05-03",
+          "lastKm": 81200,
+          "sourceServiceId": "practica-s008"
+        },
+        "changes": [
+          {
+            "at": "2026-05-03T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s009",
+        "stockManaged": true,
+        "vehicleId": "practica-v03",
+        "date": "2026-09-27",
+        "km": 88000,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 14.500,00 = $ 79.750,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 92.600,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-9-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 14500
+          },
+          {
+            "id": "practica-art-9-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-9-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 120601,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2027-03-26",
+          "nextKm": 98000,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-09-27",
+          "lastKm": 88000,
+          "sourceServiceId": "practica-s009"
+        },
+        "changes": [
+          {
+            "at": "2026-09-27T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s010",
+        "stockManaged": true,
+        "vehicleId": "practica-v04",
+        "date": "2025-12-11",
+        "km": 29600,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 8.500,00 = $ 38.250,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 10.200,00 = $ 10.200,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 722,93 = $ 722,93\nTotal de insumos y repuestos: $ 49.172,93",
+        "supplyItems": [
+          {
+            "id": "practica-art-10-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 8500
+          },
+          {
+            "id": "practica-art-10-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 10200
+          },
+          {
+            "id": "practica-art-10-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 722.93
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 77173,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-06-09",
+          "nextKm": 39600,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2025-12-11",
+          "lastKm": 29600,
+          "sourceServiceId": "practica-s010"
+        },
+        "changes": [
+          {
+            "at": "2025-12-11T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s011",
+        "stockManaged": true,
+        "vehicleId": "practica-v04",
+        "date": "2026-05-07",
+        "km": 37600,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 115.000,00 = $ 230.000,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.500,00 = $ 3.000,00\nTotal de insumos y repuestos: $ 233.000,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-11-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 115000
+          },
+          {
+            "id": "practica-art-11-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 261000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2026-11-03",
+          "nextKm": 47600,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-05-07",
+          "lastKm": 37600,
+          "sourceServiceId": "practica-s011"
+        },
+        "changes": [
+          {
+            "at": "2026-05-07T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s012",
+        "stockManaged": true,
+        "vehicleId": "practica-v04",
+        "date": "2026-09-30",
+        "km": 44400,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: Las 4 ruedas. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 18.000,00 = $ 1.350,00\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.500,00 = $ 6.000,00\nTotal de insumos y repuestos: $ 7.350,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-12-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 18000
+          },
+          {
+            "id": "practica-art-12-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 42350,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-12-29",
+          "nextKm": 54400,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2026-09-30",
+          "lastKm": 44400,
+          "sourceServiceId": "practica-s012"
+        },
+        "changes": [
+          {
+            "at": "2026-09-30T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s013",
+        "stockManaged": true,
+        "vehicleId": "practica-v05",
+        "date": "2025-12-16",
+        "km": 60800,
+        "type": "Filtro de habitáculo",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "HAB-001 · Filtro de habitáculo CUK2939 · MANN | 1 Unidad × $ 15.725,00 = $ 15.725,00\nTotal de insumos y repuestos: $ 15.725,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-13-1",
+            "productId": "practica-p09",
+            "code": "HAB-001",
+            "description": "Filtro de habitáculo CUK2939 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 15725
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 43725,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "otro-filtro-de-habitaculo",
+          "label": "Filtro de habitáculo",
+          "nextDate": "2026-06-14",
+          "nextKm": 70800,
+          "recommendation": "Cambio de filtro de habitáculo",
+          "lastDate": "2025-12-16",
+          "lastKm": 60800,
+          "sourceServiceId": "practica-s013"
+        },
+        "changes": [
+          {
+            "at": "2025-12-16T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s014",
+        "stockManaged": true,
+        "vehicleId": "practica-v05",
+        "date": "2026-05-11",
+        "km": 68800,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 10.000,00 = $ 45.000,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 57.850,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-14-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 10000
+          },
+          {
+            "id": "practica-art-14-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-14-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 85851,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-11-07",
+          "nextKm": 78800,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-05-11",
+          "lastKm": 68800,
+          "sourceServiceId": "practica-s014"
+        },
+        "changes": [
+          {
+            "at": "2026-05-11T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s015",
+        "stockManaged": true,
+        "vehicleId": "practica-v05",
+        "date": "2026-10-05",
+        "km": 75600,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 45.000,00 = $ 45.000,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 16.500,00 = $ 8.250,00\nTotal de insumos y repuestos: $ 53.250,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-15-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 45000
+          },
+          {
+            "id": "practica-art-15-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 16500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 81250,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2027-04-03",
+          "nextKm": 105600,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-10-05",
+          "lastKm": 75600,
+          "sourceServiceId": "practica-s015"
+        },
+        "changes": [
+          {
+            "at": "2026-10-05T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s016",
+        "stockManaged": true,
+        "vehicleId": "practica-v06",
+        "date": "2025-12-21",
+        "km": 7400,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 97.750,00 = $ 195.500,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.275,00 = $ 2.550,00\nTotal de insumos y repuestos: $ 198.050,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-16-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 97750
+          },
+          {
+            "id": "practica-art-16-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1275
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 226050,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2026-06-19",
+          "nextKm": 17400,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2025-12-21",
+          "lastKm": 7400,
+          "sourceServiceId": "practica-s016"
+        },
+        "changes": [
+          {
+            "at": "2025-12-21T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s017",
+        "stockManaged": true,
+        "vehicleId": "practica-v06",
+        "date": "2026-05-15",
+        "km": 15400,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: 2 ruedas delanteras. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 18.000,00 = $ 1.350,00\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.500,00 = $ 6.000,00\nTotal de insumos y repuestos: $ 7.350,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-17-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 18000
+          },
+          {
+            "id": "practica-art-17-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 42350,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-08-13",
+          "nextKm": 25400,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2026-05-15",
+          "lastKm": 15400,
+          "sourceServiceId": "practica-s017"
+        },
+        "changes": [
+          {
+            "at": "2026-05-15T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s018",
+        "stockManaged": true,
+        "vehicleId": "practica-v06",
+        "date": "2026-10-09",
+        "km": 22200,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 10.000,00 = $ 45.000,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 57.850,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-18-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 10000
+          },
+          {
+            "id": "practica-art-18-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-18-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 85851,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2027-04-07",
+          "nextKm": 32200,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-10-09",
+          "lastKm": 22200,
+          "sourceServiceId": "practica-s018"
+        },
+        "changes": [
+          {
+            "at": "2026-10-09T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s019",
+        "stockManaged": true,
+        "vehicleId": "practica-v07",
+        "date": "2025-12-26",
+        "km": 26700,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 12.325,00 = $ 67.787,50\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 10.200,00 = $ 10.200,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 722,93 = $ 722,93\nTotal de insumos y repuestos: $ 78.710,43",
+        "supplyItems": [
+          {
+            "id": "practica-art-19-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 12325
+          },
+          {
+            "id": "practica-art-19-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 10200
+          },
+          {
+            "id": "practica-art-19-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 722.93
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 106710,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-06-24",
+          "nextKm": 36700,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2025-12-26",
+          "lastKm": 26700,
+          "sourceServiceId": "practica-s019"
+        },
+        "changes": [
+          {
+            "at": "2025-12-26T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s020",
+        "stockManaged": true,
+        "vehicleId": "practica-v07",
+        "date": "2026-05-19",
+        "km": 34700,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 45.000,00 = $ 45.000,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 16.500,00 = $ 8.250,00\nTotal de insumos y repuestos: $ 53.250,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-20-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 45000
+          },
+          {
+            "id": "practica-art-20-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 16500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 81250,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2026-11-15",
+          "nextKm": 64700,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-05-19",
+          "lastKm": 34700,
+          "sourceServiceId": "practica-s020"
+        },
+        "changes": [
+          {
+            "at": "2026-05-19T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s021",
+        "stockManaged": true,
+        "vehicleId": "practica-v07",
+        "date": "2026-10-07",
+        "km": 41500,
+        "type": "Filtro de habitáculo",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "HAB-001 · Filtro de habitáculo CUK2939 · MANN | 1 Unidad × $ 18.500,00 = $ 18.500,00\nTotal de insumos y repuestos: $ 18.500,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-21-1",
+            "productId": "practica-p09",
+            "code": "HAB-001",
+            "description": "Filtro de habitáculo CUK2939 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 18500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 46500,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "otro-filtro-de-habitaculo",
+          "label": "Filtro de habitáculo",
+          "nextDate": "2027-04-05",
+          "nextKm": 51500,
+          "recommendation": "Cambio de filtro de habitáculo",
+          "lastDate": "2026-10-07",
+          "lastKm": 41500,
+          "sourceServiceId": "practica-s021"
+        },
+        "changes": [
+          {
+            "at": "2026-10-07T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s022",
+        "stockManaged": true,
+        "vehicleId": "practica-v08",
+        "date": "2025-12-31",
+        "km": 49000,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: Las 4 ruedas. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 15.300,00 = $ 1.147,50\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.275,00 = $ 5.100,00\nTotal de insumos y repuestos: $ 6.247,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-22-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 15300
+          },
+          {
+            "id": "practica-art-22-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1275
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 41248,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-03-31",
+          "nextKm": 59000,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2025-12-31",
+          "lastKm": 49000,
+          "sourceServiceId": "practica-s022"
+        },
+        "changes": [
+          {
+            "at": "2025-12-31T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s023",
+        "stockManaged": true,
+        "vehicleId": "practica-v08",
+        "date": "2026-05-23",
+        "km": 57000,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 14.500,00 = $ 79.750,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 92.600,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-23-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 14500
+          },
+          {
+            "id": "practica-art-23-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-23-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 120601,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-11-19",
+          "nextKm": 67000,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-05-23",
+          "lastKm": 57000,
+          "sourceServiceId": "practica-s023"
+        },
+        "changes": [
+          {
+            "at": "2026-05-23T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s024",
+        "stockManaged": true,
+        "vehicleId": "practica-v08",
+        "date": "2026-10-05",
+        "km": 63800,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 115.000,00 = $ 230.000,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.500,00 = $ 3.000,00\nTotal de insumos y repuestos: $ 233.000,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-24-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 115000
+          },
+          {
+            "id": "practica-art-24-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 261000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2027-04-03",
+          "nextKm": 73800,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-10-05",
+          "lastKm": 63800,
+          "sourceServiceId": "practica-s024"
+        },
+        "changes": [
+          {
+            "at": "2026-10-05T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s025",
+        "stockManaged": true,
+        "vehicleId": "practica-v09",
+        "date": "2026-01-05",
+        "km": 132500,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 38.250,00 = $ 38.250,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 14.025,00 = $ 7.012,50\nTotal de insumos y repuestos: $ 45.262,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-25-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 38250
+          },
+          {
+            "id": "practica-art-25-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 14025
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 73263,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2026-07-04",
+          "nextKm": 162500,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-01-05",
+          "lastKm": 132500,
+          "sourceServiceId": "practica-s025"
+        },
+        "changes": [
+          {
+            "at": "2026-01-05T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s026",
+        "stockManaged": true,
+        "vehicleId": "practica-v09",
+        "date": "2026-05-27",
+        "km": 140500,
+        "type": "Filtros",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "FIL-003 · Filtro de aire C2287 · MANN | 1 Unidad × $ 16.500,00 = $ 16.500,00\nFIL-004 · Filtro de combustible WK69 · MANN | 1 Unidad × $ 21.000,00 = $ 21.000,00\nTotal de insumos y repuestos: $ 37.500,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-26-1",
+            "productId": "practica-p07",
+            "code": "FIL-003",
+            "description": "Filtro de aire C2287 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 16500
+          },
+          {
+            "id": "practica-art-26-2",
+            "productId": "practica-p08",
+            "code": "FIL-004",
+            "description": "Filtro de combustible WK69 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 21000
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 65500,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "filtros",
+          "label": "Filtros",
+          "nextDate": "2026-11-23",
+          "nextKm": 150500,
+          "recommendation": "Cambio de filtros",
+          "lastDate": "2026-05-27",
+          "lastKm": 140500,
+          "sourceServiceId": "practica-s026"
+        },
+        "changes": [
+          {
+            "at": "2026-05-27T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s027",
+        "stockManaged": true,
+        "vehicleId": "practica-v09",
+        "date": "2026-10-03",
+        "km": 147300,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 14.500,00 = $ 79.750,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 92.600,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-27-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 14500
+          },
+          {
+            "id": "practica-art-27-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-27-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 120601,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2027-04-01",
+          "nextKm": 157300,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-10-03",
+          "lastKm": 147300,
+          "sourceServiceId": "practica-s027"
+        },
+        "changes": [
+          {
+            "at": "2026-10-03T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s028",
+        "stockManaged": true,
+        "vehicleId": "practica-v10",
+        "date": "2026-01-10",
+        "km": 67500,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 8.500,00 = $ 38.250,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 10.200,00 = $ 10.200,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 722,93 = $ 722,93\nTotal de insumos y repuestos: $ 49.172,93",
+        "supplyItems": [
+          {
+            "id": "practica-art-28-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 8500
+          },
+          {
+            "id": "practica-art-28-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 10200
+          },
+          {
+            "id": "practica-art-28-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 722.93
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 77173,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-07-09",
+          "nextKm": 77500,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-01-10",
+          "lastKm": 67500,
+          "sourceServiceId": "practica-s028"
+        },
+        "changes": [
+          {
+            "at": "2026-01-10T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s029",
+        "stockManaged": true,
+        "vehicleId": "practica-v10",
+        "date": "2026-05-31",
+        "km": 75500,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 115.000,00 = $ 230.000,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.500,00 = $ 3.000,00\nTotal de insumos y repuestos: $ 233.000,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-29-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 115000
+          },
+          {
+            "id": "practica-art-29-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 261000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2026-11-27",
+          "nextKm": 85500,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-05-31",
+          "lastKm": 75500,
+          "sourceServiceId": "practica-s029"
+        },
+        "changes": [
+          {
+            "at": "2026-05-31T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s030",
+        "stockManaged": true,
+        "vehicleId": "practica-v10",
+        "date": "2026-10-01",
+        "km": 82300,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: Las 4 ruedas. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 18.000,00 = $ 1.350,00\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.500,00 = $ 6.000,00\nTotal de insumos y repuestos: $ 7.350,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-30-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 18000
+          },
+          {
+            "id": "practica-art-30-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 42350,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-12-30",
+          "nextKm": 92300,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2026-10-01",
+          "lastKm": 82300,
+          "sourceServiceId": "practica-s030"
+        },
+        "changes": [
+          {
+            "at": "2026-10-01T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s031",
+        "stockManaged": true,
+        "vehicleId": "practica-v11",
+        "date": "2026-01-15",
+        "km": 2000,
+        "type": "Filtro de habitáculo",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "HAB-001 · Filtro de habitáculo CUK2939 · MANN | 1 Unidad × $ 15.725,00 = $ 15.725,00\nTotal de insumos y repuestos: $ 15.725,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-31-1",
+            "productId": "practica-p09",
+            "code": "HAB-001",
+            "description": "Filtro de habitáculo CUK2939 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 15725
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 43725,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "otro-filtro-de-habitaculo",
+          "label": "Filtro de habitáculo",
+          "nextDate": "2026-07-14",
+          "nextKm": 12000,
+          "recommendation": "Cambio de filtro de habitáculo",
+          "lastDate": "2026-01-15",
+          "lastKm": 2000,
+          "sourceServiceId": "practica-s031"
+        },
+        "changes": [
+          {
+            "at": "2026-01-15T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s032",
+        "stockManaged": true,
+        "vehicleId": "practica-v11",
+        "date": "2026-06-04",
+        "km": 10000,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 10.000,00 = $ 45.000,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 57.850,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-32-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 10000
+          },
+          {
+            "id": "practica-art-32-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-32-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 85851,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-12-01",
+          "nextKm": 20000,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-06-04",
+          "lastKm": 10000,
+          "sourceServiceId": "practica-s032"
+        },
+        "changes": [
+          {
+            "at": "2026-06-04T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s033",
+        "stockManaged": true,
+        "vehicleId": "practica-v11",
+        "date": "2026-09-29",
+        "km": 16800,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 45.000,00 = $ 45.000,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 16.500,00 = $ 8.250,00\nTotal de insumos y repuestos: $ 53.250,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-33-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 45000
+          },
+          {
+            "id": "practica-art-33-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 16500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 81250,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2027-03-28",
+          "nextKm": 46800,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-09-29",
+          "lastKm": 16800,
+          "sourceServiceId": "practica-s033"
+        },
+        "annulment": {
+          "at": "2026-10-26T16:00:00.000Z",
+          "reason": "Anulación ficticia: se canceló el trabajo; los artículos se devolvieron al stock."
+        },
+        "changes": [
+          {
+            "at": "2026-09-29T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          },
+          {
+            "at": "2026-10-26T16:00:00.000Z",
+            "action": "annulled",
+            "reason": "Anulación ficticia: se canceló el trabajo; los artículos se devolvieron al stock.",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s034",
+        "stockManaged": true,
+        "vehicleId": "practica-v12",
+        "date": "2026-01-20",
+        "km": 110000,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 97.750,00 = $ 195.500,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.275,00 = $ 2.550,00\nTotal de insumos y repuestos: $ 198.050,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-34-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 97750
+          },
+          {
+            "id": "practica-art-34-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1275
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 226050,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2026-07-19",
+          "nextKm": 120000,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-01-20",
+          "lastKm": 110000,
+          "sourceServiceId": "practica-s034"
+        },
+        "changes": [
+          {
+            "at": "2026-01-20T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s035",
+        "stockManaged": true,
+        "vehicleId": "practica-v12",
+        "date": "2026-06-08",
+        "km": 118000,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: 2 ruedas delanteras. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 18.000,00 = $ 1.350,00\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.500,00 = $ 6.000,00\nTotal de insumos y repuestos: $ 7.350,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-35-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 18000
+          },
+          {
+            "id": "practica-art-35-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 42350,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-09-06",
+          "nextKm": 128000,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2026-06-08",
+          "lastKm": 118000,
+          "sourceServiceId": "practica-s035"
+        },
+        "changes": [
+          {
+            "at": "2026-06-08T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s036",
+        "stockManaged": true,
+        "vehicleId": "practica-v12",
+        "date": "2026-09-27",
+        "km": 124800,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 10.000,00 = $ 45.000,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 57.850,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-36-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 10000
+          },
+          {
+            "id": "practica-art-36-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-36-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 85851,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2027-03-26",
+          "nextKm": 134800,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-09-27",
+          "lastKm": 124800,
+          "sourceServiceId": "practica-s036"
+        },
+        "changes": [
+          {
+            "at": "2026-09-27T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s037",
+        "stockManaged": true,
+        "vehicleId": "practica-v13",
+        "date": "2026-01-25",
+        "km": 76000,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 12.325,00 = $ 67.787,50\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 10.200,00 = $ 10.200,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 722,93 = $ 722,93\nTotal de insumos y repuestos: $ 78.710,43",
+        "supplyItems": [
+          {
+            "id": "practica-art-37-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 12325
+          },
+          {
+            "id": "practica-art-37-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 10200
+          },
+          {
+            "id": "practica-art-37-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 722.93
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 106710,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-07-24",
+          "nextKm": 86000,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-01-25",
+          "lastKm": 76000,
+          "sourceServiceId": "practica-s037"
+        },
+        "changes": [
+          {
+            "at": "2026-01-25T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s038",
+        "stockManaged": true,
+        "vehicleId": "practica-v13",
+        "date": "2026-06-12",
+        "km": 84000,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 45.000,00 = $ 45.000,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 16.500,00 = $ 8.250,00\nTotal de insumos y repuestos: $ 53.250,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-38-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 45000
+          },
+          {
+            "id": "practica-art-38-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 16500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 81250,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2026-12-09",
+          "nextKm": 114000,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-06-12",
+          "lastKm": 84000,
+          "sourceServiceId": "practica-s038"
+        },
+        "changes": [
+          {
+            "at": "2026-06-12T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s039",
+        "stockManaged": true,
+        "vehicleId": "practica-v13",
+        "date": "2026-09-25",
+        "km": 90800,
+        "type": "Filtro de habitáculo",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "HAB-001 · Filtro de habitáculo CUK2939 · MANN | 1 Unidad × $ 18.500,00 = $ 18.500,00\nTotal de insumos y repuestos: $ 18.500,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-39-1",
+            "productId": "practica-p09",
+            "code": "HAB-001",
+            "description": "Filtro de habitáculo CUK2939 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 18500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 46500,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "otro-filtro-de-habitaculo",
+          "label": "Filtro de habitáculo",
+          "nextDate": "2027-03-24",
+          "nextKm": 100800,
+          "recommendation": "Cambio de filtro de habitáculo",
+          "lastDate": "2026-09-25",
+          "lastKm": 90800,
+          "sourceServiceId": "practica-s039"
+        },
+        "changes": [
+          {
+            "at": "2026-09-25T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s040",
+        "stockManaged": true,
+        "vehicleId": "practica-v14",
+        "date": "2026-01-30",
+        "km": 52700,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: Las 4 ruedas. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 15.300,00 = $ 1.147,50\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.275,00 = $ 5.100,00\nTotal de insumos y repuestos: $ 6.247,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-40-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 15300
+          },
+          {
+            "id": "practica-art-40-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1275
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 41248,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-04-30",
+          "nextKm": 62700,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2026-01-30",
+          "lastKm": 52700,
+          "sourceServiceId": "practica-s040"
+        },
+        "changes": [
+          {
+            "at": "2026-01-30T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s041",
+        "stockManaged": true,
+        "vehicleId": "practica-v14",
+        "date": "2026-06-16",
+        "km": 60700,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 14.500,00 = $ 79.750,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 92.600,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-41-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 14500
+          },
+          {
+            "id": "practica-art-41-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-41-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 120601,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-12-13",
+          "nextKm": 70700,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-06-16",
+          "lastKm": 60700,
+          "sourceServiceId": "practica-s041"
+        },
+        "changes": [
+          {
+            "at": "2026-06-16T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s042",
+        "stockManaged": true,
+        "vehicleId": "practica-v14",
+        "date": "2026-09-23",
+        "km": 67500,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 115.000,00 = $ 230.000,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.500,00 = $ 3.000,00\nTotal de insumos y repuestos: $ 233.000,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-42-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 115000
+          },
+          {
+            "id": "practica-art-42-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 261000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2027-03-22",
+          "nextKm": 77500,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-09-23",
+          "lastKm": 67500,
+          "sourceServiceId": "practica-s042"
+        },
+        "changes": [
+          {
+            "at": "2026-09-23T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s043",
+        "stockManaged": true,
+        "vehicleId": "practica-v15",
+        "date": "2026-02-04",
+        "km": 20500,
+        "type": "Frenos",
+        "work": "Cambio de pastillas delanteras. Limpieza y control de discos y líquido de frenos.",
+        "supplies": "FRE-001 · Juego de pastillas delanteras · Bosch | 1 Juego × $ 38.250,00 = $ 38.250,00\nFRE-003 · Líquido de frenos DOT4 · Bosch | 0,5 Litro × $ 14.025,00 = $ 7.012,50\nTotal de insumos y repuestos: $ 45.262,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-43-1",
+            "productId": "practica-p11",
+            "code": "FRE-001",
+            "description": "Juego de pastillas delanteras · Bosch",
+            "quantity": 1,
+            "unit": "Juego",
+            "unitPrice": 38250
+          },
+          {
+            "id": "practica-art-43-2",
+            "productId": "practica-p13",
+            "code": "FRE-003",
+            "description": "Líquido de frenos DOT4 · Bosch",
+            "quantity": 0.5,
+            "unit": "Litro",
+            "unitPrice": 14025
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 73263,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "frenos",
+          "label": "Frenos",
+          "nextDate": "2026-08-03",
+          "nextKm": 50500,
+          "recommendation": "Revisión de frenos",
+          "lastDate": "2026-02-04",
+          "lastKm": 20500,
+          "sourceServiceId": "practica-s043"
+        },
+        "changes": [
+          {
+            "at": "2026-02-04T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s044",
+        "stockManaged": true,
+        "vehicleId": "practica-v15",
+        "date": "2026-06-20",
+        "km": 28500,
+        "type": "Filtros",
+        "work": "Reemplazo de filtro de aire y habitáculo. Inspección de conductos.",
+        "supplies": "FIL-003 · Filtro de aire C2287 · MANN | 1 Unidad × $ 16.500,00 = $ 16.500,00\nFIL-004 · Filtro de combustible WK69 · MANN | 1 Unidad × $ 21.000,00 = $ 21.000,00\nTotal de insumos y repuestos: $ 37.500,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-44-1",
+            "productId": "practica-p07",
+            "code": "FIL-003",
+            "description": "Filtro de aire C2287 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 16500
+          },
+          {
+            "id": "practica-art-44-2",
+            "productId": "practica-p08",
+            "code": "FIL-004",
+            "description": "Filtro de combustible WK69 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 21000
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 65500,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "filtros",
+          "label": "Filtros",
+          "nextDate": "2026-12-17",
+          "nextKm": 38500,
+          "recommendation": "Cambio de filtros",
+          "lastDate": "2026-06-20",
+          "lastKm": 28500,
+          "sourceServiceId": "practica-s044"
+        },
+        "changes": [
+          {
+            "at": "2026-06-20T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s045",
+        "stockManaged": true,
+        "vehicleId": "practica-v15",
+        "date": "2026-09-21",
+        "km": 35300,
+        "type": "Service general",
+        "work": "Cambio de aceite y filtros. Revisión de niveles, luces y estado general.",
+        "supplies": "ACE-002 · 8100 X-clean 5W-40 · Motul | 5,5 Litro × $ 14.500,00 = $ 79.750,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 12.000,00 = $ 12.000,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 850,50 = $ 850,50\nTotal de insumos y repuestos: $ 92.600,50",
+        "supplyItems": [
+          {
+            "id": "practica-art-45-1",
+            "productId": "practica-p02",
+            "code": "ACE-002",
+            "description": "8100 X-clean 5W-40 · Motul",
+            "quantity": 5.5,
+            "unit": "Litro",
+            "unitPrice": 14500
+          },
+          {
+            "id": "practica-art-45-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 12000
+          },
+          {
+            "id": "practica-art-45-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 850.5
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 120601,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2027-03-20",
+          "nextKm": 45300,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-09-21",
+          "lastKm": 35300,
+          "sourceServiceId": "practica-s045"
+        },
+        "changes": [
+          {
+            "at": "2026-09-21T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s046",
+        "stockManaged": true,
+        "vehicleId": "practica-v16",
+        "date": "2026-02-09",
+        "km": 56400,
+        "type": "Cambio de aceite",
+        "work": "Cambio de aceite de motor y filtro. Control de pérdidas y niveles.",
+        "supplies": "ACE-001 · Helix HX8 5W-30 · Shell | 4,5 Litro × $ 8.500,00 = $ 38.250,00\nFIL-001 · Filtro de aceite W712/95 · MANN | 1 Unidad × $ 10.200,00 = $ 10.200,00\nARR-001 · Arandela de tapón de cárter · Genérico | 1 Unidad × $ 722,93 = $ 722,93\nTotal de insumos y repuestos: $ 49.172,93",
+        "supplyItems": [
+          {
+            "id": "practica-art-46-1",
+            "productId": "practica-p01",
+            "code": "ACE-001",
+            "description": "Helix HX8 5W-30 · Shell",
+            "quantity": 4.5,
+            "unit": "Litro",
+            "unitPrice": 8500
+          },
+          {
+            "id": "practica-art-46-2",
+            "productId": "practica-p05",
+            "code": "FIL-001",
+            "description": "Filtro de aceite W712/95 · MANN",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 10200
+          },
+          {
+            "id": "practica-art-46-3",
+            "productId": "practica-p21",
+            "code": "ARR-001",
+            "description": "Arandela de tapón de cárter · Genérico",
+            "quantity": 1,
+            "unit": "Unidad",
+            "unitPrice": 722.93
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 77173,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "aceite-filtros",
+          "label": "Service de aceite y filtros",
+          "nextDate": "2026-08-08",
+          "nextKm": 66400,
+          "recommendation": "Cambio de aceite y filtros",
+          "lastDate": "2026-02-09",
+          "lastKm": 56400,
+          "sourceServiceId": "practica-s046"
+        },
+        "changes": [
+          {
+            "at": "2026-02-09T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s047",
+        "stockManaged": true,
+        "vehicleId": "practica-v16",
+        "date": "2026-06-24",
+        "km": 64400,
+        "type": "Neumáticos",
+        "work": "Rotación de neumáticos. Control de presión, desgaste y ajuste de bulones.",
+        "supplies": "NEU-001 · Neumático 185/65 R15 · Fate | 2 Unidad × $ 115.000,00 = $ 230.000,00\nALI-002 · Válvula para neumático · Genérico | 2 Unidad × $ 1.500,00 = $ 3.000,00\nTotal de insumos y repuestos: $ 233.000,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-47-1",
+            "productId": "practica-p14",
+            "code": "NEU-001",
+            "description": "Neumático 185/65 R15 · Fate",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 115000
+          },
+          {
+            "id": "practica-art-47-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 2,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 261000,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "neumaticos",
+          "label": "Neumáticos",
+          "nextDate": "2026-12-21",
+          "nextKm": 74400,
+          "recommendation": "Control de neumáticos",
+          "lastDate": "2026-06-24",
+          "lastKm": 64400,
+          "sourceServiceId": "practica-s047"
+        },
+        "changes": [
+          {
+            "at": "2026-06-24T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      },
+      {
+        "id": "practica-s048",
+        "stockManaged": true,
+        "vehicleId": "practica-v16",
+        "date": "2026-09-19",
+        "km": 71200,
+        "type": "Alineación y balanceo",
+        "work": "Alineación: Eje delantero. Balanceo: Las 4 ruedas. Corrección de convergencia, centrado del volante y control de vibraciones.",
+        "supplies": "ALI-001 · Contrapesos de balanceo · Genérico | 0,075 Kilogramo × $ 18.000,00 = $ 1.350,00\nALI-002 · Válvula para neumático · Genérico | 4 Unidad × $ 1.500,00 = $ 6.000,00\nTotal de insumos y repuestos: $ 7.350,00",
+        "supplyItems": [
+          {
+            "id": "practica-art-48-1",
+            "productId": "practica-p16",
+            "code": "ALI-001",
+            "description": "Contrapesos de balanceo · Genérico",
+            "quantity": 0.075,
+            "unit": "Kilogramo",
+            "unitPrice": 18000
+          },
+          {
+            "id": "practica-art-48-2",
+            "productId": "practica-p17",
+            "code": "ALI-002",
+            "description": "Válvula para neumático · Genérico",
+            "quantity": 4,
+            "unit": "Unidad",
+            "unitPrice": 1500
+          }
+        ],
+        "suppliesLegacy": "",
+        "amount": 42350,
+        "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
+        "public": false,
+        "maintenance": {
+          "category": "alineacion-balanceo",
+          "label": "Alineación y balanceo",
+          "nextDate": "2026-12-18",
+          "nextKm": 81200,
+          "recommendation": "Alineación y balanceo",
+          "lastDate": "2026-09-19",
+          "lastKm": 71200,
+          "sourceServiceId": "practica-s048"
+        },
+        "changes": [
+          {
+            "at": "2026-09-19T15:00:00.000Z",
+            "action": "created",
+            "changes": []
+          }
+        ]
+      }
+    ],
+    "workshop": {
+      "name": "Taller Calamante · PRÁCTICA FICTICIA",
+      "phone": "0000 000-0000",
+      "email": "practica-stock@example.com",
+      "address": "Avenida de Ejemplo 1234, Ciudad de Prueba",
+      "currency": "ARS",
+      "timezone": "America/Argentina/Buenos_Aires"
+    }
+  }
+}

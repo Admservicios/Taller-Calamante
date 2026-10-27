@@ -23,7 +23,7 @@ import { useData } from '../app/store';
 import { OfflineSettings } from '../components/OfflineApp';
 import { AutomaticBackupPanel, useAutomaticBackups } from '../components/AutomaticBackups';
 import { customerCSV, download } from '../lib/demo';
-import practiceBackup from '../data/taller-calamante-practica.json';
+import practiceBackup from '../data/taller-calamante-practica-stock.json';
 import {
   createPhotoBackup,
   downloadBlob,
@@ -273,14 +273,16 @@ export function Backups() {
             <p className="panel-description">
               Probá el sistema con {practiceBackup.data.customers.length} clientes,{' '}
               {practiceBackup.data.vehicles.length} vehículos y{' '}
-              {practiceBackup.data.services.length} mantenimientos ficticios. Incluye alineación y
-              balanceo, frenos, cambios de aceite y próximos servicios.
+              {practiceBackup.data.services.length} mantenimientos ficticios,{' '}
+              {practiceBackup.data.products.length} productos y{' '}
+              {practiceBackup.data.stockMovements.length} movimientos de stock. Incluye consumos,
+              una corrección, una anulación con devolución y próximos servicios.
             </p>
             <button
               className="button"
               onClick={() => {
                 download(
-                  'taller-calamante-practica.json',
+                  'taller-calamante-practica-stock.json',
                   JSON.stringify(practiceBackup, null, 2),
                   'application/json',
                 );
@@ -289,6 +291,31 @@ export function Backups() {
             >
               <Download size={16} />
               Descargar datos de práctica
+            </button>
+            <button
+              className="button practice-stock-download"
+              disabled={working}
+              onClick={async () => {
+                setWorking(true);
+                setError('');
+                try {
+                  const validated = parseBackup(JSON.stringify(practiceBackup));
+                  const blob = await createPhotoBackup(validated.data, [], []);
+                  downloadBlob(blob, 'taller-calamante-practica-stock.zip');
+                  notify(
+                    'ZIP de práctica descargado. Seleccionalo en Restaurar un respaldo; reemplaza la base actual.',
+                  );
+                } catch {
+                  setError(
+                    'No se pudo preparar el ZIP de práctica. Volvé a intentarlo o descargá el JSON.',
+                  );
+                } finally {
+                  setWorking(false);
+                }
+              }}
+            >
+              <Download size={16} />
+              Descargar práctica con stock · ZIP
             </button>
             <p className="fine-print">
               Descargá el archivo y seleccionalo en Restaurar un respaldo, en modo local. La
@@ -417,6 +444,10 @@ export function Backups() {
                 <p>
                   {candidate.data.customers.length} clientes · {candidate.data.vehicles.length}{' '}
                   vehículos · {candidate.data.services.length} mantenimientos
+                </p>
+                <p>
+                  {candidate.data.products?.length ?? 0} productos ·{' '}
+                  {candidate.data.stockMovements?.length ?? 0} movimientos de stock
                 </p>
                 <p>
                   {candidatePhotos !== null
@@ -558,7 +589,8 @@ export function Backups() {
               mantenimientos y {products?.length ?? 0} productos.
             </p>
             <p>
-              El respaldo contiene {candidate.data.products?.length ?? 0} productos. Se reemplaza
+              El respaldo contiene {candidate.data.products?.length ?? 0} productos y{' '}
+              {candidate.data.stockMovements?.length ?? 0} movimientos de stock. Se reemplaza
               también el catálogo actual y sus movimientos de stock.
             </p>
             <button
