@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import {
@@ -32,6 +33,7 @@ async function data(page: Page) {
 }
 async function register(page: Page, type: string, km: number, nextKm: number, work: string) {
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Tipo de servicio/).selectOption(type);
   await page.getByLabel(/Kilometraje actual/).fill(String(km));
   await page.getByLabel(/Kilometraje objetivo/).fill(String(nextKm));
@@ -42,6 +44,7 @@ async function register(page: Page, type: string, km: number, nextKm: number, wo
 }
 async function reminders(page: Page) {
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Recordatorios', exact: true }).click();
 }
 
@@ -53,6 +56,7 @@ test('frenos no reinicia aceite; renovar aceite conserva frenos, el PDF y los re
   await seed(page);
   await register(page, 'Frenos', 123000, 153000, 'Pastillas de freno con vencimiento propio.');
   await page.reload();
+  await showMoreOptions(page);
   let vehicle = (await data(page)).vehicles[0];
   const oil = vehicle.maintenancePlans.find(
     (p: { category: string }) => p.category === 'aceite-filtros',
@@ -73,6 +77,7 @@ test('frenos no reinicia aceite; renovar aceite conserva frenos, el PDF y los re
   await expect(oilCard).toContainText('Recorridos desde este servicio: 10.700 km.');
   await expect(page.getByRole('article', { name: 'Frenos', exact: true })).toContainText('Al día');
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   await expect(page.locator('tbody tr')).toHaveCount(2);
   await page.getByLabel('Filtrar vencimientos').selectOption('Vencido');
   await expect(page.locator('tbody tr')).toHaveCount(1);
@@ -104,6 +109,7 @@ test('frenos no reinicia aceite; renovar aceite conserva frenos, el PDF y los re
   expect(pdf).toContain('153.000 km');
   expect(pdf).not.toContain('133.500 km');
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar', exact: true }).first().click();
   const backup = await readFile((await (await pending).path())!);
@@ -112,6 +118,7 @@ test('frenos no reinicia aceite; renovar aceite conserva frenos, el PDF y los re
     const second = await other.newPage();
     await second.clock.setFixedTime(new Date('2026-10-22T15:00:00Z'));
     await second.goto('/backups');
+    await showMoreOptions(second);
     await second
       .getByLabel('Seleccionar respaldo JSON o ZIP')
       .setInputFiles({ name: 'vencimientos.json', mimeType: 'application/json', buffer: backup });
@@ -120,6 +127,7 @@ test('frenos no reinicia aceite; renovar aceite conserva frenos, el PDF y los re
     await second.getByRole('dialog').getByRole('button', { name: 'Confirmar y restaurar' }).click();
     await expect(second.getByRole('dialog')).toHaveCount(0);
     await second.reload();
+    await showMoreOptions(second);
     expect((await data(second)).vehicles[0].maintenancePlans).toEqual(vehicle.maintenancePlans);
   } finally {
     await other.close();
@@ -165,6 +173,7 @@ test('corregir un vencimiento anterior y agregar otro no altera el historial; ed
     .getByRole('button', { name: 'Guardar vehículo', exact: true })
     .click();
   await page.reload();
+  await showMoreOptions(page);
   expect((await data(page)).vehicles[0].maintenancePlans).toEqual(plans);
   expect((await data(page)).services).toEqual(before.services);
 });
@@ -179,6 +188,7 @@ test('dos servicios con nombre propio conservan vencimientos separados y se ven 
     ['Refrigerante', 114000, 154000],
   ] as const) {
     await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+    await showMoreOptions(page);
     await page.getByLabel(/Tipo de servicio/).selectOption('Otro mantenimiento');
     await page.getByLabel(/Nombre del servicio/).fill(name);
     await page.getByLabel(/Detalle del Servicio/).fill(`Trabajo completo de ${name}.`);

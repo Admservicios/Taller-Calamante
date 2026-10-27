@@ -1,3 +1,12 @@
+async function showMoreOptions(page) {
+  const url = new URL(page.url());
+  const path = (url.hash.startsWith('#/') ? url.hash.slice(1) : url.pathname).split('?')[0];
+  if (!['/clientes', '/vehiculos', '/mantenimientos', '/proximos-servicios'].includes(path)) return;
+  const details = page.locator('details.more-options');
+  await details.waitFor({ state: 'visible' });
+  if (!(await details.evaluate((node) => node.open)))
+    await details.locator(':scope > summary').click();
+}
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
@@ -90,6 +99,7 @@ const browser = await chromium.launch({
 });
 async function restore(page, url, file) {
   await page.goto(`${url}#/backups`);
+  await showMoreOptions(page);
   await page.getByLabel('Seleccionar respaldo JSON o ZIP').setInputFiles(file);
   await page.getByRole('button', { name: 'Revisar y restaurar' }).click();
   await page.getByRole('dialog').getByRole('checkbox').check();
@@ -108,6 +118,7 @@ try {
       const track = (page) => page.on('pageerror', (error) => errors.push(error.message));
       track(page);
       await page.goto(url);
+      await showMoreOptions(page);
       await page.waitForFunction(() => !!navigator.serviceWorker.controller);
       const manifest = await page.evaluate(async () => {
         const response = await fetch(document.querySelector('link[rel="manifest"]').href);
@@ -136,6 +147,7 @@ try {
       page = await context.newPage();
       track(page);
       await page.goto(`${url}#/ajustes`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Aplicación', exact: true }).click();
       await expect(
         page.getByRole('heading', { name: 'Lista para usar sin conexión', exact: true }),
@@ -163,15 +175,18 @@ try {
         }
       }, variant.path);
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Aplicación', exact: true }).click();
       await expect(
         page.getByRole('heading', { name: 'Lista para usar sin conexión', exact: true }),
       ).toBeVisible();
       await context.setOffline(true);
       await page.reload();
+      await showMoreOptions(page);
       await expect(page.getByRole('heading', { name: 'Ajustes', exact: true })).toBeVisible();
       // PDF y ZIP se abren por primera vez sin red: sus módulos deben estar preparados.
       await page.goto(`${url}#/mantenimientos`);
+      await showMoreOptions(page);
       let pending = page.waitForEvent('download');
       await page
         .getByRole('button', { name: /^Descargar PDF/ })
@@ -179,6 +194,7 @@ try {
         .click();
       assert.match((await readFile(await (await pending).path())).toString('latin1'), /^%PDF-/);
       await page.goto(`${url}#/clientes`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
       await page
         .getByRole('dialog')
@@ -186,11 +202,13 @@ try {
         .fill('Cliente creado sin internet');
       await page.getByRole('dialog').getByRole('button', { name: 'Guardar cliente' }).click();
       await page.reload();
+      await showMoreOptions(page);
       await page.getByLabel('Buscar clientes', { exact: true }).fill('Cliente creado sin internet');
       await expect(
         page.getByRole('button', { name: /^Cliente creado sin internet/ }),
       ).toBeVisible();
       await page.goto(`${url}#/productos`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Nuevo producto', exact: true }).click();
       const productDialog = page.getByRole('dialog');
       await productDialog.getByLabel('Código').fill('HAB-OFF');
@@ -205,8 +223,10 @@ try {
       await stockDialog.getByRole('button', { name: 'Guardar movimiento', exact: true }).click();
       await stockDialog.waitFor({ state: 'hidden' });
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Editar producto HAB-OFF', exact: true }).waitFor();
       await page.goto(`${url}#/mantenimientos/nuevo?vehiculo=practica-v02`);
+      await showMoreOptions(page);
       await page.getByLabel(/Tipo de servicio/).selectOption('Filtro de habitáculo');
       await page
         .getByLabel(/Detalle del Servicio/)
@@ -247,6 +267,7 @@ try {
         throw error;
       }
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('tab', { name: 'Fotos', exact: true }).click();
       await page.getByRole('button', { name: /^Ver foto foto-prueba.jpg/ }).waitFor();
       await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
@@ -266,6 +287,7 @@ try {
       await page.getByRole('dialog').getByRole('button', { name: 'Cerrar vista previa' }).click();
       const saved = await readData(page);
       await page.goto(`${url}#/backups`);
+      await showMoreOptions(page);
       pending = page.waitForEvent('download');
       await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
       const zip = await readFile(await (await pending).path());
@@ -281,6 +303,7 @@ try {
       await context.setOffline(false);
       variant.version = 2;
       await page.goto(`${url}#/mantenimientos/nuevo?vehiculo=practica-v02`);
+      await showMoreOptions(page);
       await page.getByLabel(/Detalle del Servicio/).fill('Texto pendiente que no se debe perder.');
       await page.evaluate(async () => {
         await (await navigator.serviceWorker.getRegistration()).update();
@@ -321,6 +344,7 @@ try {
       variant.version = 3;
       variant.broken = true;
       await page.goto(`${url}#/ajustes`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Aplicación', exact: true }).click();
       await page.getByRole('button', { name: 'Buscar actualizaciones', exact: true }).click();
       await expect(page.getByRole('alert')).toContainText('No se pudo preparar');
@@ -332,6 +356,7 @@ try {
       page = await context.newPage();
       track(page);
       await page.goto(`${url}#/vehiculos/practica-v02`);
+      await showMoreOptions(page);
       await expect(page.locator('meta[name="test-version"]')).toHaveAttribute('content', '2');
       await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
       pending = page.waitForEvent('download');
@@ -361,6 +386,7 @@ try {
       try {
         const initial = await fresh.newPage();
         await initial.goto(`${url}#/ajustes`);
+        await showMoreOptions(initial);
         await initial.getByRole('button', { name: 'Aplicación', exact: true }).click();
         await expect(initial.getByRole('alert')).toContainText('No se pudo preparar');
         variant.broken = false;
@@ -370,6 +396,7 @@ try {
         ).toBeVisible();
         await fresh.setOffline(true);
         await initial.reload();
+        await showMoreOptions(initial);
         await expect(initial.getByRole('heading', { name: 'Ajustes', exact: true })).toBeVisible();
       } finally {
         await fresh.close();

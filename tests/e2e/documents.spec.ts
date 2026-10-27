@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialVehicles } from '../../src/lib/demo';
@@ -23,6 +24,7 @@ async function data(page: Page) {
 }
 async function open(page: Page) {
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
 }
 async function select(page: Page) {
@@ -45,6 +47,7 @@ async function download(page: Page) {
 }
 async function restore(page: Page, filename: string, content: Buffer) {
   await page.goto('/backups');
+  await showMoreOptions(page);
   await page.getByLabel('Seleccionar respaldo JSON o ZIP').setInputFiles({
     name: filename,
     mimeType: filename.endsWith('.zip') ? 'application/zip' : 'application/json',
@@ -92,6 +95,7 @@ test('PDF persistente, descarga original, ZIP a otro navegador y recuperación d
   await open(page);
   await save(page);
   await page.reload();
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
   await page.screenshot({ path: '/tmp/calamante-documentacion-mobile.png', fullPage: true });
   const original = await data(page);
@@ -100,6 +104,7 @@ test('PDF persistente, descarga original, ZIP a otro navegador y recuperación d
     true,
   );
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   const zip = await readFile((await (await pending).path())!);
@@ -138,6 +143,7 @@ test('PDF persistente, descarga original, ZIP a otro navegador y recuperación d
   await page.getByRole('button', { name: 'Quitar documento seguro.pdf' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Confirmar y quitar' }).click();
   await page.reload();
+  await showMoreOptions(page);
   expect((await data(page)).documents).toEqual([]);
 });
 
@@ -221,6 +227,7 @@ test('rechaza PDF falso; la demo no escribe documentos locales ni los expone por
     ),
   ).toBe(false);
   await page.goto('/publico/demo/v2');
+  await showMoreOptions(page);
   await expect(page.locator('body')).not.toContainText('seguro.pdf');
   await open(page);
   await expect(page.getByText('Este vehículo todavía no tiene documentos.')).toBeVisible();
@@ -234,6 +241,7 @@ test('restauración fallida elimina solo los archivos nuevos; conserva el docume
   await save(page);
   const before = await data(page);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   const zip = await readFile((await (await pending).path())!);
@@ -295,9 +303,11 @@ test('imágenes privadas: vista previa, edición, originales y ZIP restaurado en
   await dialog.getByRole('button', { name: 'Guardar cambios del documento' }).click();
   await expect(dialog).toHaveCount(0);
   await page.reload();
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
   await expect(page.getByRole('article')).toHaveCount(4);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   const zip = await readFile((await (await pending).path())!);

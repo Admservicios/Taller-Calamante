@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { initialCustomers, initialVehicles } from '../../src/lib/demo';
 import { DATABASE_KEY, emptyData, localToday, newDatabase } from '../../src/lib/localDatabase';
@@ -20,6 +21,7 @@ test('mantenimiento: conservar al cancelar navegación y salir al confirmar; gua
 }) => {
   await demo(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Trabajo que todavía no guardé');
   const clientes = page
     .getByRole('navigation')
@@ -38,6 +40,7 @@ test('mantenimiento: conservar al cancelar navegación y salir al confirmar; gua
   await answer(page, true, () => clientes.click());
   await expect(page).toHaveURL(/clientes$/);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Trabajo confirmado');
   await page.getByLabel(/Importe total/).fill('1000');
   const unexpected: string[] = [];
@@ -53,6 +56,7 @@ test('mantenimiento: conservar al cancelar navegación y salir al confirmar; gua
 test('Atrás del navegador conserva el formulario si se rechaza salir', async ({ page }) => {
   await demo(page);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
   await page.getByLabel(/Detalle del Servicio/).fill('No perder al volver atrás');
   await answer(page, false, () => page.goBack());
@@ -67,6 +71,7 @@ test('cliente: Escape y Cancelar conservan lo escrito hasta confirmar el descart
 }) => {
   await demo(page);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
   const form = page.getByRole('dialog', { name: 'Nuevo cliente' });
   await form.getByLabel('Nombre y apellido').fill('Cliente todavía sin guardar');
@@ -83,6 +88,7 @@ test('ajustes: proteger cambios al cambiar pestaña y liberar la navegación des
 }) => {
   await demo(page);
   await page.goto('/ajustes');
+  await showMoreOptions(page);
   const name = page.locator('input[name="workshop"]');
   await name.fill('Taller corregido');
   // Pulsar la pestaña activa conserva tanto los campos como su protección.
@@ -134,6 +140,7 @@ test('Dashboard: contar varios servicios de un vehículo sin mezclarlos con veh�
     value: JSON.stringify(newDatabase(data)),
   });
   await page.goto('/');
+  await showMoreOptions(page);
   const card = page.locator('.stat-card').filter({ hasText: 'Servicios por atender' });
   await expect(card.locator('strong')).toHaveText('2');
   await expect(card.locator('small')).toHaveText('1 vencido · 1 próximo');
@@ -147,7 +154,8 @@ test('Dashboard: ancho móvil contenido y tabla accesible con desplazamiento pro
   for (const width of [320, 390, 768]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'Dashboard', exact: true })).toBeVisible();
+    await showMoreOptions(page);
+    await expect(page.getByRole('heading', { name: 'Inicio', exact: true })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       `ancho ${width}`,

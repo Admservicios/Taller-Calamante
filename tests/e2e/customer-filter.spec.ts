@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { initialCustomers, initialVehicles } from '../../src/lib/demo';
 import { DATABASE_KEY, emptyData, newDatabase } from '../../src/lib/localDatabase';
@@ -33,6 +34,7 @@ for (const [route, label] of [
   test(`buscar y seleccionar cliente sin alterar datos: ${route}`, async ({ page }) => {
     await seed(page);
     await page.goto(route);
+    await showMoreOptions(page);
     const before = await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY);
     const trigger = page.getByRole('button', { name: label, exact: true });
     await trigger.click();
@@ -47,6 +49,7 @@ for (const [route, label] of [
     await expect(trigger).toBeFocused();
     await expect(page.getByRole('listbox')).toHaveCount(0);
     await page.reload();
+    await showMoreOptions(page);
     await expect(trigger).toContainText('María González');
     await trigger.click();
     await page.getByRole('option', { name: 'Todos los clientes', exact: true }).click();
@@ -61,6 +64,7 @@ test('DNI y teléfono sin separadores, sin resultados, Escape, Tab y clic afuera
 }) => {
   await seed(page);
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   const trigger = page.getByRole('button', { name: 'Cliente de vehículos', exact: true });
   await trigger.focus();
   await trigger.press('ArrowDown');
@@ -99,6 +103,7 @@ test('muchos clientes: lista limitada, búsqueda por DNI y selección visible al
 }) => {
   await seed(page, true);
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   const trigger = page.getByRole('button', { name: 'Cliente de vehículos', exact: true });
   await trigger.click();
   await expect(
@@ -123,6 +128,7 @@ test('en celular se mantiene dentro de la pantalla y funciona con nombres largos
   await seed(page, true);
   await page.setViewportSize({ width: 320, height: 640 });
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   const trigger = page.getByRole('button', { name: 'Cliente de próximos servicios', exact: true });
   await trigger.click();
   await page.getByRole('combobox', { name: 'Buscar cliente', exact: true }).fill('gonzalez');

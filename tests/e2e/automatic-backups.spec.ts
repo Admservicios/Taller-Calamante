@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { initialCustomers, initialServices, initialVehicles } from '../../src/lib/demo';
 import { DATABASE_KEY, emptyData, newDatabase } from '../../src/lib/localDatabase';
@@ -83,12 +84,14 @@ async function data(page: Page) {
 }
 async function connect(page: Page) {
   await page.goto('/backups');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Elegir carpeta de respaldo', exact: true }).click();
   await expect(page.getByText(/^Última copia verificada:/)).toBeVisible();
   await expect(page.getByRole('button', { name: 'Crear copia ahora', exact: true })).toBeEnabled();
 }
 async function client(page: Page, name: string) {
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
   await page
     .getByRole('dialog')
@@ -107,6 +110,7 @@ test('carpeta persistente, ZIP con foto y documento, copia manual y pausa sin bo
   await setup(page);
   await page.clock.install({ time: new Date('2026-10-22T20:00:00Z') });
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Servicio para respaldo automático completo.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page
@@ -130,6 +134,7 @@ test('carpeta persistente, ZIP con foto y documento, copia manual y pausa sin bo
   expect(backup.documents).toHaveLength(1);
   expect(backup.backup.data).toEqual(JSON.parse(original!).data);
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByText(/^Última copia verificada:/)).toBeVisible();
   await page.getByRole('button', { name: 'Crear copia ahora', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Crear copia ahora', exact: true })).toBeEnabled();
@@ -140,6 +145,7 @@ test('carpeta persistente, ZIP con foto y documento, copia manual y pausa sin bo
   await client(page, 'Cambio durante la pausa');
   await page.clock.fastForward(2 * 86400000);
   await page.goto('/backups');
+  await showMoreOptions(page);
   expect(await files(page)).toHaveLength(2);
   await page.getByRole('button', { name: 'Activar copias' }).click();
   await expect.poll(async () => (await files(page)).length).toBe(3);
@@ -168,6 +174,7 @@ test('permisos y fallos de disco conservan la base y las copias previas; permite
   const original = await data(page);
   await page.evaluate(() => localStorage.setItem('test-folder-permission', 'prompt'));
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: 'Autorizar carpeta', exact: true })).toBeVisible();
   expect(await files(page)).toEqual(first);
   await page.getByRole('button', { name: 'Autorizar carpeta', exact: true }).click();
@@ -200,6 +207,7 @@ test('dos pestañas respetan el intervalo y el bloqueo compartido; demo no escri
   await setup(second);
   await second.clock.setFixedTime(new Date('2026-10-22T22:00:00Z'));
   await second.goto('/backups');
+  await showMoreOptions(second);
   await expect(second.getByText(/^Última copia verificada:/)).toBeVisible();
   // Retener el lock impide que cualquier pestaña cree una copia automática anticipada.
   await second.evaluate((name) => {
@@ -223,6 +231,7 @@ test('dos pestañas respetan el intervalo y el bloqueo compartido; demo no escri
   );
   await expect.poll(async () => (await files(page)).length).toBe(2);
   await page.goto('/backups');
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: 'Crear copia ahora', exact: true })).toBeEnabled();
   await expect(
     second.getByRole('button', { name: 'Crear copia ahora', exact: true }),
@@ -232,6 +241,7 @@ test('dos pestañas respetan el intervalo y el bloqueo compartido; demo no escri
   const original = await data(page);
   await page.getByRole('button', { name: 'Explorar demo', exact: true }).click();
   await page.goto('/backups');
+  await showMoreOptions(page);
   await expect(
     page.getByText(
       'Volvé a tus datos para configurar copias de la base local. La demostración no guarda archivos en tu carpeta.',
@@ -247,6 +257,7 @@ test('navegador sin selector conserva las descargas manuales', async ({ page }) 
     Object.defineProperty(window, 'showDirectoryPicker', { value: undefined, configurable: true }),
   );
   await page.goto('/backups');
+  await showMoreOptions(page);
   await expect(page.getByText(/Este navegador no permite elegir una carpeta/)).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Elegir carpeta de respaldo', exact: true }),

@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialVehicles } from '../../src/lib/demo';
@@ -33,6 +34,7 @@ test('búsqueda normalizada, filtros combinados y cambios de cliente actualizan 
 }) => {
   await seed(page);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   const search = page.getByLabel('Buscar clientes', { exact: true });
   for (const term of ['maria alvarez', '40000031', '1145670031', 'XY-123-ZZ']) {
     await search.fill(term);
@@ -65,6 +67,7 @@ test('paginación acotada y filtros conservados al cerrar la ficha, recargar y v
 }) => {
   await seed(page);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await expect(page.locator('.customer-table tbody tr')).toHaveCount(10);
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.getByText('Página 2 de 4', { exact: true })).toBeVisible();
@@ -72,6 +75,7 @@ test('paginación acotada y filtros conservados al cerrar la ficha, recargar y v
   await page.getByRole('button', { name: 'Cerrar ficha del cliente', exact: true }).click();
   await expect(page.getByText('Página 2 de 4', { exact: true })).toBeVisible();
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByText('Página 2 de 4', { exact: true })).toBeVisible();
   await page.getByLabel('Filtrar clientes por vehículos').selectOption('con');
   await expect(page.getByText('Página 1 de 1', { exact: true })).toBeVisible();
@@ -79,6 +83,7 @@ test('paginación acotada y filtros conservados al cerrar la ficha, recargar y v
   await page.locator('.customer-detail').getByRole('link').first().click();
   await expect(page).toHaveURL(/vehiculos\/v1$/);
   await page.goBack();
+  await showMoreOptions(page);
   await expect(page.getByLabel('Filtrar clientes por vehículos')).toHaveValue('con');
   await expect(page.locator('.customer-table tbody tr')).toHaveCount(1);
   await page.getByLabel('Ordenar clientes').selectOption('nombre-desc');
@@ -88,9 +93,11 @@ test('paginación acotada y filtros conservados al cerrar la ficha, recargar y v
   await expect(page.getByLabel('Ordenar clientes')).toHaveValue('nombre-desc');
   await expect(page.getByLabel('Clientes por página')).toHaveValue('25');
   await page.goto('/clientes?pagina=NaN&cantidad=600&estado=error&vehiculos=error&orden=error');
+  await showMoreOptions(page);
   await expect(page.getByText('Página 1 de 4', { exact: true })).toBeVisible();
   await expect(page.locator('.customer-table tbody tr')).toHaveCount(10);
   await page.goto('/clientes?pagina=99999');
+  await showMoreOptions(page);
   await expect(page.getByText('Página 4 de 4', { exact: true })).toBeVisible();
 });
 
@@ -99,6 +106,7 @@ test('CSV de todas las páginas, sin notas privadas ni escrituras; descarga fall
 }) => {
   await seed(page);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   const before = await read(page);
   await page.getByLabel('Ordenar clientes').selectOption('vehiculos');
   await expect(page.locator('.customer-table tbody tr').first()).toContainText('María Álvarez');
@@ -133,7 +141,10 @@ test('celular sin desbordes y demo identificada en el archivo y las filas', asyn
   await page.addInitScript(() => localStorage.setItem('motortrack-view-mode', 'demo'));
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/clientes');
-  await page.getByRole('button', { name: 'Cerrar ficha del cliente', exact: true }).click();
+  await showMoreOptions(page);
+  await expect(
+    page.getByRole('button', { name: 'Cerrar ficha del cliente', exact: true }),
+  ).toHaveCount(0);
   await page.getByLabel('Buscar clientes', { exact: true }).fill('maria');
   await expect(page.locator('.customer-table tbody tr')).toHaveCount(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

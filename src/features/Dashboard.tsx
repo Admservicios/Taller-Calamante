@@ -1,3 +1,5 @@
+import { useSearchParams } from 'react-router-dom';
+import { maintenanceSummary, reportMoney } from '../lib/maintenanceReport';
 import { Link } from 'react-router-dom';
 import {
   Activity,
@@ -8,7 +10,6 @@ import {
   ChartNoAxesCombined,
   Clock3,
   Plus,
-  QrCode,
   Users,
   Wrench,
 } from 'lucide-react';
@@ -18,7 +19,20 @@ import { dateLabel, maintenanceStatus, number } from '../lib/demo';
 import { allPlanRows, planStatus } from '../lib/maintenancePlans';
 
 export function Dashboard() {
-  const { customers, vehicles, activeServices: services, mode, referenceDate } = useData();
+  const store = useData();
+  const { customers, vehicles, activeServices: services, mode, referenceDate } = store;
+  const [params, setParams] = useSearchParams();
+  const period = ['anio', 'todo'].includes(params.get('periodo') ?? '')
+    ? params.get('periodo')!
+    : 'mes';
+  const summaryServices = store.services.filter(
+    (service) =>
+      period === 'todo' ||
+      service.date.startsWith(
+        period === 'anio' ? referenceDate.slice(0, 4) : referenceDate.slice(0, 7),
+      ),
+  );
+  const summary = maintenanceSummary(summaryServices);
   const monthCount = services.filter((s) => s.date.startsWith(referenceDate.slice(0, 7))).length;
   const schedule = allPlanRows(vehicles, referenceDate);
   const upcoming = schedule.filter(
@@ -52,8 +66,8 @@ export function Dashboard() {
   return (
     <>
       <PageTitle
-        title="Dashboard"
-        subtitle="Todo lo que pasa en tu taller, en un solo lugar."
+        title="Inicio"
+        subtitle="Resumen del taller y próximos trabajos por atender."
         actions={
           <>
             <span className="date-chip">
@@ -74,7 +88,7 @@ export function Dashboard() {
             value: customers.length,
             icon: Users,
             color: 'blue',
-            note: `${customers.filter((c) => c.active).length} clientes activos`,
+            note: `${customers.filter((c) => c.active).length} activos · ${customers.filter((c) => !c.active).length} inactivos`,
           },
           {
             label: 'Vehículos registrados',
@@ -117,113 +131,51 @@ export function Dashboard() {
       </div>
       <div className="dashboard-grid">
         <div className="dashboard-main">
-          <div className="chart-row">
-            <Panel
-              title="Servicios por mes"
-              icon={ChartNoAxesCombined}
-              action={<span className="subtle-chip">Últimos 12 meses</span>}
-            >
-              <p className="panel-description">
-                {mode === 'demo'
-                  ? 'Mantenimientos registrados en la demostración'
-                  : 'Mantenimientos registrados en este navegador'}
-              </p>
-              <div className="line-chart">
-                <svg
-                  viewBox="0 0 550 225"
-                  role="img"
-                  aria-label={`Servicios mensuales: ${chartMonths.map((m) => `${m.label}: ${m.count}`).join(', ')}`}
+          <Panel
+            title="Resumen de mantenimientos"
+            icon={Wrench}
+            action={
+              <label className="home-period">
+                Período
+                <select
+                  aria-label="Período del resumen"
+                  value={period}
+                  onChange={(event) =>
+                    setParams({ periodo: event.target.value }, { replace: true, flushSync: true })
+                  }
                 >
-                  <defs>
-                    <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#1478ff" stopOpacity=".22" />
-                      <stop offset="100%" stopColor="#1478ff" stopOpacity=".01" />
-                    </linearGradient>
-                  </defs>
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <g key={i}>
-                      <line
-                        x1="42"
-                        x2="520"
-                        y1={180 - i * 36.25}
-                        y2={180 - i * 36.25}
-                        stroke="var(--border)"
-                      />
-                      <text x="24" y={184 - i * 36.25} textAnchor="end">
-                        {Math.round((max / 4) * i)}
-                      </text>
-                    </g>
-                  ))}
-                  <polygon points={`42,180 ${points} 515,180`} fill="url(#chartFill)" />
-                  <polyline
-                    points={points}
-                    fill="none"
-                    stroke="#0879ff"
-                    strokeWidth="3"
-                    strokeLinejoin="round"
-                  />
-                  {chartMonths.map((m, i) => (
-                    <g key={i}>
-                      <circle
-                        cx={42 + i * 43}
-                        cy={180 - (m.count / max) * 145}
-                        r="4.5"
-                        fill="#0879ff"
-                        stroke="var(--surface)"
-                        strokeWidth="2"
-                      >
-                        <title>
-                          {m.label}: {m.count} servicios
-                        </title>
-                      </circle>
-                      <text x={42 + i * 43} y="210" textAnchor="middle">
-                        {m.label}
-                      </text>
-                    </g>
-                  ))}
-                </svg>
+                  <option value="mes">Este mes</option>
+                  <option value="anio">Este año</option>
+                  <option value="todo">Todo el historial</option>
+                </select>
+              </label>
+            }
+          >
+            <section aria-label="Resumen de mantenimientos" className="home-financial-summary">
+              <div className="home-amount">
+                <span>Importe registrado</span>
+                <strong>{reportMoney(summary.total)}</strong>
+                <small>{summary.active} servicios en el período elegido</small>
               </div>
-              <div className="chart-caption">
-                <span>
-                  <i />
-                  Servicios realizados
-                </span>
-                <span>
-                  {chartMonths.reduce((total, month) => total + month.count, 0)} en el período
-                </span>
-              </div>
-            </Panel>
-            <Panel title="Estado de la flota" icon={Activity}>
-              <p className="panel-description">Según fecha y kilometraje registrado</p>
-              <div
-                className="donut"
-                style={{
-                  background: `conic-gradient(#19bb86 0 ${greenEnd}%, #ffbb36 ${greenEnd}% ${yellowEnd}%, #f16372 ${yellowEnd}% ${redEnd}%, #a3afc0 ${redEnd}% 100%)`,
-                }}
-                role="img"
-                aria-label={distribution.map((d) => `${d.status}: ${d.count}`).join(', ')}
-              >
-                <div>
-                  <strong>{vehicles.length}</strong>
-                  <span>vehículos</span>
-                </div>
-              </div>
-              <div className="donut-legend">
-                {distribution.map((d, i) => (
-                  <div key={d.status}>
-                    <span>
-                      <i style={{ background: ['#19bb86', '#ffbb36', '#f16372', '#a3afc0'][i] }} />
-                      {d.status}
-                    </span>
-                    <strong>
-                      {Math.round((d.count / (vehicles.length || 1)) * 100)}%{' '}
-                      <small>{d.count}</small>
-                    </strong>
+              <details className="help-details">
+                <summary>Ver más cifras</summary>
+                <dl className="home-extra-figures">
+                  <div>
+                    <dt>Promedio por servicio</dt>
+                    <dd>{reportMoney(summary.average)}</dd>
                   </div>
-                ))}
-              </div>
-            </Panel>
-          </div>
+                  <div>
+                    <dt>Servicios anulados</dt>
+                    <dd>{summary.annulled}</dd>
+                  </div>
+                </dl>
+                <p className="fine-print">
+                  Los anulados no se suman. Estos importes corresponden a trabajos cargados, no a
+                  cobros ni ganancias.
+                </p>
+              </details>
+            </section>
+          </Panel>
           <Panel
             title="Próximos servicios"
             icon={CalendarDays}
@@ -288,6 +240,118 @@ export function Dashboard() {
               </table>
             </div>
           </Panel>
+          <details className="help-details home-charts">
+            <summary>Ver gráficos del taller</summary>{' '}
+            <div className="chart-row">
+              <Panel
+                title="Servicios por mes"
+                icon={ChartNoAxesCombined}
+                action={<span className="subtle-chip">Últimos 12 meses completos</span>}
+              >
+                <p className="panel-description">
+                  {mode === 'demo'
+                    ? 'Mantenimientos registrados en la demostración'
+                    : 'Mantenimientos registrados en el taller'}
+                </p>
+                <div className="line-chart">
+                  <svg
+                    viewBox="0 0 550 225"
+                    role="img"
+                    aria-label={`Servicios mensuales: ${chartMonths.map((m) => `${m.label}: ${m.count}`).join(', ')}`}
+                  >
+                    <defs>
+                      <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#1478ff" stopOpacity=".22" />
+                        <stop offset="100%" stopColor="#1478ff" stopOpacity=".01" />
+                      </linearGradient>
+                    </defs>
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <g key={i}>
+                        <line
+                          x1="42"
+                          x2="520"
+                          y1={180 - i * 36.25}
+                          y2={180 - i * 36.25}
+                          stroke="var(--border)"
+                        />
+                        <text x="24" y={184 - i * 36.25} textAnchor="end">
+                          {Math.round((max / 4) * i)}
+                        </text>
+                      </g>
+                    ))}
+                    <polygon points={`42,180 ${points} 515,180`} fill="url(#chartFill)" />
+                    <polyline
+                      points={points}
+                      fill="none"
+                      stroke="#0879ff"
+                      strokeWidth="3"
+                      strokeLinejoin="round"
+                    />
+                    {chartMonths.map((m, i) => (
+                      <g key={i}>
+                        <circle
+                          cx={42 + i * 43}
+                          cy={180 - (m.count / max) * 145}
+                          r="4.5"
+                          fill="#0879ff"
+                          stroke="var(--surface)"
+                          strokeWidth="2"
+                        >
+                          <title>
+                            {m.label}: {m.count} servicios
+                          </title>
+                        </circle>
+                        <text x={42 + i * 43} y="210" textAnchor="middle">
+                          {m.label}
+                        </text>
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+                <div className="chart-caption">
+                  <span>
+                    <i />
+                    Servicios realizados
+                  </span>
+                  <span>
+                    {chartMonths.reduce((total, month) => total + month.count, 0)} en el período
+                  </span>
+                </div>
+              </Panel>
+              <Panel title="Estado de la flota" icon={Activity}>
+                <p className="panel-description">Según fecha y kilometraje registrado</p>
+                <div
+                  className="donut"
+                  style={{
+                    background: `conic-gradient(#19bb86 0 ${greenEnd}%, #ffbb36 ${greenEnd}% ${yellowEnd}%, #f16372 ${yellowEnd}% ${redEnd}%, #a3afc0 ${redEnd}% 100%)`,
+                  }}
+                  role="img"
+                  aria-label={distribution.map((d) => `${d.status}: ${d.count}`).join(', ')}
+                >
+                  <div>
+                    <strong>{vehicles.length}</strong>
+                    <span>vehículos</span>
+                  </div>
+                </div>
+                <div className="donut-legend">
+                  {distribution.map((d, i) => (
+                    <div key={d.status}>
+                      <span>
+                        <i
+                          style={{ background: ['#19bb86', '#ffbb36', '#f16372', '#a3afc0'][i] }}
+                        />
+                        {d.status}
+                      </span>
+                      <strong>
+                        {Math.round((d.count / (vehicles.length || 1)) * 100)}%{' '}
+                        <small>{d.count}</small>
+                      </strong>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
+            </div>
+          </details>
         </div>
         <div className="dashboard-aside">
           <Panel title="Actividad reciente" icon={Clock3}>
@@ -322,36 +386,9 @@ export function Dashboard() {
               <span className="online-dot" />{' '}
               {mode === 'demo'
                 ? 'Actividad ficticia para explorar la interfaz'
-                : 'Actividad guardada en este navegador'}
+                : 'Últimos trabajos registrados'}
             </div>
           </Panel>
-          <div className="qr-promo">
-            <span className="eyebrow">MÁS CERCA DE TUS CLIENTES</span>
-            <div className="qr-promo-icon">
-              <QrCode size={48} strokeWidth={1.5} />
-            </div>
-            <h2>
-              El historial, siempre
-              <br />a mano.
-            </h2>
-            <p>
-              Cada vehículo tiene una historia. Compartila desde un QR con la información que vos
-              elijas.
-            </p>
-            <Link className="button" to="/publico/demo-hilux">
-              Explorar vista pública
-              <ArrowRight size={16} />
-            </Link>
-            <span className="qr-promo-foot">Sin instalar aplicaciones</span>
-          </div>
-          <div className="tip-card">
-            <Wrench size={18} />
-            <p>
-              <strong>Un taller más organizado.</strong>
-              <br />
-              Registrá cada visita y anticipá el próximo mantenimiento.
-            </p>
-          </div>
         </div>
       </div>
     </>

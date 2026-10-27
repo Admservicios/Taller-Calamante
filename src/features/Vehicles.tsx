@@ -1,3 +1,4 @@
+import { MoreOptions } from '../components/MoreOptions';
 import { VehicleHistoryPDFButton } from '../components/VehicleHistoryPDF';
 import { CustomerFilter } from '../components/CustomerFilter';
 import { isServerMode } from '../lib/serverClient';
@@ -285,10 +286,6 @@ export function Vehicles() {
         subtitle="Cada vehículo, su historia. Toda tu flota organizada."
         actions={
           <div className="history-heading-actions">
-            <button className="button" disabled={!filtered.length} onClick={exportCSV}>
-              <Download size={17} />
-              Exportar CSV
-            </button>
             <button className="button primary" onClick={() => setAdding(true)}>
               <Plus size={17} />
               Nuevo vehículo
@@ -316,54 +313,73 @@ export function Vehicles() {
             <option key={state}>{state}</option>
           ))}
         </select>
-        <CustomerFilter
-          label="Cliente de vehículos"
-          customers={customers}
-          value={customerId}
-          onChange={(value) => change('cliente', value)}
-        />
-        <select
-          aria-label="Marca del vehículo"
-          value={brand}
-          onChange={(e) => change('marca', e.target.value)}
-        >
-          <option value="">Todas las marcas</option>
-          {brands.map(([key, label]) => (
-            <option key={key} value={key}>
-              {label}
-            </option>
-          ))}
-        </select>
-        <select
-          aria-label="Ordenar vehículos"
-          value={order}
-          onChange={(e) => change('orden', e.target.value)}
-        >
-          <option value="patente">Patente (A–Z)</option>
-          <option value="urgencia">Más urgentes</option>
-          <option value="kilometraje">Mayor kilometraje</option>
-        </select>
         <button className="button" onClick={clearFilters}>
           Limpiar filtros
         </button>
-        <div className="vehicle-view-options" role="group" aria-label="Vista de vehículos">
-          <button
-            className="button small"
-            aria-pressed={!table}
-            onClick={() => change('vista', '', false)}
-          >
-            <LayoutGrid size={16} />
-            Tarjetas
+        <MoreOptions
+          label="Más opciones de vehículos"
+          active={
+            [customerId, brand, order !== 'patente' ? 'orden' : '', table ? 'tabla' : ''].filter(
+              Boolean,
+            ).length
+          }
+        >
+          <div className="options-fields">
+            <CustomerFilter
+              label="Cliente de vehículos"
+              customers={customers}
+              value={customerId}
+              onChange={(value) => change('cliente', value)}
+            />
+            <select
+              aria-label="Marca del vehículo"
+              value={brand}
+              onChange={(e) => change('marca', e.target.value)}
+            >
+              <option value="">Todas las marcas</option>
+              {brands.map(([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
+            <select
+              aria-label="Ordenar vehículos"
+              value={order}
+              onChange={(e) => change('orden', e.target.value)}
+            >
+              <option value="patente">Patente (A–Z)</option>
+              <option value="urgencia">Más urgentes</option>
+              <option value="kilometraje">Mayor kilometraje</option>
+            </select>
+            <div className="vehicle-view-options" role="group" aria-label="Vista de vehículos">
+              <button
+                className="button small"
+                aria-pressed={!table}
+                onClick={() => change('vista', '', false)}
+              >
+                <LayoutGrid size={16} />
+                Tarjetas
+              </button>
+              <button
+                className="button small"
+                aria-pressed={table}
+                onClick={() => change('vista', 'tabla', false)}
+              >
+                <List size={16} />
+                Tabla
+              </button>
+            </div>
+          </div>
+          <button className="button" disabled={!filtered.length} onClick={exportCSV}>
+            <Download size={17} />
+            Exportar CSV
           </button>
-          <button
-            className="button small"
-            aria-pressed={table}
-            onClick={() => change('vista', 'tabla', false)}
-          >
-            <List size={16} />
-            Tabla
-          </button>
-        </div>
+          <p className="fine-print">
+            El CSV se abre con Excel e incluye todos los vehículos encontrados y sus próximos
+            servicios.
+          </p>
+        </MoreOptions>
         <span className="results-count" aria-live="polite">
           {filtered.length} vehículos
         </span>
@@ -521,10 +537,7 @@ export function Vehicles() {
           </select>
         </label>
       </div>
-      <p className="fineprint">
-        El CSV incluye todos los vehículos filtrados y sus vencimientos vigentes. El servicio
-        prioritario resume el más urgente; los demás conservan sus propios objetivos.
-      </p>
+
       {adding && <VehicleEditor close={() => setAdding(false)} />}
     </>
   );

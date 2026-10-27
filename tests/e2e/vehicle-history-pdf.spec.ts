@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import {
@@ -66,6 +67,7 @@ async function seed(page: Page, empty = false) {
 const read = (page: Page) => page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY);
 async function open(page: Page) {
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Historial PDF', exact: true }).click();
   return page.getByRole('dialog', { name: 'Descargar historial del vehículo' });
 }
@@ -159,9 +161,11 @@ test('solo anulados no habilitan PDF; demo identificada y diálogo móvil sin de
 }) => {
   await seed(page, true);
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: 'Historial PDF', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: 'Explorar demo', exact: true }).click();
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.setViewportSize({ width: 320, height: 780 });
   await page.getByRole('button', { name: 'Historial PDF', exact: true }).click();
   const dialog = page.getByRole('dialog');

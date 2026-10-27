@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { initialCustomers, initialVehicles } from '../../src/lib/demo';
 import { DATABASE_KEY, emptyData, newDatabase, type LocalData } from '../../src/lib/localDatabase';
@@ -63,6 +64,7 @@ test('agenda filtra, cuenta servicios por estado, pagina y conserva filtros al r
 }) => {
   await seed(page, true);
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   await expect(page.locator('tbody tr')).toHaveCount(20);
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.locator('tbody tr')).toHaveCount(6);
@@ -78,8 +80,10 @@ test('agenda filtra, cuenta servicios por estado, pagina y conserva filtros al r
   await oilRow(page).getByRole('link', { name: 'Registrar', exact: true }).click();
   await expect(page.getByLabel(/Tipo de servicio/)).toHaveValue('Service general');
   await page.goBack();
+  await showMoreOptions(page);
   await expect(page.getByLabel('Tipo de próximos servicios')).toHaveValue('aceite-filtros');
   await page.reload();
+  await showMoreOptions(page);
   await expect(oilRow(page)).toBeVisible();
   await page.getByRole('button', { name: 'Limpiar filtros', exact: true }).click();
   await page.getByLabel('Filtrar vencimientos').selectOption('Vencido');
@@ -95,6 +99,7 @@ test('prepara y copia varios vencimientos independientes sin modificar la base n
   await seed(page);
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   const before = await read(page);
   await oilRow(page)
     .getByRole('button', { name: /Preparar aviso/ })
@@ -125,6 +130,7 @@ test('sin portapapeles permite selección manual; sin teléfono permite abrir la
   await seed(page, false, true);
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await oilRow(page)
     .getByRole('button', { name: /Preparar aviso/ })
@@ -153,6 +159,7 @@ test('aviso usa los datos actuales si otra pestaña modifica el cliente o un ven
 }) => {
   await seed(page);
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   await oilRow(page)
     .getByRole('button', { name: /Preparar aviso/ })
     .click();
@@ -171,6 +178,7 @@ test('aviso usa los datos actuales si otra pestaña modifica el cliente o un ven
 test('demo identifica el texto y preparar avisos no crea una base local', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('motortrack-view-mode', 'demo'));
   await page.goto('/proximos-servicios');
+  await showMoreOptions(page);
   await page
     .getByRole('button', { name: /Preparar aviso/ })
     .first()

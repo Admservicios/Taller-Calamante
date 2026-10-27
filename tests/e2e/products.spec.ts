@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { unzipSync } from 'fflate';
@@ -50,6 +51,7 @@ test('crear, buscar, corregir, desactivar y reactivar productos con validación 
 }) => {
   await seed(page);
   await page.goto('/productos');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo producto', exact: true }).click();
   let dialog = page.getByRole('dialog');
   await dialog.getByLabel('Código').fill('ACE-001');
@@ -70,6 +72,7 @@ test('crear, buscar, corregir, desactivar y reactivar productos con validación 
   await expect(page.locator('.product-card')).toHaveCount(0);
   await page.getByLabel('Estado de los productos').selectOption('inactivos');
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.locator('.product-card')).toHaveCount(1);
   await page.getByRole('button', { name: 'Editar producto REP-001', exact: true }).click();
   await dialog.getByLabel('Producto activo').check();
@@ -82,6 +85,7 @@ test('agregar desde catálogo conserva la referencia y el precio propio aunque c
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Servicio con producto de catálogo');
   await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
   await page.getByLabel('Buscar producto', { exact: true }).fill('ace001');
@@ -102,6 +106,7 @@ test('agregar desde catálogo conserva la referencia y el precio propio aunque c
     (s) => s.work === 'Servicio con producto de catálogo',
   )!;
   await page.goto('/productos');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Editar producto ACE-001', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await dialog.getByLabel('Precio sugerido').fill('16000');
@@ -109,6 +114,7 @@ test('agregar desde catálogo conserva la referencia y el precio propio aunque c
   await dialog.getByRole('button', { name: 'Guardar producto', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.goto(`/mantenimientos/${service.id}/editar`);
+  await showMoreOptions(page);
   await expect(page.getByLabel('Precio unitario artículo 1', { exact: true })).toHaveValue('9500');
   await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
@@ -117,11 +123,13 @@ test('agregar desde catálogo conserva la referencia y el precio propio aunque c
     (await read(page)).services.find((s) => s.id === service.id)!.supplyItems![0],
   ).toMatchObject({ productId: 'demo-oil', unitPrice: 9500 });
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
   await page.getByLabel('Buscar producto', { exact: true }).fill('ace001');
   await expect(page.getByRole('button', { name: 'Agregar ACE-001', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Cerrar catálogo', exact: true }).click();
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo', exact: true }).click();
   const entries = unzipSync(await readFile((await (await pending).path())!));
@@ -137,13 +145,16 @@ test('paginación y celular, buscador acotado, desvincular permite edición manu
 }) => {
   await seed(page, true);
   await page.goto('/productos');
+  await showMoreOptions(page);
   await expect(page.locator('.product-card')).toHaveCount(20);
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByText('Página 2 de 3', { exact: true })).toBeVisible();
   await page.setViewportSize({ width: 320, height: 800 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
   await expect(page.getByRole('dialog').getByRole('button', { name: /^Agregar / })).toHaveCount(50);
   await page.getByLabel('Buscar producto', { exact: true }).fill('shell');
@@ -171,11 +182,13 @@ test('demo tiene catálogo separado y un editor obsoleto no sobrescribe correcci
 }) => {
   await seed(page);
   await page.goto('/productos');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Editar producto ACE-001', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await dialog.getByLabel('Precio sugerido').fill('19000');
   const second = await context.newPage();
   await second.goto('/productos');
+  await showMoreOptions(second);
   await second.getByRole('button', { name: 'Editar producto ACE-001', exact: true }).click();
   await second.getByRole('dialog').getByLabel('Precio sugerido').fill('17000');
   await second.getByRole('button', { name: 'Guardar producto', exact: true }).click();
@@ -185,6 +198,7 @@ test('demo tiene catálogo separado y un editor obsoleto no sobrescribe correcci
   expect((await read(page)).products![0].unitPrice).toBe(17000);
   await second.getByRole('button', { name: 'Explorar demo', exact: true }).click();
   await second.goto('/productos');
+  await showMoreOptions(second);
   await expect(second.locator('.product-card')).toHaveCount(3);
   expect((await read(second)).products![0].unitPrice).toBe(17000);
 });
@@ -194,6 +208,7 @@ test('buscar y cerrar el catálogo no guarda ni marca cambios pendientes; Enter 
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   const before = await read(page);
   await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
   const search = page.getByLabel('Buscar producto', { exact: true });

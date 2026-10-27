@@ -36,7 +36,7 @@ import { OfflineNotice } from '../components/OfflineApp';
 import { AutomaticBackupsProvider, AutomaticBackupNotice } from '../components/AutomaticBackups';
 
 const navigation = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/', label: 'Inicio', icon: LayoutDashboard },
   { to: '/clientes', label: 'Clientes', icon: Users },
   { to: '/vehiculos', label: 'Vehículos', icon: CarFront },
   { to: '/mantenimientos', label: 'Mantenimientos', icon: ClipboardCheck },
@@ -360,7 +360,7 @@ function NotFound() {
       <Wrench size={40} />
       <h1>No encontramos esta página</h1>
       <Link className="button primary" to="/">
-        Volver al Dashboard
+        Volver al Inicio
       </Link>
     </div>
   );

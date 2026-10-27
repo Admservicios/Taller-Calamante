@@ -1,3 +1,12 @@
+async function showMoreOptions(page) {
+  const url = new URL(page.url());
+  const path = (url.hash.startsWith('#/') ? url.hash.slice(1) : url.pathname).split('?')[0];
+  if (!['/clientes', '/vehiculos', '/mantenimientos', '/proximos-servicios'].includes(path)) return;
+  const details = page.locator('details.more-options');
+  await details.waitFor({ state: 'visible' });
+  if (!(await details.evaluate((node) => node.open)))
+    await details.locator(':scope > summary').click();
+}
 import { request as httpRequest } from 'node:http';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
@@ -62,6 +71,7 @@ async function login(page, address = url) {
       console.log('Respuesta de prueba:', response.status(), response.url());
   });
   await page.goto(address);
+  await showMoreOptions(page);
   try {
     await page.getByLabel('Contraseña', { exact: true }).waitFor({ timeout: 10000 });
   } catch (error) {
@@ -70,7 +80,7 @@ async function login(page, address = url) {
   }
   await page.getByLabel('Contraseña', { exact: true }).fill(password);
   await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Dashboard', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Inicio', exact: true })).toBeVisible();
 }
 try {
   await start();
@@ -80,12 +90,14 @@ try {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(url);
+  await showMoreOptions(page);
   await expect(page.getByRole('heading', { name: 'Configurar acceso privado' })).toBeVisible();
   await page.getByLabel('Contraseña', { exact: true }).fill(password);
   await page.getByLabel('Repetir contraseña').fill(password);
   await page.getByRole('button', { name: 'Crear acceso al taller' }).click();
-  await expect(page.getByRole('heading', { name: 'Dashboard', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Inicio', exact: true })).toBeVisible();
   await page.goto(url + '/#/clientes');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
   await page
     .getByRole('dialog')
@@ -105,6 +117,7 @@ try {
   await mobile.goto(url + '/#/clientes');
   await expect(mobile.locator('tbody')).toContainText('Cliente compartido del taller');
   await page.goto(url + '/#/vehiculos');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo vehículo', exact: true }).click();
   let dialog = page.getByRole('dialog');
   await dialog.getByLabel('Patente').fill('PC 123 AB');
@@ -116,6 +129,7 @@ try {
   let snapshot = await data(page);
   const vehicle = snapshot.vehicles[0];
   await page.goto(url + `/#/mantenimientos/nuevo?vehiculo=${vehicle.id}`);
+  await showMoreOptions(page);
   await page.getByLabel('Detalle del Servicio').fill('Service compartido desde la PC del taller.');
   await page.getByLabel('Importe total').fill('35000');
   await page
@@ -149,6 +163,7 @@ try {
     await readFile(resolve(root, 'tests/fixtures/documento-imagen.png')),
   );
   await page.goto(url + '/#/clientes');
+  await showMoreOptions(page);
   await mobile.goto(url + '/#/clientes');
   for (const current of [page, mobile])
     await current
@@ -173,6 +188,7 @@ try {
   await expect(mobile.locator('tbody')).toContainText('Cliente corregido en PC');
   assert.equal((await data(page)).customers[0].name, 'Cliente corregido en PC');
   await page.goto(url + '/#/backups');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Habilitar acceso desde celulares', exact: true }).click();
   await expect(
     page.getByRole('button', { name: 'Deshabilitar acceso desde celulares' }),
@@ -254,6 +270,7 @@ try {
     ).toBeVisible();
   }
   await page.reload();
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Crear copia en la PC ahora', exact: true }).click();
   await expect
     .poll(
@@ -277,12 +294,14 @@ try {
   await stop();
   await start();
   await page.reload();
+  await showMoreOptions(page);
   await expect(
     page.getByRole('heading', { name: 'Backups y recuperación', exact: true }),
   ).toBeVisible();
   assert.deepEqual(await data(page), before);
   // El servidor guarda pero la respuesta no llega: se bloquea la edición y se revisa al reconectar.
   await page.goto(url + '/#/clientes');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
   await page.getByRole('dialog').getByLabel('Nombre y apellido').fill('Respuesta interrumpida');
   await page.route('**/api/state', async (route) => {
@@ -307,6 +326,7 @@ try {
   );
   await page.getByRole('button', { name: 'Explorar demo', exact: true }).click();
   await page.goto(url + '/#/backups');
+  await showMoreOptions(page);
   await expect(
     page.getByRole('button', { name: 'Crear copia en la PC ahora', exact: true }),
   ).toHaveCount(0);

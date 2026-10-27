@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import {
@@ -68,6 +69,7 @@ async function data(page: Page): Promise<LocalData> {
 }
 async function edit(page: Page, id = 'edit-brakes') {
   await page.goto(`/mantenimientos/${id}/editar`);
+  await showMoreOptions(page);
   await expect(
     page.getByRole('heading', { name: 'Editar mantenimiento', exact: true }),
   ).toBeVisible();
@@ -81,6 +83,7 @@ test('editar desde el historial conserva el ID, corrige kilómetros y datos, y g
 }) => {
   await seed(page);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await page.getByRole('link', { name: 'Editar servicio de AF 456 EF del 2026-02-10' }).click();
   await page.getByLabel('Kilometraje actual').fill('12000');
   await expect(page.getByLabel('Kilometraje objetivo')).toHaveValue('42000');
@@ -97,6 +100,7 @@ test('editar desde el historial conserva el ID, corrige kilómetros y datos, y g
   expect((await readFile((await (await pending).path())!)).subarray(0, 5).toString()).toBe('%PDF-');
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.reload();
+  await showMoreOptions(page);
   const result = await data(page);
   expect(result.services).toHaveLength(2);
   expect(result.services.find((s) => s.id === brakes.id)).toMatchObject({
@@ -140,6 +144,7 @@ test('rechaza una corrección incoherente; permite cambiar tipo y vehículo y ac
     maintenancePlans: [{ category: 'otro-filtro-de-habitaculo', lastKm: 12000 }],
   });
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await page
     .getByLabel('Buscar clientes')
     .fill(initialCustomers.find((c) => c.id === initialVehicles[0].customerId)!.name);
@@ -225,6 +230,7 @@ test('corrige nombre, categoría y vehículo de un documento conservando exactam
 }) => {
   await seed(page);
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
   const bytes = await readFile(new URL('../fixtures/documento-prueba.pdf', import.meta.url));
   await page
@@ -240,12 +246,14 @@ test('corrige nombre, categoría y vehículo de un documento conservando exactam
   await expect(dialog).toHaveCount(0);
   await expect(page.getByRole('article')).toHaveCount(0);
   await page.goto('/vehiculos/v1');
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
   await expect(page.getByRole('article', { name: 'seguro-corregido.pdf' })).toContainText('Seguro');
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar documento seguro-corregido.pdf' }).click();
   expect(await readFile((await (await pending).path())!)).toEqual(bytes);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const zip = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   expect((await readFile((await (await zip).path())!)).subarray(0, 2).toString()).toBe('PK');
@@ -273,14 +281,17 @@ test('editar cliente, vehículo y categoría de recordatorio propaga sus datos y
 }) => {
   await seed(page);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   const customer = initialCustomers.find((c) => c.id === initialVehicles[1].customerId)!;
   await page.getByRole('button', { name: `Editar ${customer.name}`, exact: true }).click();
   let dialog = page.getByRole('dialog');
   await dialog.getByLabel('Nombre y apellido').fill('Cliente corregido Calamante');
   await dialog.getByRole('button', { name: 'Guardar cliente', exact: true }).click();
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await expect(page.locator('tbody')).toContainText('Cliente corregido Calamante');
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Editar vehículo', exact: true }).click();
   dialog = page.getByRole('dialog');
   await dialog.getByLabel('Kilometraje registrado').fill('5000');
@@ -293,6 +304,7 @@ test('editar cliente, vehículo y categoría de recordatorio propaga sus datos y
   await dialog.getByRole('button', { name: 'Guardar vehículo', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByRole('heading', { name: 'Toyota Hilux SRX', exact: true })).toBeVisible();
   expect((await data(page)).vehicles[0]).toMatchObject({
     plate: 'COR 123',
@@ -312,6 +324,7 @@ test('editar cliente, vehículo y categoría de recordatorio propaga sus datos y
     'otro-filtro-de-habitaculo',
   ]);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await expect(page.locator('tbody')).toContainText('COR 123');
   await expect(page.locator('tbody')).not.toContainText('Cliente corregido Calamante');
   await page.screenshot({ path: '/tmp/calamante-editar-historial.png', fullPage: true });

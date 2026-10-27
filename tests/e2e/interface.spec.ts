@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 
@@ -11,7 +12,8 @@ test.afterEach(() => expect(errors, 'errores de JavaScript en el navegador').toE
 
 test('navegación de escritorio, búsqueda global y temas', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Dashboard', exact: true })).toBeVisible();
+  await showMoreOptions(page);
+  await expect(page.getByRole('heading', { name: 'Inicio', exact: true })).toBeVisible();
   await expect(
     page.getByText('Datos ficticios. Los cambios duran hasta recargar la página.'),
   ).toBeVisible();
@@ -24,6 +26,7 @@ test('navegación de escritorio, búsqueda global y temas', async ({ page }) => 
   await page.getByRole('button', { name: 'Activar modo oscuro' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   for (const [route, title] of [
     ['/clientes', 'Clientes'],
@@ -34,12 +37,14 @@ test('navegación de escritorio, búsqueda global y temas', async ({ page }) => 
     ['/ajustes', 'Ajustes'],
   ]) {
     await page.goto(route);
+    await showMoreOptions(page);
     await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
   }
 });
 
 test('clientes: filtrar, crear y descartar datos al recargar', async ({ page }) => {
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await page.getByRole('textbox', { name: 'Buscar clientes', exact: true }).fill('Lucía');
   await expect(page.locator('.customer-table tbody tr')).toHaveCount(1);
   await page.getByRole('button', { name: /^Lucía Torres/ }).click();
@@ -52,12 +57,14 @@ test('clientes: filtrar, crear y descartar datos al recargar', async ({ page }) 
   await page.getByRole('textbox', { name: 'Buscar clientes', exact: true }).fill('Marina');
   await expect(page.getByRole('button', { name: /^Marina Soto/ })).toBeVisible();
   await page.reload();
+  await showMoreOptions(page);
   await page.getByRole('textbox', { name: 'Buscar clientes', exact: true }).fill('Marina');
   await expect(page.getByText('No encontramos clientes')).toBeVisible();
 });
 
 test('mantenimiento: validar, guardar en memoria y actualizar historial', async ({ page }) => {
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await expect(page.getByRole('combobox', { name: 'Vehículo', exact: true })).toHaveValue('v2');
   await page.getByLabel(/Detalle del Servicio/).fill('Cambio de aceite de prueba automatizada');
   await page.getByLabel(/Importe total/).fill('120000');
@@ -79,6 +86,7 @@ test('mantenimiento: validar, guardar en memoria y actualizar historial', async 
 
 test('vista pública: solo servicios autorizados y QR descargable', async ({ page }) => {
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await expect(page.getByAltText('QR de demostración del historial público')).toHaveAttribute(
     'src',
     /^data:image\/png/,
@@ -87,6 +95,7 @@ test('vista pública: solo servicios autorizados y QR descargable', async ({ pag
   await page.getByRole('link', { name: 'Descargar QR demo' }).click();
   expect((await qrDownload).suggestedFilename()).toContain('.png');
   await page.goto('/publico/demo/v2');
+  await showMoreOptions(page);
   await expect(page.getByRole('heading', { name: 'Historial del vehículo' })).toBeVisible();
   await expect(page.locator('.timeline-item')).toHaveCount(4);
   await expect(page.locator('body')).not.toContainText('Nota interna de ejemplo.');
@@ -96,6 +105,7 @@ test('vista pública: solo servicios autorizados y QR descargable', async ({ pag
 
 test('exportación JSON identificada como demo y sin restauración simulada', async ({ page }) => {
   await page.goto('/backups');
+  await showMoreOptions(page);
   const downloading = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar', exact: true }).first().click();
   const file = await downloading;
@@ -116,6 +126,7 @@ test('capturas de las pantallas de referencia', async ({ page }) => {
     ['/publico/demo/v2', 'publico'],
   ]) {
     await page.goto(route);
+    await showMoreOptions(page);
     await page.screenshot({ path: `/tmp/motortrack-${name}-desktop.png`, fullPage: true });
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -127,6 +138,7 @@ test.describe('pantallas pequeñas', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   test('menú móvil y páginas sin desbordamiento horizontal', async ({ page }) => {
     await page.goto('/');
+    await showMoreOptions(page);
     await page.getByRole('button', { name: 'Abrir menú' }).click();
     await page
       .getByRole('navigation', { name: 'Navegación principal' })
@@ -149,6 +161,7 @@ test.describe('pantallas pequeñas', () => {
       ['/proximos-servicios', 'proximos'],
     ]) {
       await page.goto(route);
+      await showMoreOptions(page);
       await page.screenshot({ path: `/tmp/motortrack-${name}-mobile.png`, fullPage: true });
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -158,6 +171,7 @@ test.describe('pantallas pequeñas', () => {
   });
   test('el diálogo mantiene el foco y puede cerrarse con Escape', async ({ page }) => {
     await page.goto('/clientes');
+    await showMoreOptions(page);
     await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();

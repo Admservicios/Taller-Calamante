@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import fixture from '../../src/data/taller-calamante-practica-stock.json' with { type: 'json' };
@@ -18,6 +19,7 @@ test('ZIP de práctica se descarga sin modificar la base y la reemplaza únicame
     { key: DATABASE_KEY, value: JSON.stringify(newDatabase(original)) },
   );
   await page.goto('/backups');
+  await showMoreOptions(page);
   const read = () =>
     page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).data, DATABASE_KEY);
   const before = await read();
@@ -46,11 +48,13 @@ test('ZIP de práctica se descarga sin modificar la base y la reemplaza únicame
   await dialog.getByRole('button', { name: 'Confirmar y restaurar', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.reload();
+  await showMoreOptions(page);
   expect(await read()).toEqual(fixture.data);
   expect(
     await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).data, SAFETY_COPY_KEY),
   ).toEqual(before);
   await page.goto('/productos');
+  await showMoreOptions(page);
   await page.getByLabel('Buscar productos').fill('REP-099');
   await expect(
     page
@@ -78,6 +82,7 @@ test('agregar un artículo no quita el foco ni el importe si ya se comenzó a co
 }) => {
   await page.addInitScript(() => localStorage.setItem('motortrack-view-mode', 'demo'));
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.evaluate(() => {
     const add = [...document.querySelectorAll<HTMLButtonElement>('button')].find((button) =>
       button.textContent?.includes('Agregar artículo manual'),

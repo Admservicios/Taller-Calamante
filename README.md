@@ -4,6 +4,12 @@ La aplicación se llama **Taller Calamante** desde la versión 0.2.1. Se conserv
 
 Gestión de clientes, vehículos y mantenimiento para talleres y lubricentros. Interfaz basada en los bocetos acordados: azul, menú lateral grafito, tarjetas claras y adaptación móvil.
 
+## Interfaz para el uso diario
+
+Las listas muestran primero el buscador, el estado y la acción principal. **Más opciones** reúne filtros adicionales, orden y exportación; se abre automáticamente si un enlace trae filtros aplicados. Las fichas de clientes se abren al elegir una persona. En celular, los mantenimientos se presentan como tarjetas con sus acciones visibles.
+
+Los indicadores generales están en **Inicio**. El historial conserva un resumen opcional del listado filtrado, dentro de Más opciones. Las explicaciones extensas del formulario y el historial de stock se despliegan al solicitarlos. Los errores, advertencias y confirmaciones de cambios siguen visibles. Esta reorganización no cambia registros, respaldos ni reglas de vencimiento o stock.
+
 ## Versión 0.3: modalidad PC del taller
 
 Se incorpora una modalidad instalable con SQLite, acceso con contraseña y la misma interfaz compartida entre dispositivos de la red privada. La PC guarda los registros y adjuntos y genera copias ZIP completas. El workflow Windows prepara una carpeta portable y un instalador con runtime incluido. Ver [instalación, migración y pruebas](docs/INSTALACION-PC.md). El acceso externo y los QR públicos reales siguen pendientes.
@@ -25,7 +31,7 @@ Disponible:
 - Resumen del historial y descarga CSV para Excel: todas las páginas del resultado filtrado, importes con centavos y anulados identificados.
 - Historial completo del vehículo en PDF, con fechas, importes opcionales y vencimientos históricos/vigentes diferenciados; sin notas privadas ni servicios anulados.
 - Comprobantes PDF: guardar y descargar al registrar un servicio, o descargar desde el historial del vehículo y el listado de mantenimientos. Incluyen importe con centavos y excluyen notas privadas del cliente y del servicio.
-- Dashboard, gráficos y vencimientos calculados sobre los registros locales.
+- Inicio: resumen del taller por mes, año o todo el historial, próximos servicios y gráficos desplegables, calculados sobre los registros locales.
 - Agenda filtrada por cliente, tipo y estado; días/km restantes y avisos con varios servicios del mismo vehículo, preparados para copiar y contactar manualmente al cliente.
 - Catálogo de productos: código único, marca, unidad, precio sugerido y estado; buscador para agregar artículos al mantenimiento conservando sus datos y precios históricos.
 - Stock: saldos iniciales, ingresos y ajustes con motivo; consumos por artículos vinculados, correcciones por diferencia y devolución/recuperación al anular o recuperar servicios nuevos. Historial conservado y rechazo de saldos negativos.

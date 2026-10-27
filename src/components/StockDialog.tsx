@@ -81,8 +81,11 @@ export function StockDialog({ product, close }: { product: Product; close: () =>
         </strong>
       </div>
       <p className="fine-print">
-        El stock se actualiza al guardar. Los servicios anteriores a esta etapa no se descuentan
-        retroactivamente.
+        {kind === 'opening'
+          ? 'Cargá la cantidad que tenés disponible hoy.'
+          : kind === 'receipt'
+            ? 'Ingresá la cantidad de producto que recibiste.'
+            : 'El ajuste suma o resta esta cantidad al saldo registrado.'}
       </p>
       <form className="form-stack" onSubmit={submit}>
         <fieldset className="product-editor-fields" disabled={saving}>
@@ -135,71 +138,76 @@ export function StockDialog({ product, close }: { product: Product; close: () =>
           </button>
         </div>
       </form>
-      <h3 className="stock-history-heading">Historial de movimientos</h3>
-      <p className="fine-print">
-        Orden de registro, más recientes primero. Los movimientos se conservan; las correcciones
-        agregan un nuevo ajuste.
-      </p>
-      {!movements.length ? (
-        <p className="muted">Todavía no hay movimientos.</p>
-      ) : (
-        <ul className="stock-history">
-          {[...movements]
-            .reverse()
-            .slice((currentPage - 1) * 20, currentPage * 20)
-            .map((row) => (
-              <li key={row.id}>
-                <div>
-                  <strong>{labels[row.kind]}</strong>
-                  <strong className={row.deltaMilli < 0 ? 'stock-out' : 'stock-in'}>
-                    {row.deltaMilli > 0 ? '+' : ''}
-                    {stockQuantity(row.deltaMilli)} {row.unit}
-                  </strong>
-                </div>
-                <time dateTime={row.at}>
-                  {new Date(row.at).toLocaleString('es-AR', {
-                    timeZone: 'America/Argentina/Buenos_Aires',
-                  })}
-                </time>
-                <p>{row.reason}</p>
-                {row.serviceId &&
-                  (() => {
-                    const service = store.services.find((service) => service.id === row.serviceId);
-                    const vehicle = store.vehicles.find(
-                      (vehicle) => vehicle.id === service?.vehicleId,
-                    );
-                    return (
-                      <small>
-                        Servicio actual: {vehicle?.plate} · {service ? dateLabel(service.date) : ''}{' '}
-                        · {service?.type}
-                      </small>
-                    );
-                  })()}
-              </li>
-            ))}
-        </ul>
-      )}
-      {pages > 1 && (
-        <nav className="stock-pages" aria-label="Páginas de movimientos">
-          <button
-            className="button small"
-            disabled={currentPage === 1}
-            onClick={() => setPage(currentPage - 1)}
-          >
-            Anterior
-          </button>
-          <span>
-            Página {currentPage} de {pages}
-          </span>
-          <button
-            className="button small"
-            disabled={currentPage === pages}
-            onClick={() => setPage(currentPage + 1)}
-          >
-            Siguiente
-          </button>
-        </nav>
-      )}
+      <details className="help-details stock-history-details">
+        <summary>Historial de movimientos ({movements.length})</summary>{' '}
+        <h3 className="stock-history-heading">Historial de movimientos</h3>
+        <p className="fine-print">
+          Orden de registro, más recientes primero. Los movimientos se conservan; las correcciones
+          agregan un nuevo ajuste.
+        </p>
+        {!movements.length ? (
+          <p className="muted">Todavía no hay movimientos.</p>
+        ) : (
+          <ul className="stock-history">
+            {[...movements]
+              .reverse()
+              .slice((currentPage - 1) * 20, currentPage * 20)
+              .map((row) => (
+                <li key={row.id}>
+                  <div>
+                    <strong>{labels[row.kind]}</strong>
+                    <strong className={row.deltaMilli < 0 ? 'stock-out' : 'stock-in'}>
+                      {row.deltaMilli > 0 ? '+' : ''}
+                      {stockQuantity(row.deltaMilli)} {row.unit}
+                    </strong>
+                  </div>
+                  <time dateTime={row.at}>
+                    {new Date(row.at).toLocaleString('es-AR', {
+                      timeZone: 'America/Argentina/Buenos_Aires',
+                    })}
+                  </time>
+                  <p>{row.reason}</p>
+                  {row.serviceId &&
+                    (() => {
+                      const service = store.services.find(
+                        (service) => service.id === row.serviceId,
+                      );
+                      const vehicle = store.vehicles.find(
+                        (vehicle) => vehicle.id === service?.vehicleId,
+                      );
+                      return (
+                        <small>
+                          Servicio actual: {vehicle?.plate} ·{' '}
+                          {service ? dateLabel(service.date) : ''} · {service?.type}
+                        </small>
+                      );
+                    })()}
+                </li>
+              ))}
+          </ul>
+        )}
+        {pages > 1 && (
+          <nav className="stock-pages" aria-label="Páginas de movimientos">
+            <button
+              className="button small"
+              disabled={currentPage === 1}
+              onClick={() => setPage(currentPage - 1)}
+            >
+              Anterior
+            </button>
+            <span>
+              Página {currentPage} de {pages}
+            </span>
+            <button
+              className="button small"
+              disabled={currentPage === pages}
+              onClick={() => setPage(currentPage + 1)}
+            >
+              Siguiente
+            </button>
+          </nav>
+        )}{' '}
+      </details>
     </Modal>
   );
 }

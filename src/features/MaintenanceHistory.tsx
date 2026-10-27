@@ -1,3 +1,4 @@
+import { MoreOptions } from '../components/MoreOptions';
 import { changeServiceStatus } from '../lib/serviceHistory';
 import { CustomerFilter } from '../components/CustomerFilter';
 import { useState, type FormEvent } from 'react';
@@ -282,17 +283,9 @@ export function MaintenanceList() {
     <>
       <PageTitle
         title="Mantenimientos"
-        subtitle="El trabajo de tu taller, registrado visita a visita."
+        subtitle="Buscá un trabajo anterior o registrá una nueva visita."
         actions={
           <div className="history-heading-actions">
-            <button
-              className="button"
-              onClick={exportCSV}
-              disabled={!filtered.length || invalidDates}
-            >
-              <Download size={17} />
-              Exportar CSV
-            </button>
             <Link className="button primary" to="/mantenimientos/nuevo">
               <Plus size={17} />
               Registrar mantenimiento
@@ -310,26 +303,6 @@ export function MaintenanceList() {
             onChange={(e) => update('buscar', e.target.value)}
           />
         </div>
-        <div className="customer-filter-field">
-          <span>Cliente del vehículo</span>
-          <CustomerFilter
-            label="Cliente del vehículo"
-            customers={customers}
-            value={customer}
-            onChange={(value) => update('cliente', value)}
-          />
-        </div>
-        <label>
-          Tipo de servicio
-          <select value={category} onChange={(e) => update('tipo', e.target.value)}>
-            <option value="">Todos los servicios</option>
-            {categories.map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
         <label>
           Estado del mantenimiento
           <select value={state} onChange={(e) => update('estado', e.target.value)}>
@@ -338,58 +311,99 @@ export function MaintenanceList() {
             <option value="todos">Todos</option>
           </select>
         </label>
-        <label>
-          Desde
-          <input type="date" value={from} onChange={(e) => update('desde', e.target.value)} />
-        </label>
-        <label>
-          Hasta
-          <input type="date" value={to} onChange={(e) => update('hasta', e.target.value)} />
-        </label>
         <button
           className="button"
           onClick={() => setParams({}, { replace: true, flushSync: true })}
         >
           Limpiar filtros
         </button>
+        <MoreOptions
+          label="Más opciones de mantenimientos"
+          active={[customer, category, from, to].filter(Boolean).length}
+        >
+          <div className="options-fields">
+            <div className="customer-filter-field">
+              <span>Cliente del vehículo</span>
+              <CustomerFilter
+                label="Cliente del vehículo"
+                customers={customers}
+                value={customer}
+                onChange={(value) => update('cliente', value)}
+              />
+            </div>
+            <label>
+              Tipo de servicio
+              <select value={category} onChange={(e) => update('tipo', e.target.value)}>
+                <option value="">Todos los servicios</option>
+                {categories.map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Desde
+              <input type="date" value={from} onChange={(e) => update('desde', e.target.value)} />
+            </label>
+            <label>
+              Hasta
+              <input type="date" value={to} onChange={(e) => update('hasta', e.target.value)} />
+            </label>
+          </div>
+          <button
+            className="button"
+            onClick={exportCSV}
+            disabled={!filtered.length || invalidDates}
+          >
+            <Download size={17} />
+            Exportar CSV
+          </button>
+          <p className="fine-print">
+            El archivo CSV se puede abrir con Excel e incluye todo el listado filtrado, no solo esta
+            página. No incluye notas privadas.
+          </p>
+          <details className="help-details">
+            <summary>Ver resumen de este listado</summary>
+            <section aria-label="Resumen del historial" className="history-report">
+              <div className="history-report-cards">
+                <article aria-label="Servicios activos del resultado">
+                  <span>Servicios activos</span>
+                  <strong>{number(summary.active)}</strong>
+                  <small>Dentro de los filtros elegidos</small>
+                </article>
+                <article aria-label="Importe de servicios activos">
+                  <span>Importe registrado</span>
+                  <strong>{money(summary.total)}</strong>
+                  <small>ARS · Solo servicios activos</small>
+                </article>
+                <article aria-label="Importe promedio por servicio activo">
+                  <span>Importe promedio</span>
+                  <strong>{money(summary.average)}</strong>
+                  <small>ARS · Por servicio activo</small>
+                </article>
+                <article aria-label="Servicios anulados del resultado">
+                  <span>Servicios anulados</span>
+                  <strong>{number(summary.annulled)}</strong>
+                  <small>Fuera de los importes del resumen</small>
+                </article>
+              </div>
+              <p className="fineprint">
+                Incluye todo el listado filtrado. Los anulados no suman en los importes. Son
+                trabajos registrados, no cobros ni ganancias.{' '}
+                {mode === 'demo' && 'Datos de demostración.'}
+              </p>
+            </section>
+          </details>
+        </MoreOptions>
         <span className="results-count" aria-live="polite">
           {filtered.length} registros
         </span>
         {invalidDates && <p role="alert">La fecha Desde debe ser anterior o igual a Hasta.</p>}
       </section>
-      <section aria-label="Resumen del historial" className="history-report">
-        <div className="history-report-cards">
-          <article aria-label="Servicios activos del resultado">
-            <span>Servicios activos</span>
-            <strong>{number(summary.active)}</strong>
-            <small>Dentro de los filtros elegidos</small>
-          </article>
-          <article aria-label="Importe de servicios activos">
-            <span>Importe registrado</span>
-            <strong>{money(summary.total)}</strong>
-            <small>ARS · Solo servicios activos</small>
-          </article>
-          <article aria-label="Importe promedio por servicio activo">
-            <span>Importe promedio</span>
-            <strong>{money(summary.average)}</strong>
-            <small>ARS · Por servicio activo</small>
-          </article>
-          <article aria-label="Servicios anulados del resultado">
-            <span>Servicios anulados</span>
-            <strong>{number(summary.annulled)}</strong>
-            <small>Fuera de los importes del resumen</small>
-          </article>
-        </div>
-        <p className="fineprint">
-          El resumen y el CSV incluyen todas las páginas del resultado filtrado. Los importes son
-          valores registrados de servicios; no indican cobros ni ganancias. El CSV incluye los
-          anulados si los elegís en Estado, y excluye notas privadas e historial de cambios.{' '}
-          {mode === 'demo' && 'Estás viendo datos ficticios de demostración.'}
-        </p>
-      </section>
       <Panel title="Historial del taller" icon={Wrench}>
         <div className="table-scroll">
-          <table>
+          <table className="maintenance-history-table">
             <thead>
               <tr>
                 <th>Fecha</th>
@@ -406,8 +420,8 @@ export function MaintenanceList() {
                 const v = vehicles.find((v) => v.id === service.vehicleId);
                 return (
                   <tr key={service.id} data-service-id={service.id}>
-                    <td>{dateLabel(service.date)}</td>
-                    <td>
+                    <td data-label="Fecha">{dateLabel(service.date)}</td>
+                    <td data-label="Vehículo">
                       <Link className="table-link" to={`/vehiculos/${service.vehicleId}`}>
                         <strong>{v?.plate}</strong>
                         <small>
@@ -415,17 +429,19 @@ export function MaintenanceList() {
                         </small>
                       </Link>
                     </td>
-                    <td>{customers.find((c) => c.id === v?.customerId)?.name}</td>
-                    <td>
+                    <td data-label="Cliente">
+                      {customers.find((c) => c.id === v?.customerId)?.name}
+                    </td>
+                    <td data-label="Servicio">
                       <span className="service-type">
                         <Wrench size={15} />
                         {service.type}
                       </span>
                       {service.annulment && <span className="badge red">Anulado</span>}
                     </td>
-                    <td>{number(service.km)} km</td>
-                    <td>{money(service.amount)}</td>
-                    <td>
+                    <td data-label="Kilometraje">{number(service.km)} km</td>
+                    <td data-label="Importe">{money(service.amount)}</td>
+                    <td data-label="Acciones">
                       <div className="history-row-actions">
                         {!service.annulment && (
                           <>

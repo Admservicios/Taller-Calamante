@@ -400,14 +400,14 @@ function MaintenanceFormFields() {
         </div>
         <div className="form-main" inert={saving}>
           {original && (
-            <div className="info-strip">
-              <Info size={20} />
-              <span>
-                Se corrige el registro existente. Los historiales y futuros PDF usarán estos datos.
-                Si cambiás vehículo, el servicio y sus fotos pasarán a su ficha y cliente actual.
-                Los PDF y respaldos descargados antes conservan su contenido anterior.
-              </span>
-            </div>
+            <details className="help-details">
+              <summary>Información sobre esta corrección</summary>
+              <p>
+                Se modifica el registro existente. Si cambiás el vehículo, el servicio y sus fotos
+                pasan a su ficha. Los PDF y respaldos que ya descargaste conservan los datos
+                anteriores.
+              </p>
+            </details>
           )}
           <Panel title="Cliente y vehículo" icon={CarFront}>
             <div className="form-grid maintenance-vehicle-grid">
@@ -695,18 +695,25 @@ function MaintenanceFormFields() {
               </div>
             )}
             <p className="fine-print">
-              {original
-                ? 'Al corregir fecha o kilómetros se mantiene el intervalo de esta visita; podés ajustar los objetivos. Un servicio posterior del mismo tipo o un vencimiento ajustado manualmente conserva su prioridad. Revisá Recordatorios si cambiás el tipo o vehículo: si no hay otro vencimiento registrado, esa categoría quedará sin programación.'
-                : `Solo se actualiza el vencimiento de ${kind.label}. Los demás servicios conservan su fecha y kilometraje objetivo.`}
+              Este aviso corresponde a {kind.label}. Los otros servicios conservan sus vencimientos.
             </p>
-            {vehicle &&
-              vehiclePlans(vehicle)
-                .filter((p) => p.category !== kind.key)
-                .map((plan) => (
-                  <p className="fine-print" key={plan.category}>
-                    Se conserva {plan.label}: {dateLabel(plan.nextDate)} o {number(plan.nextKm)} km.
-                  </p>
-                ))}
+            <details className="help-details">
+              <summary>Ver otros vencimientos y cómo se actualizan</summary>{' '}
+              <p className="fine-print">
+                {original
+                  ? 'Al corregir fecha o kilómetros se mantiene el intervalo de esta visita; podés ajustar los objetivos. Un servicio posterior del mismo tipo o un vencimiento ajustado manualmente conserva su prioridad. Revisá Recordatorios si cambiás el tipo o vehículo: si no hay otro vencimiento registrado, esa categoría quedará sin programación.'
+                  : `Solo se actualiza el vencimiento de ${kind.label}. Los demás servicios conservan su fecha y kilometraje objetivo.`}
+              </p>
+              {vehicle &&
+                vehiclePlans(vehicle)
+                  .filter((p) => p.category !== kind.key)
+                  .map((plan) => (
+                    <p className="fine-print" key={plan.category}>
+                      Se conserva {plan.label}: {dateLabel(plan.nextDate)} o {number(plan.nextKm)}{' '}
+                      km.
+                    </p>
+                  ))}
+            </details>
           </Panel>
           <div className="form-bottom-grid">
             <Panel title="Observaciones privadas" icon={NotebookPen}>
@@ -816,17 +823,19 @@ function MaintenanceFormFields() {
                 </span>
               </div>
             )}
-            <label className="check-label">
-              <input
-                type="checkbox"
-                name="public"
-                defaultChecked={original?.public}
-                disabled={mode !== 'demo'}
-              />
-              {mode === 'demo'
-                ? 'Mostrar este servicio en el historial público de prueba'
-                : 'Historial público pendiente de implementar'}
-            </label>
+            {mode === 'demo' && (
+              <label className="check-label">
+                <input
+                  type="checkbox"
+                  name="public"
+                  defaultChecked={original?.public}
+                  disabled={mode !== 'demo'}
+                />
+                {mode === 'demo'
+                  ? 'Mostrar este servicio en el historial público de prueba'
+                  : 'Historial público pendiente de implementar'}
+              </label>
+            )}
             <button
               className="button ghost full"
               type="button"

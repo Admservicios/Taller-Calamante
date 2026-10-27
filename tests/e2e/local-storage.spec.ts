@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialServices, initialVehicles } from '../../src/lib/demo';
@@ -26,6 +27,7 @@ async function seed(page: Page) {
 }
 async function addCustomer(page: Page, name: string) {
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Nuevo cliente' });
   await dialog.getByLabel(/Nombre y apellido/).fill(name);
@@ -39,12 +41,15 @@ test('base vacía, persistencia de cliente y aislamiento entre navegadores', asy
   browser,
 }) => {
   await page.goto('/');
+  await showMoreOptions(page);
   await expect(page.locator('.demo-banner')).toContainText('Base local');
   await expect(page.locator('body')).not.toContainText('NaN');
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await expect(page.getByText('No encontramos clientes')).toBeVisible();
   await addCustomer(page, 'Cliente local de prueba');
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: /^Cliente local de prueba/ })).toBeVisible();
   const data = await dataFromBrowser(page);
   expect(data.customers).toHaveLength(1);
@@ -64,13 +69,16 @@ test('demo separada y vista pública sin datos locales', async ({ page }) => {
   await page.getByRole('button', { name: 'Explorar demo', exact: true }).click();
   await expect(page.locator('.demo-banner')).toContainText('Vista de demostración');
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: /^Juan Pérez/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /^Persona privada local/ })).toHaveCount(0);
   await page.getByRole('button', { name: 'Volver a mis datos' }).click();
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: /^Persona privada local/ })).toBeVisible();
   expect((await dataFromBrowser(page)).customers).toHaveLength(1);
   await page.goto('/publico/demo/v2');
+  await showMoreOptions(page);
   await expect(page.locator('body')).not.toContainText('Persona privada local');
 });
 
@@ -79,6 +87,7 @@ test('mantenimiento y kilometraje sobreviven a una recarga; el QR local no expon
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Mantenimiento local persistente');
   await page.getByLabel(/Importe total/).fill('120000');
   await page.getByLabel(/Kilometraje actual/).fill('113000');
@@ -86,18 +95,21 @@ test('mantenimiento y kilometraje sobreviven a una recarga; el QR local no expon
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByText('Mantenimiento local persistente', { exact: true })).toBeVisible();
   const data = await dataFromBrowser(page);
   expect(data.services).toHaveLength(9);
   expect(data.vehicles.find((v: { id: string }) => v.id === 'v2').km).toBe(113000);
   await expect(page.getByRole('link', { name: 'Descargar QR demo' })).toHaveCount(0);
   await page.goto('/publico/demo/v2');
+  await showMoreOptions(page);
   await expect(page.locator('body')).not.toContainText('Mantenimiento local persistente');
 });
 
 test('crear un vehículo nuevo y actualizar el taller en la base local', async ({ page }) => {
   await addCustomer(page, 'Propietario de prueba');
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Nuevo vehículo' }).click();
   const dialog = page.getByRole('dialog');
   await dialog.getByLabel(/Patente/).fill('AE 100 ZZ');
@@ -106,11 +118,14 @@ test('crear un vehículo nuevo y actualizar el taller en la base local', async (
   await dialog.getByLabel(/Kilometraje registrado/).fill('25000');
   await dialog.getByRole('button', { name: 'Guardar vehículo' }).click();
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByRole('heading', { name: 'Toyota Corolla' })).toBeVisible();
   await page.goto('/ajustes');
+  await showMoreOptions(page);
   await page.getByLabel(/Nombre del taller/).fill('Taller de prueba local');
   await page.getByRole('button', { name: 'Guardar taller' }).click();
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.getByLabel(/Nombre del taller/)).toHaveValue('Taller de prueba local');
   await expect(page.locator('.profile-button')).toContainText('Taller de prueba local');
 });
@@ -120,6 +135,7 @@ test('guardar con PDF, volver a descargarlo y conservar un único mantenimiento'
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Trabajo para comprobante PDF.');
   await page.getByRole('button', { name: 'Agregar artículo manual', exact: true }).click();
   await page.getByLabel('Descripción artículo 1').fill('Filtro de habitáculo: MANN CUK 2939');
@@ -144,6 +160,7 @@ test('guardar con PDF, volver a descargarlo y conservar un único mantenimiento'
   expect(pdf).not.toContain('SECRETO-PDF-NO-INCLUIR');
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.reload();
+  await showMoreOptions(page);
   const before = await dataFromBrowser(page);
   expect(before.services).toHaveLength(initialServices.length + 1);
   expect(before.services[0].supplies).toContain('Filtro de habitáculo: MANN CUK 2939');
@@ -155,6 +172,7 @@ test('guardar con PDF, volver a descargarlo y conservar un único mantenimiento'
   );
   expect(await dataFromBrowser(page)).toEqual(before);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   const third = page.waitForEvent('download');
   await page
     .getByRole('button', { name: /^Descargar PDF/ })
@@ -170,6 +188,7 @@ test('fallo de generación PDF conserva el servicio y permite descargarlo despu�
   await seed(page);
   await page.route('**/*jspdf*', (route) => route.abort());
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Servicio guardado aunque falle el PDF.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page.getByRole('button', { name: 'Guardar y generar PDF', exact: true }).click();
@@ -180,6 +199,7 @@ test('fallo de generación PDF conserva el servicio y permite descargarlo despu�
   expect((await dataFromBrowser(page)).services).toHaveLength(initialServices.length + 1);
   await page.unroute('**/*jspdf*');
   await page.reload();
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page
     .getByRole('row')
@@ -195,6 +215,7 @@ test('almacenamiento lleno impide guardar y generar un comprobante de un servici
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   const before = await dataFromBrowser(page);
   let downloads = 0;
   page.on('download', () => downloads++);
@@ -218,6 +239,7 @@ test('alineación y balanceo: detalle, persistencia y respaldo desde el móvil',
   await seed(page);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await expect(page.getByLabel(/Alineación realizada/)).toHaveCount(0);
   await page.getByLabel(/Tipo de servicio/).selectOption('Alineación y balanceo');
   await expect(
@@ -242,6 +264,7 @@ test('alineación y balanceo: detalle, persistencia y respaldo desde el móvil',
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.reload();
+  await showMoreOptions(page);
   const work =
     'Alineación: Ejes delantero y trasero. Balanceo: 2 ruedas delanteras. Se corrigió la deriva y la vibración.';
   await expect(page.getByText(work, { exact: true })).toBeVisible();
@@ -261,10 +284,12 @@ test('alineación y balanceo: detalle, persistencia y respaldo desde el móvil',
     ).nextKm,
   ).toBe(initialVehicles[1].nextKm);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await page.getByRole('textbox', { name: 'Buscar mantenimientos' }).fill('alineación');
   await expect(page.locator('tbody tr')).toHaveCount(1);
   await expect(page.locator('tbody')).toContainText('Alineación y balanceo');
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar', exact: true }).first().click();
   const backup = JSON.parse(await readFile((await (await pending).path())!, 'utf8'));
@@ -274,6 +299,7 @@ test('alineación y balanceo: detalle, persistencia y respaldo desde el móvil',
 test('exportar y restaurar con confirmación y copia previa', async ({ page }) => {
   await seed(page);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar', exact: true }).first().click();
   const content = await readFile((await (await pending).path())!, 'utf8');
@@ -282,6 +308,7 @@ test('exportar y restaurar con confirmación y copia previa', async ({ page }) =
   await addCustomer(page, 'Cliente agregado después del respaldo');
   expect((await dataFromBrowser(page)).customers).toHaveLength(9);
   await page.goto('/backups');
+  await showMoreOptions(page);
   await page.locator('input[type="file"]').setInputFiles({
     name: 'respaldo.json',
     mimeType: 'application/json',
@@ -302,6 +329,7 @@ test('exportar y restaurar con confirmación y copia previa', async ({ page }) =
     ),
   ).toBe(9);
   await page.reload();
+  await showMoreOptions(page);
   expect(await dataFromBrowser(page)).toEqual(backup.data);
 });
 
@@ -311,6 +339,7 @@ test('descargar la base de práctica e importarla conserva las relaciones y pers
   await addCustomer(page, 'Cliente previo a la práctica');
   const before = await dataFromBrowser(page);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar datos de práctica', exact: true }).click();
   const downloaded = await pending;
@@ -333,16 +362,20 @@ test('descargar la base de práctica e importarla conserva las relaciones y pers
   await page.getByRole('dialog').getByRole('button', { name: 'Confirmar y restaurar' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.reload();
+  await showMoreOptions(page);
   expect(await dataFromBrowser(page)).toEqual(practiceBackup.data);
   expect(
     await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).data, SAFETY_COPY_KEY),
   ).toEqual(before);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: /^Julián Acosta/ })).toBeVisible();
   await page.goto('/vehiculos/practica-v02');
+  await showMoreOptions(page);
   await expect(page.getByRole('heading', { name: /Toyota Hilux SRX/ })).toBeVisible();
   await expect(page.getByText(/Corrección de convergencia/)).toBeVisible();
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await page.getByRole('textbox', { name: 'Buscar mantenimientos' }).fill('alineación');
   await expect(page.locator('tbody tr')).toHaveCount(
     practiceBackup.data.services.filter((s) => s.type === 'Alineación y balanceo').length,
@@ -352,6 +385,7 @@ test('descargar la base de práctica e importarla conserva las relaciones y pers
 test('respaldo inválido y almacenamiento lleno no destruyen registros', async ({ page }) => {
   await seed(page);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const before = await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY);
   await page.locator('input[type="file"]').setInputFiles({
     name: 'invalido.json',
@@ -361,6 +395,7 @@ test('respaldo inválido y almacenamiento lleno no destruyen registros', async (
   await expect(page.getByRole('alert')).toContainText('Respaldo inválido');
   expect(await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY)).toBe(before);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await page.evaluate((key) => {
     const original = Storage.prototype.setItem;
     Storage.prototype.setItem = function (k: string, value: string) {
@@ -384,11 +419,13 @@ test('base dañada: se conserva hasta restaurar un respaldo validado', async ({ 
     if (!localStorage.getItem(key)) localStorage.setItem(key, '{datos incompletos');
   }, DATABASE_KEY);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   await expect(page.getByRole('alert')).toContainText('No se puede usar la base local');
   expect(await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY)).toBe(
     '{datos incompletos',
   );
   await page.goto('/backups');
+  await showMoreOptions(page);
   await page.locator('input[type="file"]').setInputFiles({
     name: 'valido.json',
     mimeType: 'application/json',

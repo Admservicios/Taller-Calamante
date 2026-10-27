@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialVehicles, initialServices } from '../../src/lib/demo';
@@ -23,6 +24,7 @@ for (const width of [320, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await seed(page);
     await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+    await showMoreOptions(page);
     await page
       .getByLabel(/Detalle del Servicio/)
       .fill('Servicio guardado desde la barra persistente.');
@@ -67,6 +69,7 @@ test('celular: seleccionar cliente abre su ficha con foco y cerrar devuelve al l
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page);
   await page.goto('/clientes');
+  await showMoreOptions(page);
   const row = page.getByRole('button', { name: /^María González/ });
   await row.click();
   const profile = page.getByRole('complementary', { name: 'Ficha de María González' });
@@ -86,6 +89,7 @@ test('celular: los campos inválidos reciben foco sin quedar debajo de Guardar; 
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
   const work = page.getByLabel(/Detalle del Servicio/);

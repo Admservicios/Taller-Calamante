@@ -1,3 +1,12 @@
+async function showMoreOptions(page) {
+  const url = new URL(page.url());
+  const path = (url.hash.startsWith('#/') ? url.hash.slice(1) : url.pathname).split('?')[0];
+  if (!['/clientes', '/vehiculos', '/mantenimientos', '/proximos-servicios'].includes(path)) return;
+  const details = page.locator('details.more-options');
+  await details.waitFor({ state: 'visible' });
+  if (!(await details.evaluate((node) => node.open)))
+    await details.locator(':scope > summary').click();
+}
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
@@ -82,20 +91,24 @@ try {
       });
       const url = `http://127.0.0.1:${port}${path}`;
       assert.equal((await page.goto(url)).status(), 200);
-      await page.getByRole('heading', { name: 'Dashboard', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor();
       assert.match(await page.title(), /Taller Calamante/);
       assert.match(await page.locator('.sidebar .brand').innerText(), /Calamante/);
       await page.goto(`${url}#/clientes`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Nuevo cliente', exact: true }).click();
       const dialog = page.getByRole('dialog');
       await dialog.getByLabel(/Nombre y apellido/).fill('Cliente de prueba estática');
       await dialog.getByRole('button', { name: 'Guardar cliente' }).click();
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('button', { name: /^Cliente de prueba estática/ }).waitFor();
       await page.goto(`${url}#/publico/demo/v2`);
+      await showMoreOptions(page);
       await page.getByRole('heading', { name: 'Historial del vehículo', exact: true }).waitFor();
       assert.ok(!(await page.locator('body').innerText()).includes('Cliente de prueba estática'));
       await page.goto(`${url}#/backups`);
+      await showMoreOptions(page);
       await page
         .getByLabel('Seleccionar respaldo JSON')
         .setInputFiles(resolve(root, 'src/data/taller-calamante-practica.json'));
@@ -104,6 +117,7 @@ try {
       await page.getByRole('dialog').getByRole('button', { name: 'Confirmar y restaurar' }).click();
       await page.getByRole('dialog').waitFor({ state: 'hidden' });
       await page.goto(`${url}#/clientes`);
+      await showMoreOptions(page);
       await page.getByLabel('Buscar clientes', { exact: true }).fill('AE610ZZ');
       await page.getByRole('button', { name: /^Julián Acosta DNI/ }).click();
       await page.getByRole('button', { name: 'Cerrar ficha del cliente', exact: true }).click();
@@ -112,6 +126,7 @@ try {
         'AE610ZZ',
       );
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('button', { name: /^Julián Acosta DNI/ }).waitFor();
       const customersDownload = page.waitForEvent('download');
       await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
@@ -121,6 +136,7 @@ try {
       assert.match(customersCSV, /AE 610 ZZ/);
       assert.ok(!customersCSV.includes('Valentina Suárez'));
       await page.goto(`${url}#/productos`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Nuevo producto', exact: true }).click();
       const productDialog = page.getByRole('dialog');
       await productDialog.getByLabel('Código').fill('CAT-001');
@@ -136,6 +152,7 @@ try {
       await stockDialog.getByRole('button', { name: 'Guardar movimiento', exact: true }).click();
       await stockDialog.waitFor({ state: 'hidden' });
       await page.goto(`${url}#/mantenimientos`);
+      await showMoreOptions(page);
       const pending = page.waitForEvent('download');
       await page
         .getByRole('button', { name: /^Descargar PDF/ })
@@ -144,7 +161,9 @@ try {
       const pdf = await readFile(await (await pending).path());
       assert.match(pdf.toString('latin1'), /^%PDF-/);
       await page.goto(`${url}#/vehiculos/practica-v02`);
+      await showMoreOptions(page);
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('link', { name: 'Registrar mantenimiento', exact: true }).click();
       await page.getByLabel(/Detalle del Servicio/).fill('Mantenimiento estático con foto.');
       await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
@@ -193,6 +212,7 @@ try {
       await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
       await page.waitForURL(/vehiculos\/practica-v02$/);
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('tab', { name: 'Fotos', exact: true }).click();
       await page.getByRole('button', { name: /^Ver foto foto-prueba.jpg/ }).waitFor();
       await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
@@ -212,6 +232,7 @@ try {
       await page.getByRole('dialog').getByRole('img').waitFor();
       await page.getByRole('dialog').getByRole('button', { name: 'Cerrar vista previa' }).click();
       await page.reload();
+      await showMoreOptions(page);
       await page.getByRole('tab', { name: 'Documentación', exact: true }).click();
       const documentDownload = page.waitForEvent('download');
       await page.getByRole('button', { name: 'Descargar documento documento-prueba.pdf' }).click();
@@ -229,6 +250,7 @@ try {
       );
       // El historial usa parámetros dentro del hash también en ambas publicaciones.
       await page.goto(`${url}#/mantenimientos`);
+      await showMoreOptions(page);
       await page.getByLabel('Buscar mantenimientos').fill('Mantenimiento estático con foto.');
       await page.waitForFunction(() => document.querySelectorAll('tbody tr').length === 1);
       assert.equal(await page.locator('tbody tr').count(), 1);
@@ -257,6 +279,7 @@ try {
       assert.ok(!page.url().includes('estado='));
       assert.ok(!page.url().includes('buscar='));
       await page.goto(`${url}#/backups`);
+      await showMoreOptions(page);
       const archiveDownload = page.waitForEvent('download');
       await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
       const archive = await readFile(await (await archiveDownload).path());
@@ -291,6 +314,7 @@ try {
         11000,
       );
       await page.goto(`${url}#/vehiculos/practica-v02`);
+      await showMoreOptions(page);
       await page.getByRole('button', { name: 'Historial PDF', exact: true }).click();
       const historyDialog = page.getByRole('dialog', { name: 'Descargar historial del vehículo' });
       await historyDialog.getByLabel('Incluir importes de los servicios').uncheck();
@@ -304,6 +328,7 @@ try {
       assert.ok(!historyPDF.includes('Importe registrado'));
       await historyDialog.getByRole('button', { name: 'Cerrar diálogo' }).click();
       await page.goto(`${url}#/proximos-servicios`);
+      await showMoreOptions(page);
       await page.getByLabel('Buscar próximos servicios').fill('Hilux');
       await page
         .getByRole('button', { name: /^Preparar aviso/ })
@@ -316,6 +341,7 @@ try {
       assert.match(reminderText, /Confirmá el kilometraje actual/);
       await reminderDialog.getByRole('button', { name: 'Cerrar diálogo' }).click();
       await page.goto(`${url}#/vehiculos?vista=tabla&buscar=Hilux`);
+      await showMoreOptions(page);
       await page.getByRole('heading', { name: 'Listado de vehículos', exact: true }).waitFor();
       await page.waitForFunction(() => document.querySelectorAll('tbody tr').length > 0);
       const fleetDownload = page.waitForEvent('download');

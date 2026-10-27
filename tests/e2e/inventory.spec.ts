@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { unzipSync } from 'fflate';
@@ -44,11 +45,13 @@ const read = (page: Page): Promise<LocalData> =>
   page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).data, DATABASE_KEY);
 async function stock(page: Page) {
   await page.goto('/productos');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Stock y movimientos ACE-001', exact: true }).click();
   return page.getByRole('dialog');
 }
 async function draft(page: Page, quantity = '4.5') {
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Servicio con control de stock');
   await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
   await page.getByLabel('Buscar producto', { exact: true }).fill('ACE-001');
@@ -86,6 +89,7 @@ test('saldo inicial, ingreso y ajuste con motivo: guarda y rechaza cantidades qu
   await dialog.getByRole('button', { name: 'Guardar movimiento', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.reload();
+  await showMoreOptions(page);
   expect(stockBalance(await read(page), 'demo-oil')).toBe(12500);
 });
 
@@ -99,14 +103,17 @@ test('consume al guardar, corrige la diferencia, anula y recupera; ZIP conserva 
   const service = state.services.find((s) => s.work === 'Servicio con control de stock')!;
   expect(stockBalance(state, 'demo-oil')).toBe(5500);
   await page.goto(`/mantenimientos/${service.id}/editar`);
+  await showMoreOptions(page);
   await page.getByLabel('Cantidad artículo 1', { exact: true }).fill('6');
   await save(page, true);
   expect(stockBalance(await read(page), 'demo-oil')).toBe(4000);
   await page.goto(`/mantenimientos/${service.id}/editar`);
+  await showMoreOptions(page);
   await page.getByLabel('Precio unitario artículo 1', { exact: true }).fill('9500');
   await save(page, true);
   expect((await read(page)).stockMovements).toHaveLength(3);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   let row = page.locator(`tr[data-service-id="${service.id}"]`);
   await row.getByRole('button', { name: /Anular servicio/ }).click();
   await page.getByLabel('Motivo de anulación').fill('Anulación para verificar devolución');
@@ -114,6 +121,7 @@ test('consume al guardar, corrige la diferencia, anula y recupera; ZIP conserva 
   await expect(page.getByRole('dialog')).toHaveCount(0);
   expect(stockBalance(await read(page), 'demo-oil')).toBe(10000);
   await page.goto('/mantenimientos?estado=anulados');
+  await showMoreOptions(page);
   row = page.locator(`tr[data-service-id="${service.id}"]`);
   await row.getByRole('button', { name: /Recuperar servicio/ }).click();
   await page.getByLabel('Motivo de recuperación').fill('Recuperación del trabajo confirmado');
@@ -122,6 +130,7 @@ test('consume al guardar, corrige la diferencia, anula y recupera; ZIP conserva 
   state = await read(page);
   expect(stockBalance(state, 'demo-oil')).toBe(4000);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo', exact: true }).click();
   const entries = unzipSync(await readFile((await (await pending).path())!));
@@ -209,6 +218,7 @@ test('editar un servicio antiguo conserva artículos sin inventar movimientos re
   await seed(page);
   const old = initialServices[0];
   await page.goto(`/mantenimientos/${old.id}/editar`);
+  await showMoreOptions(page);
   const before = await read(page);
   await expect(page.getByText(/Servicio anterior al control de stock:/)).toBeVisible();
   await page.getByRole('button', { name: 'Agregar desde catálogo', exact: true }).click();
@@ -230,6 +240,7 @@ test('recuperación sin existencias explica el error dentro del diálogo y conse
     (s) => s.work === 'Servicio con control de stock',
   )!;
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await page
     .locator(`tr[data-service-id="${service.id}"]`)
     .getByRole('button', { name: /Anular servicio/ })
@@ -245,6 +256,7 @@ test('recuperación sin existencias explica el error dentro del diálogo y conse
   await expect(dialog).toHaveCount(0);
   const before = await read(page);
   await page.goto('/mantenimientos?estado=anulados');
+  await showMoreOptions(page);
   await page
     .locator(`tr[data-service-id="${service.id}"]`)
     .getByRole('button', { name: /Recuperar servicio/ })

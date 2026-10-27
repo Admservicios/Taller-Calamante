@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { unzipSync, strFromU8 } from 'fflate';
@@ -93,6 +94,7 @@ test('filtra por cliente, categoría, fechas y texto; pagina y conserva los filt
 }) => {
   await seed(page, true);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await expect(page.locator('tbody tr')).toHaveCount(10);
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.locator('tbody tr')).toHaveCount(3);
@@ -105,6 +107,7 @@ test('filtra por cliente, categoría, fechas y texto; pagina y conserva los filt
     .getByRole('link', { name: /Editar servicio/ })
     .click();
   await page.goBack();
+  await showMoreOptions(page);
   await expect(page.getByRole('combobox', { name: 'Tipo de servicio', exact: true })).toHaveValue(
     'frenos',
   );
@@ -119,6 +122,7 @@ test('filtra por cliente, categoría, fechas y texto; pagina y conserva los filt
   await page.getByLabel('Buscar mantenimientos').fill('frenos');
   await expect(row(page)).toBeVisible();
   await page.reload();
+  await showMoreOptions(page);
   await expect(row(page)).toBeVisible();
   await page.getByLabel('Hasta', { exact: true }).fill('2026-01-01');
   await expect(page.getByRole('alert')).toContainText('Desde');
@@ -133,6 +137,7 @@ test('anula, conserva fotos y auditoría en ZIP y recupera el mantenimiento con 
 }) => {
   await seed(page);
   await page.goto(`/mantenimientos/${brakes.id}/editar`);
+  await showMoreOptions(page);
   await page.getByLabel('Seleccionar fotos').setInputFiles({
     name: 'frenos.jpg',
     mimeType: 'image/jpeg',
@@ -145,6 +150,7 @@ test('anula, conserva fotos y auditoría en ZIP y recupera el mantenimiento con 
   const before = await data(page);
   const photos = before.photos;
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await annul(page);
   await expect(row(page)).toHaveCount(0);
   const cancelled = await data(page);
@@ -154,8 +160,10 @@ test('anula, conserva fotos y auditoría en ZIP y recupera el mantenimiento con 
   expect(cancelled.vehicles[0]).toMatchObject({ km: 10000, maintenancePlans: [oil.maintenance] });
   expect(cancelled.photos).toEqual(photos);
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await expect(page.locator('tbody')).not.toContainText('Frenos');
   await page.goto('/backups');
+  await showMoreOptions(page);
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   const entries = unzipSync(await readFile((await (await download).path())!));
@@ -165,6 +173,7 @@ test('anula, conserva fotos y auditoría en ZIP y recupera el mantenimiento con 
   ).toEqual(['edited', 'annulled']);
   expect(Object.keys(entries).filter((k) => k.startsWith('photos/'))).toHaveLength(1);
   await page.goto('/mantenimientos?estado=anulados');
+  await showMoreOptions(page);
   await expect(row(page)).toBeVisible();
   await expect(row(page).getByRole('link', { name: /Editar servicio/ })).toHaveCount(0);
   await row(page)
@@ -185,6 +194,7 @@ test('anula, conserva fotos y auditoría en ZIP y recupera el mantenimiento con 
   await page.getByLabel('Estado del mantenimiento').selectOption('activos');
   await expect(row(page)).toBeVisible();
   await page.reload();
+  await showMoreOptions(page);
   const recovered = await data(page);
   expect(recovered.photos).toEqual(photos);
   expect(recovered.vehicles[0].km).toBe(13000);
@@ -200,6 +210,7 @@ test('una anulación fallida conserva la base y el motivo para volver a guardar'
 }) => {
   await seed(page);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   await row(page)
     .getByRole('button', { name: /Anular servicio/ })
     .click();
@@ -234,6 +245,7 @@ test('en celular los filtros y los diálogos no desbordan y un motivo sin guarda
   await seed(page);
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await row(page)
     .getByRole('button', { name: /Anular servicio/ })
@@ -255,6 +267,8 @@ test('resumen y CSV usan todos los resultados filtrados, incluyen centavos y sep
 }) => {
   await seed(page, true);
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
+  await page.getByText('Ver resumen de este listado', { exact: true }).click();
   const summary = page.getByRole('region', { name: 'Resumen del historial' });
   await expect(
     summary.getByRole('article', { name: 'Servicios activos del resultado' }).locator('strong'),
@@ -281,6 +295,8 @@ test('resumen y CSV usan todos los resultados filtrados, incluyen centavos y sep
   await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.goto('/mantenimientos?tipo=frenos');
+  await showMoreOptions(page);
+  await page.getByText('Ver resumen de este listado', { exact: true }).click();
   await expect(
     summary
       .getByRole('article', { name: 'Importe de servicios activos', exact: true })
@@ -334,6 +350,8 @@ test('resumen y CSV usan todos los resultados filtrados, incluyen centavos y sep
 test('CSV de demostración identificado y exportación vacía deshabilitada', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('motortrack-view-mode', 'demo'));
   await page.goto('/mantenimientos');
+  await showMoreOptions(page);
+  await page.getByText('Ver resumen de este listado', { exact: true }).click();
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
   const downloaded = await pending;

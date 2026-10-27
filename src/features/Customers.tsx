@@ -1,3 +1,4 @@
+import { MoreOptions } from '../components/MoreOptions';
 import { isServerMode } from '../lib/serverClient';
 import { randomId } from '../lib/ids';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
@@ -16,7 +17,6 @@ import {
   Search,
   SlidersHorizontal,
   UserRound,
-  Users,
   X,
 } from 'lucide-react';
 import { Avatar, Badge, Empty, Modal, ModalCancelButton, PageTitle, Panel } from '../components/ui';
@@ -121,7 +121,7 @@ export function CustomerEditor({ customer, close }: { customer?: Customer; close
 export function Customers() {
   const { customers, vehicles, activeServices: services, mode, referenceDate, notify } = useData();
   const [params, setParams] = useSearchParams();
-  const selected = customers.find((c) => c.id === (params.get('cliente') ?? customers[0]?.id));
+  const selected = customers.find((c) => c.id === params.get('cliente'));
   const search = params.get('buscar') ?? '';
   const status = ['activos', 'inactivos'].includes(params.get('estado') ?? '')
     ? params.get('estado')!
@@ -203,56 +203,18 @@ export function Customers() {
     <>
       <PageTitle
         title="Clientes"
-        subtitle="Conocé a tus clientes. Acompañá cada kilómetro."
+        subtitle="Buscá un cliente y tocá su nombre para ver la ficha."
         actions={
           <>
             <button className="button primary" onClick={() => setEditing('new')}>
               <Plus size={18} />
               Nuevo cliente
             </button>
-            <button className="button" onClick={exportCSV} disabled={!filtered.length}>
-              <Download size={17} />
-              Exportar CSV
-            </button>
           </>
         }
       />
       <div className={`customers-layout ${selected ? '' : 'detail-hidden'}`}>
         <div className="customers-main">
-          <Panel title="Tu comunidad de clientes" icon={Users}>
-            <div className="customer-stats">
-              {[
-                {
-                  label: 'Clientes activos',
-                  value: customers.filter((c) => c.active).length,
-                  color: 'blue',
-                  icon: Users,
-                },
-                {
-                  label: 'Con vehículos',
-                  value: rows.filter((row) => row.vehicles.length > 0).length,
-                  color: 'green',
-                  icon: CarFront,
-                },
-                {
-                  label: 'Clientes inactivos',
-                  value: customers.filter((c) => !c.active).length,
-                  color: 'red',
-                  icon: UserRound,
-                },
-              ].map(({ label, value, color, icon: Icon }) => (
-                <div key={label}>
-                  <span className={`stat-icon ${color}`}>
-                    <Icon size={22} />
-                  </span>
-                  <span>
-                    <small>{label}</small>
-                    <strong>{value}</strong>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Panel>
           <div className="filter-bar customer-catalogue-filters">
             <div className="input-icon">
               <Search size={17} />
@@ -273,24 +235,6 @@ export function Customers() {
               <option value="activos">Activos</option>
               <option value="inactivos">Inactivos</option>
             </select>
-            <select
-              aria-label="Filtrar clientes por vehículos"
-              value={ownership}
-              onChange={(e) => change('vehiculos', e.target.value)}
-            >
-              <option value="todos">Con o sin vehículos</option>
-              <option value="con">Con vehículos</option>
-              <option value="sin">Sin vehículos</option>
-            </select>
-            <select
-              aria-label="Ordenar clientes"
-              value={order}
-              onChange={(e) => change('orden', e.target.value)}
-            >
-              <option value="nombre">Nombre: A–Z</option>
-              <option value="nombre-desc">Nombre: Z–A</option>
-              <option value="vehiculos">Más vehículos</option>
-            </select>
             <button
               className="text-button"
               onClick={() => {
@@ -302,6 +246,45 @@ export function Customers() {
               <SlidersHorizontal size={15} />
               Limpiar
             </button>
+            <MoreOptions
+              label="Más opciones de clientes"
+              active={
+                [
+                  ownership !== 'todos' ? 'vehiculos' : '',
+                  order !== 'nombre' ? 'orden' : '',
+                ].filter(Boolean).length
+              }
+            >
+              <div className="options-fields">
+                {' '}
+                <select
+                  aria-label="Filtrar clientes por vehículos"
+                  value={ownership}
+                  onChange={(e) => change('vehiculos', e.target.value)}
+                >
+                  <option value="todos">Con o sin vehículos</option>
+                  <option value="con">Con vehículos</option>
+                  <option value="sin">Sin vehículos</option>
+                </select>
+                <select
+                  aria-label="Ordenar clientes"
+                  value={order}
+                  onChange={(e) => change('orden', e.target.value)}
+                >
+                  <option value="nombre">Nombre: A–Z</option>
+                  <option value="nombre-desc">Nombre: Z–A</option>
+                  <option value="vehiculos">Más vehículos</option>
+                </select>
+              </div>
+              <button className="button" onClick={exportCSV} disabled={!filtered.length}>
+                <Download size={17} />
+                Exportar CSV
+              </button>{' '}
+              <p className="fine-print">
+                El CSV se abre con Excel e incluye todos los clientes encontrados y sus patentes. No
+                incluye notas privadas, DNI ni domicilio.
+              </p>
+            </MoreOptions>
           </div>
           <div className="panel table-panel">
             <div className="table-scroll">
@@ -408,10 +391,6 @@ export function Customers() {
               </select>
             </label>
           </div>
-          <p className="fineprint">
-            El CSV incluye todos los clientes filtrados y sus patentes actuales, sin notas privadas,
-            DNI ni domicilio. Los totales superiores representan toda la base.
-          </p>
         </div>
         {selected && (
           <aside

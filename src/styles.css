@@ -5940,3 +5940,214 @@ input[type='checkbox'] {
 .practice-stock-download {
   margin-top: 10px;
 }
+
+.more-options {
+  grid-column: 1 / -1;
+  flex-basis: 100%;
+  width: 100%;
+  min-width: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+.more-options > summary,
+.help-details > summary {
+  cursor: pointer;
+  padding: 12px 4px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue);
+  line-height: 1.5;
+}
+.more-options > summary:focus-visible,
+.help-details > summary:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.options-count {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.more-options-content {
+  padding: 8px 0 0;
+}
+.options-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+  align-items: end;
+}
+.options-fields label,
+.options-fields .customer-filter-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+.options-fields select,
+.options-fields input,
+.options-fields .customer-filter-trigger {
+  width: 100%;
+  min-width: 0;
+}
+.more-options .fine-print {
+  margin-bottom: 0;
+}
+.customers-main .customer-catalogue-filters {
+  grid-template-columns: minmax(0, 1fr) 165px auto;
+}
+.customers-main .customer-catalogue-filters .input-icon {
+  grid-column: auto;
+}
+.help-details {
+  min-width: 0;
+}
+.help-details p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.home-period {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+.home-period select {
+  min-width: 150px;
+}
+.home-amount {
+  display: grid;
+  gap: 8px;
+  padding: 6px 0 12px;
+}
+.home-amount > span,
+.home-amount > small {
+  color: var(--muted);
+  font-size: 14px;
+}
+.home-amount > strong {
+  font-size: 30px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.home-extra-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  margin: 10px 0 16px;
+}
+.home-extra-figures dt {
+  color: var(--muted);
+  font-size: 14px;
+}
+.home-extra-figures dd {
+  margin: 6px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.home-charts {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 16px;
+  border-radius: 9px;
+}
+.home-charts .chart-row {
+  margin: 12px 0;
+}
+.stock-history-details {
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 900px) {
+  .options-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .options-fields,
+  .customers-main .customer-catalogue-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-period {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .home-period select {
+    flex: 1;
+    min-width: 0;
+  }
+  .home-financial-summary {
+    width: 100%;
+  }
+  .dashboard-main > .panel:first-child .panel-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+@media (max-width: 760px) {
+  .maintenance-history-table,
+  .maintenance-history-table tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+  .maintenance-history-table thead {
+    display: none;
+  }
+  .maintenance-history-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: 'vehicle vehicle' 'service service' 'date km' 'client amount' 'actions actions';
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .maintenance-history-table td {
+    display: block;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+  }
+  .maintenance-history-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .maintenance-history-table td:nth-child(1) {
+    grid-area: date;
+  }
+  .maintenance-history-table td:nth-child(2) {
+    grid-area: vehicle;
+  }
+  .maintenance-history-table td:nth-child(3) {
+    grid-area: client;
+  }
+  .maintenance-history-table td:nth-child(4) {
+    grid-area: service;
+  }
+  .maintenance-history-table td:nth-child(5) {
+    grid-area: km;
+  }
+  .maintenance-history-table td:nth-child(6) {
+    grid-area: amount;
+  }
+  .maintenance-history-table td:nth-child(7) {
+    grid-area: actions;
+  }
+  .maintenance-history-table .history-row-actions {
+    min-width: 0;
+  }
+  .maintenance-history-table .service-type {
+    white-space: normal;
+  }
+}

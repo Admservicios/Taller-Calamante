@@ -1,3 +1,4 @@
+import { MoreOptions } from '../components/MoreOptions';
 import { CustomerFilter } from '../components/CustomerFilter';
 import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -260,30 +261,37 @@ export function Reminders() {
             <option key={state}>{state}</option>
           ))}
         </select>
-        <CustomerFilter
-          label="Cliente de próximos servicios"
-          customers={customers}
-          value={customerId}
-          onChange={(value) => change('cliente', value)}
-        />
-        <select
-          aria-label="Tipo de próximos servicios"
-          value={category}
-          onChange={(e) => change('tipo', e.target.value)}
-        >
-          <option value="">Todos los tipos</option>
-          {categories.map(([key, label]) => (
-            <option key={key} value={key}>
-              {label}
-            </option>
-          ))}
-        </select>
         <button
           className="button"
           onClick={() => setParams({}, { replace: true, flushSync: true })}
         >
           Limpiar filtros
         </button>
+        <MoreOptions
+          label="Más opciones de próximos servicios"
+          active={[customerId, category].filter(Boolean).length}
+        >
+          <div className="options-fields">
+            <CustomerFilter
+              label="Cliente de próximos servicios"
+              customers={customers}
+              value={customerId}
+              onChange={(value) => change('cliente', value)}
+            />
+            <select
+              aria-label="Tipo de próximos servicios"
+              value={category}
+              onChange={(e) => change('tipo', e.target.value)}
+            >
+              <option value="">Todos los tipos</option>
+              {categories.map(([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </MoreOptions>
         <span className="results-count" aria-live="polite">
           {filtered.length} servicios · {new Set(filtered.map(({ vehicle }) => vehicle.id)).size}{' '}
           vehículos

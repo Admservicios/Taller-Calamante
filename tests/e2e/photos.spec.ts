@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialServices, initialVehicles } from '../../src/lib/demo';
@@ -28,6 +29,7 @@ async function data(page: Page) {
 }
 async function prepare(page: Page) {
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Servicio con fotografía local persistente.');
   await page.getByLabel(/Importe total/).fill('45000');
   await page
@@ -40,6 +42,7 @@ async function prepare(page: Page) {
 }
 async function restore(page: Page, filename: string, content: Buffer) {
   await page.goto('/backups');
+  await showMoreOptions(page);
   await page.getByLabel('Seleccionar respaldo JSON o ZIP').setInputFiles({
     name: filename,
     mimeType: filename.endsWith('.zip') ? 'application/zip' : 'application/json',
@@ -52,6 +55,7 @@ async function restore(page: Page, filename: string, content: Buffer) {
 }
 async function openGallery(page: Page) {
   await page.goto('/vehiculos/v2');
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Fotos', exact: true }).click();
   await expect(page.getByRole('button', { name: /^Ver foto motor.jpg/ })).toBeVisible();
   await expect
@@ -74,6 +78,7 @@ test('fotos persistentes, ZIP a otro navegador y recuperación de la copia previ
   await page.getByRole('button', { name: 'Guardar mantenimiento', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.reload();
+  await showMoreOptions(page);
   await openGallery(page);
   const original = await data(page);
   expect(original.photos).toHaveLength(1);
@@ -88,6 +93,7 @@ test('fotos persistentes, ZIP a otro navegador y recuperación de la copia previ
     .getByRole('button', { name: /Cerrar/ })
     .click();
   await page.goto('/backups');
+  await showMoreOptions(page);
   const archiveDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   const zip = await readFile((await (await archiveDownload).path())!);
@@ -97,6 +103,7 @@ test('fotos persistentes, ZIP a otro navegador y recuperación de la copia previ
     const second = await other.newPage();
     await restore(second, 'respaldo-completo.zip', zip);
     await second.reload();
+    await showMoreOptions(second);
     await openGallery(second);
     const recovered = await data(second);
     expect(recovered.customers).toEqual(original.customers);
@@ -122,6 +129,7 @@ test('fotos persistentes, ZIP a otro navegador y recuperación de la copia previ
   await openGallery(page);
   expect(await data(page)).toEqual(original);
   await page.goto('/publico/demo/v2');
+  await showMoreOptions(page);
   await expect(page.locator('body')).not.toContainText('motor.jpg');
   await expect(page.locator('body')).not.toContainText(
     'Servicio con fotografía local persistente.',
@@ -185,6 +193,7 @@ test('rechaza archivos falsos y exceso de fotos sin guardar registros ni archivo
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   const before = await data(page);
   await page.getByLabel('Seleccionar fotos').setInputFiles({
     name: 'falsa.jpg',
@@ -211,6 +220,7 @@ test('demo mantiene fotos solo en memoria y no escribe archivos en la base local
   expect(await page.evaluate((key) => localStorage.getItem(key), DATABASE_KEY)).toBeNull();
   expect(await page.evaluate(async () => (await indexedDB.databases()).length)).toBe(0);
   await page.reload();
+  await showMoreOptions(page);
   await page.getByRole('tab', { name: 'Fotos', exact: true }).click();
   await expect(
     page.getByText('Este vehículo todavía no tiene fotos de mantenimiento.'),
@@ -227,6 +237,7 @@ test('una restauración fallida conserva las fotos anteriores y un ZIP incomplet
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   const before = await data(page);
   await page.goto('/backups');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   const zip = await readFile((await (await pending).path())!);
@@ -269,6 +280,7 @@ test('una restauración fallida conserva las fotos anteriores y un ZIP incomplet
     { name: PHOTO_DATABASE, id: before.photos[0].id },
   );
   await page.goto('/backups');
+  await showMoreOptions(page);
   await page.getByRole('button', { name: 'Descargar ZIP completo' }).click();
   await expect(page.getByRole('alert')).toContainText('Faltan fotos');
   expect(await data(page)).toEqual(before);

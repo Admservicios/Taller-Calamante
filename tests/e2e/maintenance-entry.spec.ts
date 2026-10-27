@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialServices, initialVehicles } from '../../src/lib/demo';
@@ -53,6 +54,7 @@ test('artículos con cantidades fraccionadas: total, corrección, persistencia y
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await expect(page.getByRole('group', { name: 'Tareas frecuentes' })).toHaveCount(0);
   await page.getByLabel(/Detalle del Servicio/).fill('Cambio de aceite y filtros.');
   await addItem(page, 1, 'Shell Helix HX8 5W-30', '4.5', '10000', 'Litro');
@@ -70,6 +72,7 @@ test('artículos con cantidades fraccionadas: total, corrección, persistencia y
   let data = await read(page);
   const created = data.services.find((s) => !initialServices.some((old) => old.id === s.id))!;
   await page.goto(`/mantenimientos/${created.id}/editar`);
+  await showMoreOptions(page);
   await expect(page.getByLabel('Cantidad artículo 1', { exact: true })).toHaveValue('4.5');
   await expect(page.getByLabel('Precio unitario artículo 1', { exact: true })).toHaveValue('10000');
   await page.getByLabel('Precio unitario artículo 2', { exact: true }).fill('13000.50');
@@ -84,6 +87,7 @@ test('artículos con cantidades fraccionadas: total, corrección, persistencia y
   expect(pdf).toContain('95.000,00');
   await expect(page).toHaveURL(/vehiculos\/v2$/);
   await page.reload();
+  await showMoreOptions(page);
   data = await read(page);
   expect(data.services).toHaveLength(initialServices.length + 1);
   expect(data.services.find((s) => s.id === created.id)).toMatchObject({
@@ -97,6 +101,7 @@ test('editar y quitar renglones recalcula; un artículo incompleto no se guarda 
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel(/Detalle del Servicio/).fill('Detalle del trabajo con artículos.');
   await page.getByLabel('Importe total').fill('0');
   const before = await read(page);
@@ -130,6 +135,7 @@ test('detalle antiguo se conserva sin valorizar y se puede complementar sin alte
   await seed(page);
   const service = initialServices.find((s) => s.vehicleId === 'v2')!;
   await page.goto(`/mantenimientos/${service.id}/editar`);
+  await showMoreOptions(page);
   await expect(page.getByLabel('Detalle anterior de insumos')).toHaveValue(service.supplies);
   await expect(page.getByLabel('Total de insumos y repuestos', { exact: true })).toHaveText(/0,00/);
   await page.getByLabel('Importe total').fill('60000');
@@ -139,6 +145,7 @@ test('detalle antiguo se conserva sin valorizar y se puede complementar sin alte
   expect(edited.supplyItems).toBeUndefined();
   const vehiclesBeforeItems = (await read(page)).vehicles;
   await page.goto(`/mantenimientos/${service.id}/editar`);
+  await showMoreOptions(page);
   await addItem(page, 1, 'Filtro de habitáculo', '1', '12000');
   await save(page, true);
   const data = await read(page);
@@ -148,6 +155,7 @@ test('detalle antiguo se conserva sin valorizar y se puede complementar sin alte
   expect(edited.changes!.at(-1)!.changes.map((c) => c.field)).toContain('Artículos utilizados');
   expect(data.vehicles).toEqual(vehiclesBeforeItems);
   await page.goto(`/mantenimientos/${service.id}/editar`);
+  await showMoreOptions(page);
   await page.getByLabel('Detalle anterior de insumos').fill('');
   await expect(page.getByLabel('Detalle anterior de insumos')).toBeVisible();
 });
@@ -158,6 +166,7 @@ test('celular: tarjetas legibles, cambios de tipo conservan artículos y salir p
   await seed(page);
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await addItem(page, 1, 'Aceite Shell Helix HX8 5W-30', '4.5', '10000', 'Litro');
   await page.getByLabel('Tipo de servicio').selectOption('Frenos');
   await expect(page.getByLabel('Descripción artículo 1', { exact: true })).toHaveValue(
@@ -182,6 +191,7 @@ test('alineación y balanceo sigue editable y los artículos se conservan al cam
 }) => {
   await seed(page);
   await page.goto('/mantenimientos/nuevo?vehiculo=v2');
+  await showMoreOptions(page);
   await page.getByLabel('Tipo de servicio').selectOption('Alineación y balanceo');
   await page.getByLabel(/Detalle del Servicio/).fill('Corrección de deriva');
   await page.getByLabel('Alineación realizada').selectOption('Ejes delantero y trasero');
@@ -191,6 +201,7 @@ test('alineación y balanceo sigue editable y los artículos se conservan al cam
   await save(page);
   const created = (await read(page)).services.find((s) => s.type === 'Alineación y balanceo')!;
   await page.goto(`/mantenimientos/${created.id}/editar`);
+  await showMoreOptions(page);
   await expect(page.getByLabel('Alineación realizada')).toHaveValue('Ejes delantero y trasero');
   await page.getByLabel('Ruedas balanceadas').selectOption('Las 4 ruedas');
   await save(page, true);

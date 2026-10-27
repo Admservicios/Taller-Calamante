@@ -1,3 +1,4 @@
+import { showMoreOptions } from './helpers/options';
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { initialCustomers, initialVehicles, type Vehicle } from '../../src/lib/demo';
@@ -85,6 +86,7 @@ test('tarjetas y tabla comparten filtros, orden y paginación; volver de la fich
 }) => {
   await seed(page, true);
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   await expect(page.locator('.vehicle-card')).toHaveCount(12);
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.locator('.vehicle-card')).toHaveCount(12);
@@ -103,12 +105,14 @@ test('tarjetas y tabla comparten filtros, orden y paginación; volver de la fich
   await page.getByRole('link', { name: 'Ver ficha', exact: true }).click();
   await expect(page).toHaveURL(/vehiculos\/soon$/);
   await page.goBack();
+  await showMoreOptions(page);
   await expect(page.getByRole('button', { name: 'Tabla', exact: true })).toHaveAttribute(
     'aria-pressed',
     'true',
   );
   await expect(page.getByLabel('Estado de mantenimiento')).toHaveValue('Próximo');
   await page.reload();
+  await showMoreOptions(page);
   await expect(page.locator('tbody tr')).toHaveCount(1);
   await page.getByRole('button', { name: 'Limpiar filtros', exact: true }).click();
   await expect(page.locator('tbody tr')).toHaveCount(12);
@@ -128,6 +132,7 @@ test('prioridad correcta, CSV completo de todas las páginas y registro desde la
 }) => {
   await seed(page, true);
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   await page.getByLabel('Ordenar vehículos').selectOption('urgencia');
   await expect(page.locator('.vehicle-card').first()).toHaveAttribute('data-vehicle-id', 'urgent');
   await page.getByLabel('Ordenar vehículos').selectOption('kilometraje');
@@ -162,6 +167,7 @@ test('vistas en celular no desbordan y la edición mantiene actualizados cliente
   await seed(page);
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('button', { name: 'Tabla', exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -177,6 +183,7 @@ test('vistas en celular no desbordan y la edición mantiene actualizados cliente
   await dialog.getByRole('button', { name: 'Guardar vehículo', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.goto('/vehiculos?vista=tabla&buscar=COR456');
+  await showMoreOptions(page);
   await expect(page.locator('tbody')).toContainText('Juan Pérez');
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
@@ -189,6 +196,7 @@ test('vistas en celular no desbordan y la edición mantiene actualizados cliente
 test('demo identificada y descarga deshabilitada sin coincidencias', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('motortrack-view-mode', 'demo'));
   await page.goto('/vehiculos');
+  await showMoreOptions(page);
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Exportar CSV', exact: true }).click();
   const file = await pending;
