@@ -47,6 +47,7 @@ describe('artículos del mantenimiento', () => {
     for (const changes of [
       { description: '   ' },
       { quantity: 0 },
+      { quantity: 0.000000001 },
       { quantity: -1 },
       { quantity: 1.0001 },
       { quantity: 10001 },

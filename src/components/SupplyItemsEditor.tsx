@@ -172,7 +172,7 @@ export function SupplyItemsEditor({
                         )
                       }
                     >
-                      Catálogo · pasar a manual
+                      Catálogo · pasar a manual (sin stock)
                     </button>
                   )}
                 </td>
@@ -271,8 +271,8 @@ export function SupplyItemsEditor({
         </p>
       )}
       <p className="fine-print">
-        El importe final del servicio se carga aparte. Este total incluye únicamente los artículos
-        de la lista.
+        El importe final del servicio se carga aparte. Los artículos manuales no descuentan stock.
+        Este total incluye únicamente los artículos de la lista.
       </p>
       {(hadLegacy.current || !!legacy) && (
         <div className="supply-legacy">

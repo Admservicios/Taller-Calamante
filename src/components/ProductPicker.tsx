@@ -1,3 +1,4 @@
+import { stockBalance, stockQuantity } from '../lib/inventory';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Modal, Empty } from './ui';
@@ -11,7 +12,8 @@ export function ProductPicker({
   choose: (product: Product) => void;
   close: () => void;
 }) {
-  const { products = [] } = useData();
+  const store = useData();
+  const { products = [] } = store;
   const [search, setSearch] = useState('');
   const filtered = searchProducts(products, search);
   return (
@@ -53,7 +55,8 @@ export function ProductPicker({
                     {product.code} · {product.description}
                   </strong>
                   <small>
-                    {product.brand || 'Sin marca'} · {product.unit}
+                    {product.brand || 'Sin marca'} · {product.unit} · Stock:{' '}
+                    {stockQuantity(stockBalance(store, product.id))}
                   </small>
                 </span>
                 <strong>{itemMoney(Math.round(product.unitPrice * 100))}</strong>

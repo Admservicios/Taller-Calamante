@@ -60,6 +60,12 @@ export function saveProductData(data: LocalData, edited: Product, original?: Pro
     throw new Error(
       'Este producto cambió. Cerrá el editor y volvé a abrirlo para revisar los datos actuales.',
     );
+  if (
+    original &&
+    original.unit !== product.unit &&
+    data.stockMovements?.some((row) => row.productId === product.id)
+  )
+    throw new Error('Este producto ya tiene movimientos de stock. Su unidad no puede cambiarse.');
   if (original && original.id !== product.id)
     throw new Error('No se puede cambiar el identificador del producto.');
   if (

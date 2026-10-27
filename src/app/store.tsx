@@ -1,3 +1,4 @@
+import { addStockMovement, applyServiceStock, type StockMovement } from '../lib/inventory';
 import { demoProducts, saveProductData, type Product } from '../lib/products';
 import { useRef } from 'react';
 import {
@@ -64,6 +65,7 @@ type Store = LocalData & {
   storageError: string | null;
   updatedAt: string;
   switchMode: () => void;
+  saveStockMovement: (movement: StockMovement, expectedVersion: string) => Promise<boolean>;
   saveProduct: (product: Product, original?: Product) => Promise<boolean>;
   saveCustomer: (customer: Customer) => Promise<boolean>;
   saveVehicle: (vehicle: Vehicle) => Promise<boolean>;
@@ -145,6 +147,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
   });
   const [demo, setDemo] = useState<LocalData>(() => ({
     products: structuredClone(demoProducts),
+    stockMovements: demoProducts.map((product) => ({
+      id: `demo-stock-${product.id}`,
+      productId: product.id,
+      unit: product.unit,
+      deltaMilli: 50000,
+      kind: 'opening',
+      reason: 'Saldo inicial ficticio de demostración',
+      at: '2026-10-21T15:00:00Z',
+    })),
     customers: structuredClone(initialCustomers),
     vehicles: structuredClone(initialVehicles),
     services: structuredClone(initialServices),
@@ -210,6 +221,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
           ? error.message
           : 'No se pudo guardar. El almacenamiento está lleno, bloqueado o los datos no son válidos. La base anterior se conserva.';
       notify(message);
+      return false;
+    }
+  };
+  const saveStockMovement = async (movement: StockMovement, expectedVersion: string) => {
+    try {
+      return await commit(addStockMovement(data, movement, expectedVersion));
+    } catch (error) {
+      notify(error instanceof Error ? error.message : 'No se pudo registrar el movimiento.');
       return false;
     }
   };
@@ -367,7 +386,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
     next: { date: string; km: number; recommendation: string },
     photos: PreparedPhoto[] = [],
   ): Promise<boolean> => {
-    const nextData: LocalData = {
+    service = { ...service, stockManaged: true };
+    let nextData: LocalData = {
       ...data,
       services: [
         recordServiceChange(
@@ -389,6 +409,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
           : v,
       ),
     };
+    try {
+      nextData = applyServiceStock(data, nextData, nextData.services[0]);
+    } catch (error) {
+      notify(error instanceof Error ? error.message : 'No se pudo actualizar el stock.');
+      return false;
+    }
     if (!photos.length) return commit(nextData);
     const setId = data.photoSet ?? randomId();
     const files = photos.map((photo) => ({ ...photo, serviceId: service.id, setId }));
@@ -488,6 +514,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         storageError: mode === 'local' ? local.error : null,
         updatedAt: local.raw && !local.error ? local.database.updatedAt : '',
         switchMode,
+        saveStockMovement,
         saveProduct,
         saveCustomer,
         saveVehicle,

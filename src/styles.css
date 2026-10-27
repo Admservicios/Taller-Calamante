@@ -5869,3 +5869,70 @@ input[type='checkbox'] {
     width: 100%;
   }
 }
+
+.stock-balance {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  overflow-wrap: anywhere;
+}
+.stock-balance strong {
+  color: var(--blue);
+  font-size: 22px;
+}
+.product-card .product-stock {
+  margin: 12px 0;
+  font-size: 14px;
+}
+.product-card > .button {
+  margin-bottom: 16px;
+}
+.stock-history-heading {
+  margin-top: 28px;
+}
+.stock-history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stock-history li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+.stock-history li > div,
+.stock-pages {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.stock-history time,
+.stock-history small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.stock-history p {
+  margin: 8px 0;
+  white-space: pre-wrap;
+}
+.stock-out {
+  color: #c43f4d;
+}
+.stock-in {
+  color: #087c52;
+}
+.stock-pages {
+  margin-top: 16px;
+}
+[data-theme='dark'] .stock-in {
+  color: #69d9ac;
+}
+[data-theme='dark'] .stock-out {
+  color: #ff9aa5;
+}

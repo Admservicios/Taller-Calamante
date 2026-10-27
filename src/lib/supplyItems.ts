@@ -11,7 +11,7 @@ export const supplyItemSchema = z.strictObject({
   description: z.string().trim().min(1, 'Completá la descripción del artículo.').max(120),
   quantity: z
     .number()
-    .positive()
+    .min(0.001)
     .max(10000)
     .refine((value) => precision(value, 1000), 'Usá hasta tres decimales para la cantidad.'),
   unit: z.enum(supplyUnits),

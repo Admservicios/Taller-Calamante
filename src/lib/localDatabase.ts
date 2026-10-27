@@ -1,3 +1,4 @@
+import { stockMovementSchema, inventoryIssue, type StockMovement } from './inventory';
 import { productSchema, productCode, type Product } from './products';
 import { supplyItemsSchema, supplyItemsSummary } from './supplyItems';
 import { suppliesDetailSchema, suppliesSummary } from './maintenanceEntry';
@@ -49,6 +50,7 @@ const vehicleSchema = z.strictObject({
 const serviceSchema = z
   .strictObject({
     id,
+    stockManaged: z.literal(true).optional(),
     vehicleId: id,
     date: z.iso.date(),
     km: z.number().int().min(0).max(9999999),
@@ -107,6 +109,7 @@ export const workshopSchema = z.strictObject({
 });
 export type Workshop = z.infer<typeof workshopSchema>;
 export type LocalData = {
+  stockMovements?: StockMovement[];
   products?: Product[];
   customers: Customer[];
   vehicles: Vehicle[];
@@ -119,6 +122,7 @@ export type LocalData = {
 };
 export const dataSchema = z
   .strictObject({
+    stockMovements: z.array(stockMovementSchema).max(100000).optional(),
     products: z.array(productSchema).max(20000).optional(),
     customers: z.array(customerSchema).max(20000),
     vehicles: z.array(vehicleSchema).max(20000),
@@ -130,6 +134,8 @@ export const dataSchema = z
     documents: z.array(documentReferenceSchema).max(MAX_DOCUMENTS).optional(),
   })
   .superRefine((data, context) => {
+    const stockError = inventoryIssue(data);
+    if (stockError) context.addIssue({ code: 'custom', message: stockError });
     const products = data.products ?? [];
     const productIds = new Set(products.map((product) => product.id));
     if (

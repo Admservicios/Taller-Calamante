@@ -36,6 +36,7 @@ export type ServiceChange = {
   changes: { field: string; before: string; after: string }[];
 };
 export type Service = {
+  stockManaged?: true;
   annulment?: { at: string; reason: string };
   changes?: ServiceChange[];
   id: string;

@@ -1,3 +1,4 @@
+import { changeServiceStatus } from '../lib/serviceHistory';
 import { CustomerFilter } from '../components/CustomerFilter';
 import { useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -109,7 +110,8 @@ function ServiceHistory({ service, close }: { service: Service; close: () => voi
   );
 }
 function StatusDialog({ service, close }: { service: Service; close: () => void }) {
-  const { vehicles, setServiceStatus, notify } = useData();
+  const store = useData();
+  const { vehicles, setServiceStatus, notify } = store;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const restoring = !!service.annulment;
@@ -118,8 +120,14 @@ function StatusDialog({ service, close }: { service: Service; close: () => void 
     event.preventDefault();
     if (busy) return;
     const reason = String(new FormData(event.currentTarget).get('reason') ?? '').trim();
-    setBusy(true);
     setError('');
+    try {
+      changeServiceStatus(store, service, reason, store.referenceDate);
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : 'Revisá los datos.');
+      return;
+    }
+    setBusy(true);
     if (await setServiceStatus(service, reason)) {
       notify(
         restoring
@@ -147,6 +155,13 @@ function StatusDialog({ service, close }: { service: Service; close: () => void 
             ? 'El registro volverá al historial activo. Se verificará que sus kilómetros sean coherentes con las otras visitas.'
             : 'El registro dejará de contar en el historial activo, las estadísticas y los vencimientos. Se conservarán sus datos y fotos para poder recuperarlo.'}
         </p>
+        {service.stockManaged && (
+          <p className="fineprint">
+            {restoring
+              ? 'Se volverán a descontar los artículos del catálogo. La recuperación requiere existencias suficientes.'
+              : 'Se devolverán al stock los artículos del catálogo consumidos por este servicio.'}
+          </p>
+        )}
         <p className="fineprint">
           Se recalculan los vencimientos del servicio afectado. Las lecturas y los ajustes manuales
           se conservan. Los PDF ya descargados permanecen en tu dispositivo.

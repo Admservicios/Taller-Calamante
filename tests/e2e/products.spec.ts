@@ -25,6 +25,15 @@ async function seed(page: Page, many = false) {
         newDatabase({
           ...emptyData(),
           products,
+          stockMovements: products.map((product) => ({
+            id: `opening-${product.id}`,
+            productId: product.id,
+            unit: product.unit,
+            kind: 'opening',
+            at: '2026-10-26T12:00:00Z',
+            deltaMilli: 100000,
+            reason: 'Stock ficticio para las pruebas',
+          })),
           customers: initialCustomers,
           vehicles: initialVehicles,
           services: initialServices,

@@ -50,6 +50,7 @@ import {
 export function Backups() {
   const auto = useAutomaticBackups();
   const {
+    stockMovements,
     products,
     customers,
     vehicles,
@@ -74,6 +75,7 @@ export function Backups() {
   const [working, setWorking] = useState(false);
   const [reading, setReading] = useState(false);
   const localData = {
+    ...(stockMovements ? { stockMovements } : {}),
     ...(products ? { products } : {}),
     customers,
     vehicles,
@@ -115,6 +117,7 @@ export function Backups() {
             restorable: false,
             exportedAt: new Date().toISOString(),
             products: products ?? [],
+            stockMovements: stockMovements ?? [],
             customers,
             vehicles,
             services,
@@ -556,7 +559,7 @@ export function Backups() {
             </p>
             <p>
               El respaldo contiene {candidate.data.products?.length ?? 0} productos. Se reemplaza
-              también el catálogo actual.
+              también el catálogo actual y sus movimientos de stock.
             </p>
             <button
               className="button"

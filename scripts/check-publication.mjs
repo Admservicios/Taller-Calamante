@@ -129,6 +129,12 @@ try {
       await productDialog.getByLabel('Precio sugerido').fill('10000');
       await productDialog.getByRole('button', { name: 'Guardar producto', exact: true }).click();
       await productDialog.waitFor({ state: 'hidden' });
+      await page.getByRole('button', { name: 'Stock y movimientos CAT-001', exact: true }).click();
+      const stockDialog = page.getByRole('dialog');
+      await stockDialog.getByLabel(/Cantidad/).fill('50');
+      await stockDialog.getByLabel(/Motivo/).fill('Saldo inicial ficticio de prueba');
+      await stockDialog.getByRole('button', { name: 'Guardar movimiento', exact: true }).click();
+      await stockDialog.waitFor({ state: 'hidden' });
       await page.goto(`${url}#/mantenimientos`);
       const pending = page.waitForEvent('download');
       await page
@@ -272,6 +278,10 @@ try {
         'Shell Helix HX8',
       );
       assert.equal(backedUp.data.products.length, 1);
+      assert.equal(
+        backedUp.data.stockMovements.reduce((sum, row) => sum + row.deltaMilli, 0),
+        45500,
+      );
       assert.equal(
         backedUp.data.services.find((service) => service.id === serviceId).supplyItems[0].productId,
         backedUp.data.products[0].id,

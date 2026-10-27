@@ -198,6 +198,12 @@ try {
       await productDialog.getByLabel('Precio sugerido').fill('12000');
       await productDialog.getByRole('button', { name: 'Guardar producto', exact: true }).click();
       await productDialog.waitFor({ state: 'hidden' });
+      await page.getByRole('button', { name: 'Stock y movimientos HAB-OFF', exact: true }).click();
+      const stockDialog = page.getByRole('dialog');
+      await stockDialog.getByLabel(/Cantidad/).fill('50');
+      await stockDialog.getByLabel(/Motivo/).fill('Saldo inicial ficticio de prueba');
+      await stockDialog.getByRole('button', { name: 'Guardar movimiento', exact: true }).click();
+      await stockDialog.waitFor({ state: 'hidden' });
       await page.reload();
       await page.getByRole('button', { name: 'Editar producto HAB-OFF', exact: true }).waitFor();
       await page.goto(`${url}#/mantenimientos/nuevo?vehiculo=practica-v02`);

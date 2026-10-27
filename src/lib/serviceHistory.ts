@@ -3,6 +3,7 @@ import type { LocalData } from './localDatabase';
 import { editServiceData } from './serviceEditing';
 
 const fields: [keyof Service, string][] = [
+  ['stockManaged', 'Control de existencias'],
   ['vehicleId', 'Vehículo (ID)'],
   ['date', 'Fecha'],
   ['km', 'Kilometraje'],

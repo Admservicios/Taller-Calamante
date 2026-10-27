@@ -1,3 +1,5 @@
+import { StockDialog } from '../components/StockDialog';
+import { stockBalance, stockQuantity } from '../lib/inventory';
 import { useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Package, Pencil, Plus, Search, Check } from 'lucide-react';
@@ -130,7 +132,9 @@ export function ProductEditor({ original, close }: { original?: Product; close: 
   );
 }
 export function Products() {
-  const { products = [] } = useData();
+  const store = useData();
+  const { products = [] } = store;
+  const [stockProduct, setStockProduct] = useState<Product | null>(null);
   const [params, setParams] = useSearchParams();
   const [editing, setEditing] = useState<Product | 'new' | null>(null);
   const search = params.get('buscar') ?? '';
@@ -212,6 +216,19 @@ export function Products() {
             </div>
             <h2>{product.description}</h2>
             <p className="muted">{product.brand || 'Sin marca especificada'}</p>
+            <p className="product-stock">
+              Existencias:{' '}
+              <strong>
+                {stockQuantity(stockBalance(store, product.id))} {product.unit}
+              </strong>
+            </p>
+            <button
+              className="button small"
+              aria-label={`Stock y movimientos ${product.code}`}
+              onClick={() => setStockProduct(product)}
+            >
+              Stock y movimientos
+            </button>
             <div>
               <strong>
                 {itemMoney(Math.round(product.unitPrice * 100))}{' '}
@@ -267,6 +284,7 @@ export function Products() {
           </select>
         </label>
       </div>
+      {stockProduct && <StockDialog product={stockProduct} close={() => setStockProduct(null)} />}
       {editing && (
         <ProductEditor
           original={editing === 'new' ? undefined : editing}

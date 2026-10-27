@@ -1,3 +1,4 @@
+import { applyServiceStock } from './inventory';
 import type { Service, Vehicle } from './demo';
 import type { LocalData } from './localDatabase';
 import { dataSchema } from './localDatabase';
@@ -50,6 +51,8 @@ export function editServiceData(
     throw new Error(
       'Este mantenimiento cambió en otra pestaña. Volvé al historial y abrí Editar nuevamente.',
     );
+  if (original.stockManaged && !edited.stockManaged)
+    throw new Error('No se puede retirar el control de stock de un servicio registrado.');
   if (edited.id !== original.id)
     throw new Error('No se puede cambiar el identificador del mantenimiento.');
   if (!data.vehicles.some((v) => v.id === edited.vehicleId))
@@ -120,6 +123,7 @@ export function editServiceData(
     );
   });
   const result: LocalData = {
+    ...(data.stockMovements ? { stockMovements: data.stockMovements } : {}),
     ...(data.products ? { products: data.products } : {}),
     customers: data.customers,
     workshop: data.workshop,
@@ -130,7 +134,8 @@ export function editServiceData(
     ...(data.documentSet ? { documentSet: data.documentSet } : {}),
     ...(data.documents ? { documents: data.documents } : {}),
   };
-  const valid = dataSchema.safeParse(result);
+  const stockResult = applyServiceStock(data, result, edited);
+  const valid = dataSchema.safeParse(stockResult);
   if (!valid.success) throw new Error(valid.error.issues[0].message);
-  return result;
+  return stockResult;
 }

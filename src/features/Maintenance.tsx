@@ -1,3 +1,4 @@
+import { applyServiceStock } from '../lib/inventory';
 import { isServerMode } from '../lib/serverClient';
 import { randomId } from '../lib/ids';
 import { useUnsavedChanges } from '../components/UnsavedChanges';
@@ -213,6 +214,7 @@ function MaintenanceFormFields() {
       original,
     );
     const service: Service = {
+      ...(!original || original.stockManaged ? { stockManaged: true as const } : {}),
       id: original?.id ?? randomId(),
       vehicleId: vehicle.id,
       date: result.data.date,
@@ -230,6 +232,14 @@ function MaintenanceFormFields() {
         service.maintenance = servicePlan(service, next);
       } catch {
         setError('Revisá el vencimiento y completá el trabajo recomendado.');
+        return;
+      }
+    }
+    if (!original) {
+      try {
+        applyServiceStock(store, store, service);
+      } catch (reason) {
+        setError(reason instanceof Error ? reason.message : 'Revisá las existencias.');
         return;
       }
     }
@@ -594,6 +604,11 @@ function MaintenanceFormFields() {
             </Panel>
           )}
           <Panel title="Insumos y repuestos" icon={Settings2}>
+            <p className="fine-print">
+              {original && !original.stockManaged
+                ? 'Servicio anterior al control de stock: sus correcciones no descuentan existencias. Si corresponde, registrá un ajuste con motivo en Productos.'
+                : 'Los artículos del catálogo descuentan stock al guardar. Los artículos manuales no modifican existencias. No se reservan cantidades mientras completás el formulario.'}
+            </p>
             <SupplyItemsEditor
               rows={supplyRows}
               legacy={legacyText}
