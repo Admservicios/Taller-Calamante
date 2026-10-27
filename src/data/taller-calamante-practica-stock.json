@@ -2373,6 +2373,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 73263,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2414,6 +2415,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 28000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2486,6 +2488,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 106710,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2548,6 +2551,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 261000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2611,6 +2615,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 65500,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2671,6 +2676,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 120601,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2731,6 +2737,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 77173,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2782,6 +2789,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 261000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2833,6 +2841,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 42350,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2875,6 +2884,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 43725,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2935,6 +2945,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 85851,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -2986,6 +2997,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 81250,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3037,6 +3049,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 226050,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3088,6 +3101,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 42350,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3148,6 +3162,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 85851,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3208,6 +3223,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 106710,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3259,6 +3275,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 81250,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3301,6 +3318,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 46500,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3352,6 +3370,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 41248,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3412,6 +3431,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 120601,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3463,6 +3483,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 261000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3514,6 +3535,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 73263,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3565,6 +3587,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 65500,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3625,6 +3648,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 120601,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3685,6 +3709,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 77173,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3736,6 +3761,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 261000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3787,6 +3813,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 42350,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3829,6 +3856,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 43725,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3889,6 +3917,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 85851,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -3940,6 +3969,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 81250,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4001,6 +4031,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 226050,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4052,6 +4083,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 42350,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4112,6 +4144,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 85851,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4172,6 +4205,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 106710,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4223,6 +4257,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 81250,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4265,6 +4300,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 46500,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4316,6 +4352,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 41248,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4376,6 +4413,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 120601,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4427,6 +4465,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 261000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4478,6 +4517,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 73263,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4529,6 +4569,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 65500,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4589,6 +4630,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 120601,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4649,6 +4691,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 77173,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4700,6 +4743,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 261000,
+        "laborAmount": 28000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {
@@ -4751,6 +4795,7 @@
         ],
         "suppliesLegacy": "",
         "amount": 42350,
+        "laborAmount": 35000,
         "notes": "DATOS FICTICIOS. Ejemplo para practicar; no corresponde a un cliente ni a un trabajo real.",
         "public": false,
         "maintenance": {

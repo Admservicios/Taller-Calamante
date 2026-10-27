@@ -1,3 +1,9 @@
+import {
+  laborAmountSchema,
+  suggestedServiceCents,
+  serviceAdjustmentCents,
+} from '../lib/serviceCosts';
+import { itemMoney, totalItemCents } from '../lib/supplyItems';
 import { applyServiceStock } from '../lib/inventory';
 import { isServerMode } from '../lib/serverClient';
 import { randomId } from '../lib/ids';
@@ -120,8 +126,25 @@ function MaintenanceFormFields() {
   const [balancing, setBalancing] = useState(
     original ? initialAlignment.balancing : 'Las 4 ruedas',
   );
+  const [laborAmount, setLaborAmount] = useState(original?.laborAmount?.toString() ?? '');
+  const [amount, setAmount] = useState(original?.amount?.toString() ?? '');
   const [supplyRows, setSupplyRows] = useState(() => (original?.supplyItems ?? []).map(draftItem));
   const [legacyText, setLegacyText] = useState(() => legacySupplyText(original));
+  const draftItems = supplyRows.map(parsedDraft);
+  const validItems = draftItems.every((item) => item.success);
+  const pricedItems = draftItems.flatMap((item) => (item.success ? [item.data] : []));
+  const laborValid = laborAmount !== '' && laborAmountSchema.safeParse(Number(laborAmount)).success;
+  const suggested =
+    validItems && laborValid ? suggestedServiceCents(pricedItems, Number(laborAmount)) : undefined;
+  const adjustment =
+    amount !== '' && Number.isFinite(Number(amount))
+      ? serviceAdjustmentCents({
+          supplyItems: validItems ? pricedItems : undefined,
+          suppliesLegacy: legacyText,
+          laborAmount: laborValid ? Number(laborAmount) : undefined,
+          amount: Number(amount),
+        })
+      : undefined;
   const chooseType = (value: string) => {
     if (isAlignment && value !== 'Alineación y balanceo') {
       setWork(alignmentSummary(work, alignment, balancing));
@@ -181,6 +204,7 @@ function MaintenanceFormFields() {
       type: actualType,
       work,
       amount: Number(data.get('amount')),
+      ...(laborAmount !== '' ? { laborAmount: Number(laborAmount) } : {}),
       nextDate,
       nextKm,
     });
@@ -223,6 +247,7 @@ function MaintenanceFormFields() {
       work: savedWork,
       ...supplyData,
       amount: result.data.amount,
+      ...(result.data.laborAmount !== undefined ? { laborAmount: result.data.laborAmount } : {}),
       notes: String(data.get('notes')).trim(),
       public: mode === 'demo' ? data.get('public') === 'on' : (original?.public ?? false),
     };
@@ -730,23 +755,79 @@ function MaintenanceFormFields() {
               </label>
             </Panel>
             <Panel title="Importe del servicio" icon={Wallet}>
-              <label>
-                Importe total (ARS) <span>*</span>
-                <div className="input-suffix">
-                  <input
-                    type="number"
-                    name="amount"
-                    inputMode="decimal"
-                    defaultValue={original?.amount}
-                    required
-                    min="0"
-                    max="999999999"
-                    step="0.01"
-                    placeholder="0,00"
-                  />
-                  <span>$</span>
+              <div className="service-price-fields">
+                <label>
+                  Mano de obra (ARS)
+                  <div className="input-suffix">
+                    <input
+                      type="number"
+                      name="laborAmount"
+                      inputMode="decimal"
+                      min="0"
+                      max="999999999"
+                      step="0.01"
+                      value={laborAmount}
+                      onChange={(e) => setLaborAmount(e.target.value)}
+                      placeholder="Sin registrar"
+                    />
+                    <span>$</span>
+                  </div>
+                </label>
+                <div className="service-price-suggestion">
+                  <span>Insumos valorizados</span>
+                  <strong>
+                    {validItems ? itemMoney(totalItemCents(pricedItems)) : 'Revisá los artículos'}
+                  </strong>
+                  {suggested !== undefined && (
+                    <>
+                      <span>Total sugerido con mano de obra</span>
+                      <strong>{itemMoney(suggested)}</strong>
+                    </>
+                  )}
+                  {adjustment !== undefined && adjustment !== 0 && (
+                    <>
+                      <span>Ajuste / descuento</span>
+                      <strong>{itemMoney(adjustment)}</strong>
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    className="button small"
+                    disabled={suggested === undefined || suggested > 99999999900}
+                    onClick={() => {
+                      setAmount(((suggested ?? 0) / 100).toFixed(2));
+                      setDirty(true);
+                    }}
+                  >
+                    Usar total sugerido
+                  </button>
+                  {legacyText.trim() && (
+                    <small>No incluye el detalle anterior de insumos sin valorizar.</small>
+                  )}
                 </div>
-              </label>
+                <label>
+                  Importe total (ARS) <span>*</span>
+                  <div className="input-suffix">
+                    <input
+                      type="number"
+                      name="amount"
+                      inputMode="decimal"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      required
+                      min="0"
+                      max="999999999"
+                      step="0.01"
+                      placeholder="0,00"
+                    />
+                    <span>$</span>
+                  </div>
+                </label>
+                <small className="muted">
+                  El total es editable para aplicar descuentos o ajustes. La mano de obra está
+                  incluida en ese total.
+                </small>
+              </div>
             </Panel>
           </div>
           <Panel title="Fotos del mantenimiento" icon={Camera}>

@@ -1,3 +1,4 @@
+import { reportMoney as money } from '../lib/maintenanceReport';
 import { MoreOptions } from '../components/MoreOptions';
 import { VehicleHistoryPDFButton } from '../components/VehicleHistoryPDF';
 import { CustomerFilter } from '../components/CustomerFilter';
@@ -49,7 +50,7 @@ import { PhotoGallery } from '../components/MaintenancePhotos';
 import { MaintenanceSchedules } from '../components/MaintenanceSchedules';
 import { VehicleDocuments } from '../components/VehicleDocuments';
 import { nextVehiclePlan, planServiceURL } from '../lib/maintenancePlans';
-import { dateLabel, download, maintenanceStatus, money, number, type Vehicle } from '../lib/demo';
+import { dateLabel, download, maintenanceStatus, number, type Vehicle } from '../lib/demo';
 import {
   normalizedVehicleText,
   selectVehicleRows,
@@ -749,7 +750,14 @@ export function VehicleDetail() {
                             <small>{s.work}</small>
                           </td>
                           <td className="wrap-cell">{s.supplies}</td>
-                          <td>{money(s.amount)}</td>
+                          <td>
+                            {money(s.amount)}
+                            {s.laborAmount !== undefined && (
+                              <small className="block muted">
+                                Mano de obra: {money(s.laborAmount)}
+                              </small>
+                            )}
+                          </td>
                           <td>
                             <span className="subtle-chip">{s.public ? 'Público' : 'Privado'}</span>
                           </td>

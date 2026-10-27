@@ -150,9 +150,8 @@ try {
       ];
     Object.assign(service, saveSupplyItems(items, ''));
     service.stockManaged = true;
-    service.amount = Math.round(
-      totalItemCents(items) / 100 + (kind.key === 'alineacion-balanceo' ? 35000 : 28000),
-    );
+    service.laborAmount = kind.key === 'alineacion-balanceo' ? 35000 : 28000;
+    service.amount = Math.round(totalItemCents(items) / 100 + service.laborAmount);
     const nextDate = new Date(`${service.date}T12:00:00Z`);
     nextDate.setUTCDate(nextDate.getUTCDate() + (kind.key === 'alineacion-balanceo' ? 90 : 180));
     service.maintenance = servicePlan(service, {

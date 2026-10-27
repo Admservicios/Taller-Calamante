@@ -1,3 +1,5 @@
+import { ServiceCosts } from '../components/ServiceCosts';
+import { laborSummary } from '../lib/serviceCosts';
 import { ServiceActions } from '../components/ServiceActions';
 import { ServiceSupplies } from '../components/ServiceSupplies';
 import { MoreOptions } from '../components/MoreOptions';
@@ -47,7 +49,11 @@ function ChangeValue({ field, value }: { field: string; value: string }) {
   }
   return (
     <span>
-      {field === 'Importe' ? money(Number(value)) : field === 'Fecha' ? dateLabel(value) : value}
+      {(field === 'Importe' || field === 'Mano de obra') && value !== 'Sin dato'
+        ? money(Number(value))
+        : field === 'Fecha'
+          ? dateLabel(value)
+          : value}
     </span>
   );
 }
@@ -75,6 +81,7 @@ function ServiceHistory({ service, close }: { service: Service; close: () => voi
           <dd>{service.work || 'Sin detalle'}</dd>
         </dl>
         <ServiceSupplies service={service} />
+        <ServiceCosts service={service} />
         {service.notes && (
           <section className="service-private-notes">
             <h3>Observaciones privadas</h3>
@@ -257,6 +264,7 @@ export function MaintenanceList() {
     })
     .sort((a, b) => b.date.localeCompare(a.date) || b.km - a.km || a.id.localeCompare(b.id));
   const summary = maintenanceSummary(filtered);
+  const labor = laborSummary(filtered);
   const exportCSV = () => {
     if (!filtered.length || invalidDates) return;
     try {
@@ -396,6 +404,11 @@ export function MaintenanceList() {
                 Incluye todo el listado filtrado. Los anulados no suman en los importes. Son
                 trabajos registrados, no cobros ni ganancias.{' '}
                 {mode === 'demo' && 'Datos de demostración.'}
+              </p>
+              <p className="fineprint">
+                Mano de obra registrada: {labor.known ? money(labor.total) : 'Sin registrar'} ·{' '}
+                {labor.known} servicios con desglose. Ya está incluida en los importes, no se suma
+                otra vez.
               </p>
             </section>
           </details>

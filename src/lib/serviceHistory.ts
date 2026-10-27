@@ -14,6 +14,7 @@ const fields: [keyof Service, string][] = [
   ['supplyItems', 'Artículos utilizados'],
   ['suppliesLegacy', 'Detalle anterior de insumos'],
   ['amount', 'Importe'],
+  ['laborAmount', 'Mano de obra'],
   ['notes', 'Observaciones privadas'],
   ['public', 'Visibilidad pública'],
   ['maintenance', 'Vencimiento'],

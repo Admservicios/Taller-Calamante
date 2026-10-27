@@ -1,3 +1,4 @@
+import { laborAmountSchema } from './serviceCosts';
 import { z } from 'zod';
 
 export const serviceFieldsSchema = z.object({
@@ -10,6 +11,7 @@ export const serviceFieldsSchema = z.object({
     .min(5, 'Describí los trabajos realizados (mínimo 5 caracteres).')
     .max(2000),
   amount: z.number().min(0, 'El importe no puede ser negativo.').max(999999999),
+  laborAmount: laborAmountSchema.optional(),
 });
 
 export const serviceSchema = serviceFieldsSchema

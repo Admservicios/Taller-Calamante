@@ -1,7 +1,7 @@
 /* Se genera una versión con los recursos de la compilación actual, incluidos los módulos de PDF y ZIP. */
-const BUILD_ID = '6f4817f695643e4e4fce';
-const INDEX_HASH = '1fdd5a5dae5cb744a1f1f74c79739d7d013d284a47ba81d2f1fc313f045c9476';
-const PRECACHE = ["icons/app-180.png","icons/app-192.png","icons/app-512.png","icons/app.svg","index.html","manifest.webmanifest","site-assets/app-BKE0Oo2_.css","site-assets/app-CTHz4Gh4.js","site-assets/browser-B5ODykp-.js","site-assets/html2canvas-DZ3vztRE.js","site-assets/index.es-BT95KgNV.js","site-assets/jspdf.es.min-DGxBHw9Q.js","site-assets/purify.es-Dqk5qvad.js","site-assets/sha256-C77sL9Ok.js"];
+const BUILD_ID = '741a3f633d2c8db8b143';
+const INDEX_HASH = 'cf51f84c0b94ebc646e4a05df69eb46774f67f0e20cee9c095e8b62d1d48359d';
+const PRECACHE = ["icons/app-180.png","icons/app-192.png","icons/app-512.png","icons/app.svg","index.html","manifest.webmanifest","site-assets/app-BLtmVD-0.js","site-assets/app-CByATR3s.css","site-assets/browser-B5ODykp-.js","site-assets/html2canvas-Z9j2VU_B.js","site-assets/index.es-CH213oQP.js","site-assets/jspdf.es.min-D8ifVPSV.js","site-assets/purify.es-Dqk5qvad.js","site-assets/sha256-C77sL9Ok.js"];
 const ROOT = self.registration.scope;
 const PREFIX = `taller-calamante-offline:${new URL(ROOT).pathname}:`;
 const CACHE_NAME = PREFIX + BUILD_ID;

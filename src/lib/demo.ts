@@ -50,6 +50,7 @@ export type Service = {
   supplyItems?: SupplyItem[];
   suppliesLegacy?: string;
   amount: number;
+  laborAmount?: number;
   notes: string;
   public: boolean;
   maintenance?: MaintenancePlan;

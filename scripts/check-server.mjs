@@ -132,6 +132,7 @@ try {
   await showMoreOptions(page);
   await page.getByLabel('Detalle del Servicio').fill('Service compartido desde la PC del taller.');
   await page.getByLabel('Importe total').fill('35000');
+  await page.getByLabel('Mano de obra (ARS)').fill('15000.25');
   await page
     .getByLabel('Seleccionar fotos')
     .setInputFiles(resolve(root, 'tests/fixtures/foto-prueba.jpg'));
@@ -149,6 +150,8 @@ try {
   await expect(page.getByRole('dialog').getByRole('img')).toBeVisible();
   await page.getByRole('dialog').getByRole('button', { name: 'Cerrar vista previa' }).click();
   snapshot = await data(page);
+  assert.equal(snapshot.services[0].laborAmount, 15000.25);
+  assert.equal(snapshot.services[0].amount, 35000);
   assert.equal(snapshot.photos.length, 1);
   assert.equal(snapshot.documents.length, 1);
   await mobile.goto(url + `/#/vehiculos/${vehicle.id}`);

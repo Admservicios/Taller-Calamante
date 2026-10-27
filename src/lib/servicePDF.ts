@@ -1,3 +1,5 @@
+import { serviceAdjustmentCents } from './serviceCosts';
+import { itemMoney } from './supplyItems';
 import { dateLabel, number, type Customer, type Service, type Vehicle } from './demo';
 import type { Workshop } from './localDatabase';
 import { maintenanceKind, vehiclePlans } from './maintenancePlans';
@@ -101,6 +103,13 @@ export async function createServicePDF({
   section('Insumos y repuestos');
   text(service.supplies || 'Sin insumos registrados.');
   section('Importe del servicio');
+  const adjustment = serviceAdjustmentCents(service);
+  if (service.laborAmount !== undefined)
+    text(
+      `Mano de obra incluida: ARS ${service.laborAmount.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    );
+  if (adjustment !== undefined && adjustment !== 0)
+    text(`Ajuste / descuento: ${itemMoney(adjustment)}`);
   text(
     `ARS ${new Intl.NumberFormat('es-AR', {
       minimumFractionDigits: 2,

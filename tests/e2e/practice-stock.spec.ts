@@ -90,7 +90,10 @@ test('agregar un artículo no quita el foco ni el importe si ya se comenzó a co
     add.click();
     const amount = document.querySelector<HTMLInputElement>('input[name="amount"]')!;
     amount.focus();
-    amount.value = '35000';
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(
+      amount,
+      '35000',
+    );
     amount.dispatchEvent(new Event('input', { bubbles: true }));
   });
   await page.evaluate(

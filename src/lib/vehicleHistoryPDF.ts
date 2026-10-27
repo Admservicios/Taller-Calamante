@@ -1,3 +1,5 @@
+import { serviceAdjustmentCents } from './serviceCosts';
+import { itemMoney } from './supplyItems';
 import { serviceSuppliesText } from './supplyItems';
 import { z } from 'zod';
 import { dateLabel, number, type Customer, type Service, type Vehicle } from './demo';
@@ -156,6 +158,11 @@ export async function createVehicleHistoryPDF(report: VehicleHistoryReport) {
     y += 2;
     text('Insumos y repuestos', 10, true);
     text(serviceSuppliesText(service, includeAmounts) || 'Sin insumos registrados.');
+    if (includeAmounts && service.laborAmount !== undefined)
+      text(`Mano de obra incluida: ARS ${currency(service.laborAmount)}`);
+    const adjustment = serviceAdjustmentCents(service);
+    if (includeAmounts && adjustment !== undefined && adjustment !== 0)
+      text(`Ajuste / descuento: ${itemMoney(adjustment)}`);
     if (includeAmounts)
       text(`Importe registrado: ARS ${currency(amountCents(service.amount) / 100)}`, 10, true);
     if (service.maintenance) {

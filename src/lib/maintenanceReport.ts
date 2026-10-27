@@ -52,6 +52,7 @@ export function maintenanceCSV(
       'Próximo km registrado',
       'Trabajo recomendado registrado',
       'Modo',
+      'Mano de obra ARS',
     ],
     ...services.map((service) => {
       const vehicle = vehicleById.get(service.vehicleId);
@@ -72,6 +73,9 @@ export function maintenanceCSV(
         service.maintenance ? String(service.maintenance.nextKm) : '',
         service.maintenance?.recommendation ?? '',
         demo ? 'Demostración' : 'Taller',
+        service.laborAmount === undefined
+          ? ''
+          : (amountCents(service.laborAmount) / 100).toFixed(2).replace('.', ','),
       ];
     }),
   ];

@@ -6380,3 +6380,64 @@ input[type='checkbox'] {
     margin-bottom: 6px;
   }
 }
+
+.service-price-fields {
+  display: grid;
+  gap: 16px;
+}
+.service-price-suggestion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 14px;
+  background: var(--surface-soft);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.service-price-suggestion .button,
+.service-price-suggestion small {
+  grid-column: 1 / -1;
+}
+.service-costs {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.service-costs h3 {
+  font-size: 15px;
+  margin: 0 0 16px;
+}
+.service-audit .service-costs dl {
+  display: grid;
+  margin: 0;
+  gap: 12px;
+}
+.service-costs dl > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+.service-audit .service-costs dt {
+  font-weight: 400;
+}
+.service-audit .service-costs dd {
+  margin: 0;
+  font-weight: 600;
+}
+.service-costs-final {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.service-price-suggestion strong {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.home-extra-figures dd small {
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 6px;
+}

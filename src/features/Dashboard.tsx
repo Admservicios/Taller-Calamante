@@ -1,3 +1,4 @@
+import { laborSummary } from '../lib/serviceCosts';
 import { useSearchParams } from 'react-router-dom';
 import { maintenanceSummary, reportMoney } from '../lib/maintenanceReport';
 import { Link } from 'react-router-dom';
@@ -33,6 +34,7 @@ export function Dashboard() {
       ),
   );
   const summary = maintenanceSummary(summaryServices);
+  const labor = laborSummary(summaryServices);
   const monthCount = services.filter((s) => s.date.startsWith(referenceDate.slice(0, 7))).length;
   const schedule = allPlanRows(vehicles, referenceDate);
   const upcoming = schedule.filter(
@@ -160,6 +162,15 @@ export function Dashboard() {
               <details className="help-details">
                 <summary>Ver más cifras</summary>
                 <dl className="home-extra-figures">
+                  <div>
+                    <dt>Mano de obra registrada</dt>
+                    <dd>
+                      {labor.known ? reportMoney(labor.total) : 'Sin registrar'}
+                      <small className="block muted">
+                        {labor.known} servicios con desglose · incluida en los importes
+                      </small>
+                    </dd>
+                  </div>
                   <div>
                     <dt>Promedio por servicio</dt>
                     <dd>{reportMoney(summary.average)}</dd>

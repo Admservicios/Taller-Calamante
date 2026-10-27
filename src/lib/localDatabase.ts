@@ -1,3 +1,4 @@
+import { laborAmountSchema } from './serviceCosts';
 import { stockMovementSchema, inventoryIssue, type StockMovement } from './inventory';
 import { productSchema, productCode, type Product } from './products';
 import { supplyItemsSchema, supplyItemsSummary } from './supplyItems';
@@ -61,6 +62,7 @@ const serviceSchema = z
     suppliesLegacy: text(10000).optional(),
     suppliesDetail: suppliesDetailSchema.optional(),
     amount: z.number().min(0).max(999999999),
+    laborAmount: laborAmountSchema.optional(),
     notes: text(500),
     public: z.boolean(),
     maintenance: maintenancePlanSchema.optional(),
