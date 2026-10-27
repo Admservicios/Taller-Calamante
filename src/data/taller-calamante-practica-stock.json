@@ -1267,7 +1267,8 @@
         "brand": "Shell",
         "unit": "Litro",
         "unitPrice": 10000,
-        "active": true
+        "active": true,
+        "minimumStock": 20
       },
       {
         "id": "practica-p02",
@@ -1276,7 +1277,8 @@
         "brand": "Motul",
         "unit": "Litro",
         "unitPrice": 14500,
-        "active": true
+        "active": true,
+        "minimumStock": 20
       },
       {
         "id": "practica-p03",
@@ -1285,7 +1287,8 @@
         "brand": "YPF",
         "unit": "Litro",
         "unitPrice": 8500,
-        "active": true
+        "active": true,
+        "minimumStock": 20
       },
       {
         "id": "practica-p04",
@@ -1294,7 +1297,8 @@
         "brand": "Castrol",
         "unit": "Litro",
         "unitPrice": 13000,
-        "active": true
+        "active": true,
+        "minimumStock": 20
       },
       {
         "id": "practica-p05",
@@ -1303,7 +1307,8 @@
         "brand": "MANN",
         "unit": "Unidad",
         "unitPrice": 12000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p06",
@@ -1312,7 +1317,8 @@
         "brand": "Fram",
         "unit": "Unidad",
         "unitPrice": 10500,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p07",
@@ -1321,7 +1327,8 @@
         "brand": "MANN",
         "unit": "Unidad",
         "unitPrice": 16500,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p08",
@@ -1330,7 +1337,8 @@
         "brand": "MANN",
         "unit": "Unidad",
         "unitPrice": 21000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p09",
@@ -1339,7 +1347,8 @@
         "brand": "MANN",
         "unit": "Unidad",
         "unitPrice": 18500,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p10",
@@ -1348,7 +1357,8 @@
         "brand": "Bosch",
         "unit": "Unidad",
         "unitPrice": 22500,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p11",
@@ -1357,7 +1367,8 @@
         "brand": "Bosch",
         "unit": "Juego",
         "unitPrice": 45000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p12",
@@ -1366,7 +1377,8 @@
         "brand": "Brembo",
         "unit": "Unidad",
         "unitPrice": 68000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p13",
@@ -1375,7 +1387,8 @@
         "brand": "Bosch",
         "unit": "Litro",
         "unitPrice": 16500,
-        "active": true
+        "active": true,
+        "minimumStock": 20
       },
       {
         "id": "practica-p14",
@@ -1384,7 +1397,8 @@
         "brand": "Fate",
         "unit": "Unidad",
         "unitPrice": 115000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p15",
@@ -1393,7 +1407,8 @@
         "brand": "Pirelli",
         "unit": "Unidad",
         "unitPrice": 180000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p16",
@@ -1402,7 +1417,8 @@
         "brand": "Genérico",
         "unit": "Kilogramo",
         "unitPrice": 18000,
-        "active": true
+        "active": true,
+        "minimumStock": 1
       },
       {
         "id": "practica-p17",
@@ -1411,7 +1427,8 @@
         "brand": "Genérico",
         "unit": "Unidad",
         "unitPrice": 1500,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p18",
@@ -1420,7 +1437,8 @@
         "brand": "Total",
         "unit": "Litro",
         "unitPrice": 12500,
-        "active": true
+        "active": true,
+        "minimumStock": 20
       },
       {
         "id": "practica-p19",
@@ -1429,7 +1447,8 @@
         "brand": "Gates",
         "unit": "Unidad",
         "unitPrice": 38000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p20",
@@ -1438,7 +1457,8 @@
         "brand": "NGK",
         "unit": "Unidad",
         "unitPrice": 9500,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p21",
@@ -1447,7 +1467,8 @@
         "brand": "Genérico",
         "unit": "Unidad",
         "unitPrice": 850.5,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p22",
@@ -1456,7 +1477,8 @@
         "brand": "Würth",
         "unit": "Unidad",
         "unitPrice": 8200,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p23",
@@ -1465,7 +1487,8 @@
         "brand": "SKF",
         "unit": "Unidad",
         "unitPrice": 54000,
-        "active": true
+        "active": true,
+        "minimumStock": 3
       },
       {
         "id": "practica-p24",

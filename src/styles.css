@@ -6441,3 +6441,60 @@ input[type='checkbox'] {
   font-weight: 400;
   margin-top: 6px;
 }
+
+.stock-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.stock-notice:empty {
+  display: none;
+}
+.stock-notice small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.product-card > .stock-notice {
+  margin: 0 0 14px;
+}
+.stock-replenishment-link {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+}
+.stock-replenishment-link > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--blue);
+  font-weight: 600;
+}
+.stock-replenishment-link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.product-filters select {
+  min-width: 190px;
+}
+@media (max-width: 600px) {
+  .product-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .product-filters select,
+  .product-filters .text-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+  }
+}

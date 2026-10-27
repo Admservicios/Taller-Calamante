@@ -1,3 +1,4 @@
+import { StockNotice } from './StockNotice';
 import { dateLabel } from '../lib/demo';
 import { useState, type FormEvent } from 'react';
 import { useData } from '../app/store';
@@ -79,6 +80,10 @@ export function StockDialog({ product, close }: { product: Product; close: () =>
         <strong>
           {stockQuantity(stockBalance(store, product.id))} {product.unit}
         </strong>
+        <StockNotice
+          product={store.products?.find((current) => current.id === product.id) ?? product}
+          balance={stockBalance(store, product.id)}
+        />
       </div>
       <p className="fine-print">
         {kind === 'opening'

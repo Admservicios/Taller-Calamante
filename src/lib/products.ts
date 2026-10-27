@@ -10,6 +10,15 @@ export const productSchema = z
     unit: supplyItemSchema.shape.unit,
     unitPrice: supplyItemSchema.shape.unitPrice,
     active: z.boolean(),
+    minimumStock: z
+      .number()
+      .min(0)
+      .max(1000000)
+      .refine(
+        (value) => Number(value.toFixed(3)) === value,
+        'El mínimo admite hasta tres decimales.',
+      )
+      .optional(),
   })
   .refine(
     (product) => [product.description, product.brand].filter(Boolean).join(' · ').length <= 120,

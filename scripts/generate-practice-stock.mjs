@@ -58,6 +58,9 @@ try {
     unit,
     unitPrice,
     active: code !== 'ACE-099',
+    ...(code === 'ACE-099'
+      ? {}
+      : { minimumStock: unit === 'Litro' ? 20 : unit === 'Kilogramo' ? 1 : 3 }),
   }));
   const byCode = new Map(data.products.map((product) => [product.code, product]));
   data.stockMovements = data.products

@@ -34,7 +34,7 @@ Disponible:
 - Inicio: resumen del taller por mes, año o todo el historial, próximos servicios y gráficos desplegables, calculados sobre los registros locales.
 - Agenda filtrada por cliente, tipo y estado; días/km restantes y avisos con varios servicios del mismo vehículo, preparados para copiar y contactar manualmente al cliente.
 - Catálogo de productos: vistas de tarjetas y lista con filtros y página conservados; código único, marca, unidad, precio sugerido y estado; buscador para agregar artículos al mantenimiento conservando sus datos y precios históricos.
-- Stock: saldos iniciales, ingresos y ajustes con motivo; consumos por artículos vinculados, correcciones por diferencia y devolución/recuperación al anular o recuperar servicios nuevos. Historial conservado y rechazo de saldos negativos.
+- Stock: mínimos opcionales, avisos de reposición en Inicio y filtro en Productos; saldos iniciales, ingresos y ajustes con motivo; consumos por artículos vinculados, correcciones por diferencia y devolución/recuperación al anular o recuperar servicios nuevos. Historial conservado y rechazo de saldos negativos.
 - Datos del taller persistentes.
 - Respaldo JSON versionado, validación de relaciones y restauración confirmada.
 - Copia previa antes de restaurar cuando ya existe una base.

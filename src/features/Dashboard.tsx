@@ -1,3 +1,4 @@
+import { replenishmentProducts } from '../lib/stockAlerts';
 import { laborSummary } from '../lib/serviceCosts';
 import { useSearchParams } from 'react-router-dom';
 import { maintenanceSummary, reportMoney } from '../lib/maintenanceReport';
@@ -22,6 +23,7 @@ import { allPlanRows, planStatus } from '../lib/maintenancePlans';
 export function Dashboard() {
   const store = useData();
   const { customers, vehicles, activeServices: services, mode, referenceDate } = store;
+  const replenishCount = replenishmentProducts(store).length;
   const [params, setParams] = useSearchParams();
   const period = ['anio', 'todo'].includes(params.get('periodo') ?? '')
     ? params.get('periodo')!
@@ -131,6 +133,17 @@ export function Dashboard() {
           </div>
         ))}
       </div>
+      {replenishCount > 0 && (
+        <Link className="stock-replenishment-link" to="/productos?stock=reponer">
+          <span>
+            {replenishCount} {replenishCount === 1 ? 'producto necesita' : 'productos necesitan'}{' '}
+            reposición
+          </span>
+          <span>
+            Revisar productos <ArrowRight size={16} />
+          </span>
+        </Link>
+      )}
       <div className="dashboard-grid">
         <div className="dashboard-main">
           <Panel

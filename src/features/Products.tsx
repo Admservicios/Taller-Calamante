@@ -1,3 +1,5 @@
+import { replenishmentProducts } from '../lib/stockAlerts';
+import { StockNotice } from '../components/StockNotice';
 import { StockDialog } from '../components/StockDialog';
 import { stockBalance, stockQuantity } from '../lib/inventory';
 import { useState, type FormEvent } from 'react';
@@ -25,6 +27,9 @@ export function ProductEditor({ original, close }: { original?: Product; close: 
       unit: data.get('unit'),
       unitPrice: Number(data.get('unitPrice')),
       active: data.get('active') === 'on',
+      ...(String(data.get('minimumStock') ?? '').trim()
+        ? { minimumStock: Number(data.get('minimumStock')) }
+        : {}),
     });
     if (!result.success) {
       setError(result.error.issues[0].message);
@@ -105,6 +110,22 @@ export function ProductEditor({ original, close }: { original?: Product; close: 
               />
             </label>
           </div>
+          <label>
+            Stock mínimo (opcional)
+            <input
+              name="minimumStock"
+              type="number"
+              inputMode="decimal"
+              min="0"
+              max="1000000"
+              step="0.001"
+              defaultValue={original?.minimumStock}
+              placeholder="Sin configurar"
+            />
+            <small className="muted">
+              En la unidad elegida arriba. Avisa al alcanzar el mínimo; vacío desactiva el aviso.
+            </small>
+          </label>
           <label className="check-label">
             <input type="checkbox" name="active" defaultChecked={original?.active ?? true} />{' '}
             Producto activo
@@ -138,6 +159,7 @@ export function Products() {
   const [params, setParams] = useSearchParams();
   const [editing, setEditing] = useState<Product | 'new' | null>(null);
   const list = params.get('vista') === 'lista';
+  const replenishOnly = params.get('stock') === 'reponer';
   const search = params.get('buscar') ?? '';
   const status = ['todos', 'inactivos'].includes(params.get('estado') ?? '')
     ? params.get('estado')!
@@ -155,7 +177,12 @@ export function Products() {
       },
       { replace: true, flushSync: true },
     );
-  const filtered = searchProducts(products, search, status);
+  const replenishIds = replenishOnly
+    ? new Set(replenishmentProducts(store).map((product) => product.id))
+    : undefined;
+  const filtered = searchProducts(products, search, status).filter(
+    (product) => !replenishIds || replenishIds.has(product.id),
+  );
   const pages = Math.max(1, Math.ceil(filtered.length / size));
   const requested = Number(params.get('pagina') ?? 1);
   const page = Math.min(pages, Math.max(1, Number.isSafeInteger(requested) ? requested : 1));
@@ -190,13 +217,21 @@ export function Products() {
           <option value="inactivos">Inactivos</option>
           <option value="todos">Todos</option>
         </select>
+        <select
+          aria-label="Filtrar productos por existencias"
+          value={replenishOnly ? 'reponer' : ''}
+          onChange={(e) => change('stock', e.target.value)}
+        >
+          <option value="">Todas las existencias</option>
+          <option value="reponer">Necesitan reposición</option>
+        </select>
         <button
           className="text-button"
           onClick={() =>
             setParams(
               (current) => {
                 const next = new URLSearchParams(current);
-                for (const key of ['buscar', 'estado', 'pagina']) next.delete(key);
+                for (const key of ['buscar', 'estado', 'stock', 'pagina']) next.delete(key);
                 return next;
               },
               { replace: true, flushSync: true },
@@ -247,6 +282,7 @@ export function Products() {
                     <td data-label="Marca">{product.brand || 'Sin marca especificada'}</td>
                     <td data-label="Existencias">
                       {stockQuantity(stockBalance(store, product.id))} {product.unit}
+                      <StockNotice product={product} balance={stockBalance(store, product.id)} />
                     </td>
                     <td data-label="Precio sugerido">
                       <strong>{itemMoney(Math.round(product.unitPrice * 100))}</strong>
@@ -300,6 +336,7 @@ export function Products() {
                   {stockQuantity(stockBalance(store, product.id))} {product.unit}
                 </strong>
               </p>
+              <StockNotice product={product} balance={stockBalance(store, product.id)} />
               <button
                 className="button small"
                 aria-label={`Stock y movimientos ${product.code}`}
