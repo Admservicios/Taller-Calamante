@@ -1,3 +1,4 @@
+import { changeWorkOrder, type PendingJob, type WorkStage } from '../lib/workOrders';
 import { addStockMovement, applyServiceStock, type StockMovement } from '../lib/inventory';
 import { demoProducts, saveProductData, type Product } from '../lib/products';
 import { useRef } from 'react';
@@ -57,6 +58,15 @@ import {
 } from '../lib/documents';
 
 type Store = LocalData & {
+  saveWorkOrder: (
+    original: PendingJob | undefined,
+    service: Service,
+    stage: WorkStage,
+    photos: PreparedPhoto[],
+    removed: string[],
+    issueQuote: boolean,
+    reason: string,
+  ) => Promise<{ saved: Service } | { error: string }>;
   activeServices: Service[];
   setServiceStatus: (original: Service, reason: string) => Promise<boolean>;
   mode: 'local' | 'demo';
@@ -343,6 +353,69 @@ export function DataProvider({ children }: { children: ReactNode }) {
       await discardPhotos(files.map((p) => p.id)).catch(() => {});
     return false;
   };
+  const saveWorkOrder: Store['saveWorkOrder'] = async (
+    original,
+    service,
+    stage,
+    photos,
+    removed,
+    issueQuote,
+    reason,
+  ) => {
+    let next: LocalData;
+    let saved: Service;
+    try {
+      const result = changeWorkOrder(
+        data,
+        original,
+        service,
+        stage,
+        mode === 'demo' ? demoDate : localToday(),
+        issueQuote,
+        reason,
+      );
+      next = result.data;
+      saved = result.saved;
+    } catch (error) {
+      return { error: error instanceof Error ? error.message : 'No se pudo guardar el trabajo.' };
+    }
+    const setId = data.photoSet ?? randomId();
+    const files = photos.map((photo) => ({ ...photo, serviceId: service.id, setId }));
+    const retained = (data.photos ?? []).filter(
+      (photo) => photo.serviceId !== service.id || !removed.includes(photo.id),
+    );
+    if (
+      retained.filter((photo) => photo.serviceId === service.id).length + files.length >
+      MAX_SERVICE_PHOTOS
+    ) {
+      return { error: 'Máximo 6 fotos por trabajo.' };
+    }
+    if (files.length || data.photos) {
+      next.photoSet = setId;
+      next.photos = [...retained, ...files.map(({ data: _blob, setId: _set, ...ref }) => ref)];
+    }
+    let failure =
+      'No se pudo guardar. Revisá el aviso del taller y volvé a intentarlo. Tus datos se conservan.';
+    try {
+      newDatabase(next);
+      if (mode === 'local' && files.length) await storePhotos(files);
+      if (await commit(next)) {
+        if (mode === 'demo')
+          setDemoPhotos((previous) => [
+            ...previous.filter((photo) => !removed.includes(photo.id)),
+            ...files,
+          ]);
+        return { saved };
+      }
+    } catch {
+      failure =
+        'No se pudo guardar el trabajo con sus fotos. Revisá el espacio disponible o elegí menos imágenes. Los datos anteriores se conservan.';
+      notify(failure);
+    }
+    if (mode === 'local' && files.length)
+      await discardPhotos(files.map((photo) => photo.id)).catch(() => {});
+    return { error: failure };
+  };
   const saveDocument = async (original: DocumentReference, document: DocumentReference) => {
     const current = (data.documents ?? []).find((d) => d.id === original.id);
     if (JSON.stringify(current) !== JSON.stringify(original)) {
@@ -493,6 +566,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     <Context.Provider
       value={{
         ...data,
+        saveWorkOrder,
         activeServices: data.services.filter((s) => !s.annulment),
         setServiceStatus: async (original, reason) => {
           try {

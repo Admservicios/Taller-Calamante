@@ -1,3 +1,4 @@
+import { localToday } from './localDatabase';
 import { serviceAdjustmentCents } from './serviceCosts';
 import { itemMoney } from './supplyItems';
 import { dateLabel, number, type Customer, type Service, type Vehicle } from './demo';
@@ -10,6 +11,10 @@ export type ServiceReceipt = {
   customer: Customer;
   workshop: Workshop;
   demo: boolean;
+  kind?: 'quote';
+  quoteVersion?: number;
+  quoteReference?: string;
+  issuedAt?: string;
 };
 
 // La biblioteca se carga al pedir el comprobante, sin enviar registros a un servidor.
@@ -19,7 +24,12 @@ export async function createServicePDF({
   customer,
   workshop,
   demo,
+  kind,
+  quoteVersion,
+  quoteReference,
+  issuedAt,
 }: ServiceReceipt) {
+  const isQuote = kind === 'quote';
   if (service.annulment)
     throw new Error('Recuperá el mantenimiento antes de emitir un comprobante.');
   if (service.vehicleId !== vehicle.id || vehicle.customerId !== customer.id)
@@ -68,12 +78,15 @@ export async function createServicePDF({
     y += 2;
   };
   doc.setProperties({
-    title: `Comprobante de mantenimiento · ${vehicle.plate}`,
+    title: `${isQuote ? 'Presupuesto' : 'Comprobante de mantenimiento'} · ${vehicle.plate}`,
     author: workshop.name,
     creator: 'Taller Calamante',
   });
   text(workshop.name, 19, true, '#10203a');
-  text('Comprobante de mantenimiento', 12);
+  text(isQuote ? `Presupuesto · versión ${quoteVersion ?? 1}` : 'Comprobante de mantenimiento', 12);
+  if (isQuote && quoteReference) text(`Referencia: ${quoteReference}`, 9);
+  if (isQuote && issuedAt) text(`Emitido: ${dateLabel(localToday(new Date(issuedAt)))}`, 9);
+  if (isQuote) text('No acredita un trabajo realizado ni un pago. No reserva existencias.', 9);
   y += 3;
   if (workshop.address) text(workshop.address, 9);
   if (workshop.phone || workshop.email)
@@ -82,9 +95,11 @@ export async function createServicePDF({
     y += 3;
     text('DEMOSTRACIÓN · DATOS FICTICIOS', 10, true, '#b45309');
   }
-  section('Servicio realizado');
+  section(isQuote ? 'Servicio presupuestado' : 'Servicio realizado');
   text(service.type, 14, true);
-  text(`Fecha: ${dateLabel(service.date)} · Kilometraje del servicio: ${number(service.km)} km`);
+  text(
+    `Fecha: ${dateLabel(service.date)} · ${isQuote ? 'Kilometraje informado' : 'Kilometraje del servicio'}: ${number(service.km)} km`,
+  );
   section('Cliente');
   text(customer.name, 11, true);
   if (customer.document) text(`Documento: ${customer.document}`);
@@ -98,11 +113,11 @@ export async function createServicePDF({
       .filter(Boolean)
       .join(' · '),
   );
-  section('Trabajos realizados');
+  section(isQuote ? 'Trabajo presupuestado' : 'Trabajos realizados');
   text(service.work || 'Sin detalle registrado.');
   section('Insumos y repuestos');
   text(service.supplies || 'Sin insumos registrados.');
-  section('Importe del servicio');
+  section(isQuote ? 'Importe presupuestado' : 'Importe del servicio');
   const adjustment = serviceAdjustmentCents(service);
   if (service.laborAmount !== undefined)
     text(
@@ -119,22 +134,24 @@ export async function createServicePDF({
     true,
     '#10203a',
   );
-  section('Próximo mantenimiento de este servicio');
-  const plan =
-    service.maintenance ??
-    vehiclePlans(vehicle).find((p) => p.category === maintenanceKind(service.type).key);
-  if (plan) {
-    text(`${plan.label} · ${plan.recommendation}`, 11, true);
-    text(`${dateLabel(plan.nextDate)} o ${number(plan.nextKm)} km, lo que ocurra primero.`);
-    text(
-      service.maintenance
-        ? 'Vencimiento registrado al realizar este servicio.'
-        : 'Recomendación vigente de este tipo de servicio.',
-      9,
-      false,
-      '#52647e',
-    );
-  } else text('No hay un vencimiento registrado para este tipo de servicio.');
+  if (!isQuote) {
+    section('Próximo mantenimiento de este servicio');
+    const plan =
+      service.maintenance ??
+      vehiclePlans(vehicle).find((p) => p.category === maintenanceKind(service.type).key);
+    if (plan) {
+      text(`${plan.label} · ${plan.recommendation}`, 11, true);
+      text(`${dateLabel(plan.nextDate)} o ${number(plan.nextKm)} km, lo que ocurra primero.`);
+      text(
+        service.maintenance
+          ? 'Vencimiento registrado al realizar este servicio.'
+          : 'Recomendación vigente de este tipo de servicio.',
+        9,
+        false,
+        '#52647e',
+      );
+    } else text('No hay un vencimiento registrado para este tipo de servicio.');
+  }
   const pages = doc.getNumberOfPages();
   for (let page = 1; page <= pages; page++) {
     doc.setPage(page);
@@ -143,7 +160,13 @@ export async function createServicePDF({
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor('#52647e');
-    doc.text('Taller Calamante · Comprobante de mantenimiento', margin, 289);
+    doc.text(
+      isQuote
+        ? 'Taller Calamante · Presupuesto'
+        : 'Taller Calamante · Comprobante de mantenimiento',
+      margin,
+      289,
+    );
     doc.text(`Página ${page} de ${pages}`, 194, 289, { align: 'right' });
   }
   const slug = (value: string) =>
@@ -155,7 +178,7 @@ export async function createServicePDF({
       .slice(0, 45);
   return {
     bytes: doc.output('arraybuffer'),
-    filename: `taller-calamante-${demo ? 'demo-' : ''}${slug(vehicle.plate)}-${service.date}-${slug(service.type)}.pdf`,
+    filename: `taller-calamante-${isQuote ? `presupuesto-${quoteReference ?? ''}-v${quoteVersion ?? 1}-` : ''}${demo ? 'demo-' : ''}${slug(vehicle.plate)}-${service.date}-${slug(service.type)}.pdf`,
   };
 }
 

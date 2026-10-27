@@ -46,6 +46,13 @@ export function editServiceData(
   edited: Service,
   today: string,
 ): LocalData {
+  if (
+    JSON.stringify(original.quotes ?? []) !== JSON.stringify(edited.quotes ?? []) ||
+    JSON.stringify(original.workHistory ?? []) !== JSON.stringify(edited.workHistory ?? [])
+  )
+    throw new Error(
+      'Las versiones emitidas y el seguimiento del trabajo se conservan sin modificaciones.',
+    );
   const current = data.services.find((s) => s.id === original.id);
   if (!current || JSON.stringify(current) !== JSON.stringify(original))
     throw new Error(

@@ -1,3 +1,5 @@
+import { PendingJobs } from './PendingJobs';
+import { QuoteHistory } from '../components/QuoteHistory';
 import { ServiceCosts } from '../components/ServiceCosts';
 import { laborSummary } from '../lib/serviceCosts';
 import { ServiceActions } from '../components/ServiceActions';
@@ -82,6 +84,7 @@ function ServiceHistory({ service, close }: { service: Service; close: () => voi
         </dl>
         <ServiceSupplies service={service} />
         <ServiceCosts service={service} />
+        <QuoteHistory service={service} />
         {service.notes && (
           <section className="service-private-notes">
             <h3>Observaciones privadas</h3>
@@ -200,6 +203,34 @@ function StatusDialog({ service, close }: { service: Service; close: () => void 
   );
 }
 export function MaintenanceList() {
+  const { jobs = [] } = useData();
+  const [params] = useSearchParams();
+  const pending =
+    params.get('vista') === 'pendientes' ||
+    (!params.has('vista') && jobs.some((job) => job.stage !== 'cancelado'));
+  return (
+    <>
+      <nav className="work-tabs" aria-label="Secciones de mantenimiento">
+        <Link
+          className={`button ${pending ? 'primary' : ''}`}
+          aria-current={pending ? 'page' : undefined}
+          to="/mantenimientos?vista=pendientes"
+        >
+          Presupuestos y trabajos ({jobs.filter((job) => job.stage !== 'cancelado').length})
+        </Link>
+        <Link
+          className={`button ${!pending ? 'primary' : ''}`}
+          aria-current={!pending ? 'page' : undefined}
+          to="/mantenimientos?vista=historial"
+        >
+          Historial de servicios
+        </Link>
+      </nav>
+      {pending ? <PendingJobs /> : <MaintenanceHistory />}
+    </>
+  );
+}
+function MaintenanceHistory() {
   const { services, vehicles, customers, mode, referenceDate, notify } = useData();
   const [params, setParams] = useSearchParams();
   const [dialog, setDialog] = useState<{ service: Service; kind: 'history' | 'status' } | null>(
@@ -298,6 +329,10 @@ export function MaintenanceList() {
         subtitle="Buscá un trabajo anterior o registrá una nueva visita."
         actions={
           <div className="history-heading-actions">
+            <Link className="button" to="/mantenimientos/nuevo?estado=presupuesto">
+              <Plus size={17} />
+              Nuevo presupuesto
+            </Link>
             <Link className="button primary" to="/mantenimientos/nuevo">
               <Plus size={17} />
               Registrar mantenimiento
@@ -318,14 +353,19 @@ export function MaintenanceList() {
         <label>
           Estado del mantenimiento
           <select value={state} onChange={(e) => update('estado', e.target.value)}>
-            <option value="activos">Activos</option>
+            <option value="activos">Completados</option>
             <option value="anulados">Anulados</option>
             <option value="todos">Todos</option>
           </select>
         </label>
         <button
           className="button"
-          onClick={() => setParams({}, { replace: true, flushSync: true })}
+          onClick={() =>
+            setParams(params.get('vista') === 'historial' ? { vista: 'historial' } : {}, {
+              replace: true,
+              flushSync: true,
+            })
+          }
         >
           Limpiar filtros
         </button>

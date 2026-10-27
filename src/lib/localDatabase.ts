@@ -1,3 +1,4 @@
+import type { PendingJob } from './workOrders';
 import { laborAmountSchema } from './serviceCosts';
 import { stockMovementSchema, inventoryIssue, type StockMovement } from './inventory';
 import { productSchema, productCode, type Product } from './products';
@@ -48,7 +49,7 @@ const vehicleSchema = z.strictObject({
   maintenancePlans: z.array(maintenancePlanSchema).max(100).optional(),
   manualKm: z.number().int().min(0).max(9999999).optional(),
 });
-const serviceSchema = z
+const serviceContentSchema = z
   .strictObject({
     id,
     stockManaged: z.literal(true).optional(),
@@ -109,8 +110,65 @@ export const workshopSchema = z.strictObject({
   currency: z.literal('ARS'),
   timezone: z.literal('America/Argentina/Buenos_Aires'),
 });
+const stages = z.enum(['presupuesto', 'en-trabajo', 'completado', 'cancelado']);
+const workEventSchema = z.strictObject({
+  at: z.iso.datetime(),
+  from: z.enum(['nuevo', 'presupuesto', 'en-trabajo', 'completado', 'cancelado']),
+  to: stages,
+  reason: text(500).optional(),
+});
+const quoteSchema = z
+  .strictObject({
+    id,
+    version: z.number().int().min(1).max(20),
+    issuedAt: z.iso.datetime(),
+    service: serviceContentSchema.safeExtend({
+      notes: z.literal(''),
+      public: z.literal(false),
+      stockManaged: z.never().optional(),
+      annulment: z.never().optional(),
+      changes: z.never().optional(),
+      maintenance: z.never().optional(),
+    }),
+    vehicle: vehicleSchema,
+    customer: customerSchema.extend({ notes: z.literal('') }),
+    workshop: workshopSchema,
+  })
+  .refine(
+    (q) => q.service.vehicleId === q.vehicle.id && q.vehicle.customerId === q.customer.id,
+    'El presupuesto emitido tiene relaciones inválidas.',
+  );
+export type QuoteSnapshot = z.infer<typeof quoteSchema>;
+const serviceSchema = serviceContentSchema
+  .safeExtend({
+    quotes: z.array(quoteSchema).max(20).optional(),
+    workHistory: z.array(workEventSchema).max(1000).optional(),
+  })
+  .refine(
+    (s) =>
+      !s.quotes ||
+      (new Set(s.quotes.map((q) => q.id)).size === s.quotes.length &&
+        s.quotes.every((q, i) => q.service.id === s.id && q.version === i + 1)),
+    'Las versiones del presupuesto no son válidas.',
+  );
+const jobSchema = serviceSchema
+  .safeExtend({
+    stage: z.enum(['presupuesto', 'en-trabajo', 'cancelado']),
+    cancellationReason: text(500).optional(),
+  })
+  .refine(
+    (job) =>
+      !job.annulment &&
+      !job.public &&
+      !job.stockManaged &&
+      !job.changes &&
+      (!job.workHistory?.length || job.workHistory.at(-1)?.to === job.stage) &&
+      (job.stage !== 'cancelado' || (job.cancellationReason?.trim().length ?? 0) >= 3),
+    'El estado del trabajo pendiente no es válido.',
+  );
 export type Workshop = z.infer<typeof workshopSchema>;
 export type LocalData = {
+  jobs?: PendingJob[];
   stockMovements?: StockMovement[];
   products?: Product[];
   customers: Customer[];
@@ -129,6 +187,7 @@ export const dataSchema = z
     customers: z.array(customerSchema).max(20000),
     vehicles: z.array(vehicleSchema).max(20000),
     services: z.array(serviceSchema).max(50000),
+    jobs: z.array(jobSchema).max(10000).optional(),
     workshop: workshopSchema,
     photoSet: id.optional(),
     photos: z.array(photoReferenceSchema).max(1000).optional(),
@@ -136,6 +195,16 @@ export const dataSchema = z
     documents: z.array(documentReferenceSchema).max(MAX_DOCUMENTS).optional(),
   })
   .superRefine((data, context) => {
+    const allRecords = [...data.services, ...(data.jobs ?? [])];
+    if (
+      data.services.some(
+        (service) => service.workHistory?.length && service.workHistory.at(-1)?.to !== 'completado',
+      )
+    )
+      context.addIssue({
+        code: 'custom',
+        message: 'Un historial realizado tiene un estado pendiente.',
+      });
     const stockError = inventoryIssue(data);
     if (stockError) context.addIssue({ code: 'custom', message: stockError });
     const products = data.products ?? [];
@@ -143,7 +212,7 @@ export const dataSchema = z
     if (
       productIds.size !== products.length ||
       new Set(products.map((product) => productCode(product.code))).size !== products.length ||
-      data.services.some((service) =>
+      allRecords.some((service) =>
         service.supplyItems?.some((item) => item.productId && !productIds.has(item.productId)),
       )
     )
@@ -154,7 +223,7 @@ export const dataSchema = z
       });
     const customers = new Set(data.customers.map((c) => c.id));
     const vehicles = new Set(data.vehicles.map((v) => v.id));
-    const services = new Set(data.services.map((s) => s.id));
+    const services = new Set(allRecords.map((s) => s.id));
     const photos = data.photos ?? [];
     const documents = data.documents ?? [];
     if (
@@ -189,14 +258,14 @@ export const dataSchema = z
       (photos.length > 0 && !data.photoSet) ||
       new Set(photos.map((p) => p.id)).size !== photos.length ||
       photos.some((p) => !services.has(p.serviceId)) ||
-      data.services.some((s) => photos.filter((p) => p.serviceId === s.id).length > 6)
+      allRecords.some((s) => photos.filter((p) => p.serviceId === s.id).length > 6)
     ) {
       context.addIssue({ code: 'custom', message: 'Las referencias de las fotos no son válidas.' });
     }
     if (
       customers.size !== data.customers.length ||
       vehicles.size !== data.vehicles.length ||
-      services.size !== data.services.length
+      services.size !== allRecords.length
     ) {
       context.addIssue({
         code: 'custom',
@@ -208,7 +277,7 @@ export const dataSchema = z
       context.addIssue({ code: 'custom', message: 'Hay patentes duplicadas.' });
     if (
       data.vehicles.some((v) => !customers.has(v.customerId)) ||
-      data.services.some((s) => !vehicles.has(s.vehicleId))
+      allRecords.some((s) => !vehicles.has(s.vehicleId))
     ) {
       context.addIssue({
         code: 'custom',
@@ -332,13 +401,13 @@ export function parseBackup(content: string): LocalBackup {
     );
   }
 }
-export function localToday(): string {
+export function localToday(value = new Date()): string {
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/Argentina/Buenos_Aires',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-  }).formatToParts(new Date());
+  }).formatToParts(value);
   return ['year', 'month', 'day']
     .map((type) => parts.find((p) => p.type === type)!.value)
     .join('-');

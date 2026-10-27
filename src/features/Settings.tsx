@@ -50,6 +50,7 @@ import {
 export function Backups() {
   const auto = useAutomaticBackups();
   const {
+    jobs,
     stockMovements,
     products,
     customers,
@@ -75,6 +76,7 @@ export function Backups() {
   const [working, setWorking] = useState(false);
   const [reading, setReading] = useState(false);
   const localData = {
+    ...(jobs ? { jobs } : {}),
     ...(stockMovements ? { stockMovements } : {}),
     ...(products ? { products } : {}),
     customers,
@@ -116,6 +118,7 @@ export function Backups() {
             demo: true,
             restorable: false,
             exportedAt: new Date().toISOString(),
+            jobs: jobs ?? [],
             products: products ?? [],
             stockMovements: stockMovements ?? [],
             customers,
@@ -338,7 +341,7 @@ export function Backups() {
                   <h3>{mode === 'demo' ? 'Datos de la sesión · JSON' : 'Respaldo local · JSON'}</h3>
                   <p>
                     {customers.length} clientes, {vehicles.length} vehículos y {services.length}{' '}
-                    mantenimientos.
+                    mantenimientos · {jobs?.length ?? 0} presupuestos y trabajos.
                   </p>
                   <small>
                     {mode === 'demo'
@@ -443,7 +446,8 @@ export function Backups() {
                 <h3>Respaldo válido · {candidate.data.workshop.name}</h3>
                 <p>
                   {candidate.data.customers.length} clientes · {candidate.data.vehicles.length}{' '}
-                  vehículos · {candidate.data.services.length} mantenimientos
+                  vehículos · {candidate.data.services.length} mantenimientos ·{' '}
+                  {candidate.data.jobs?.length ?? 0} presupuestos y trabajos
                 </p>
                 <p>
                   {candidate.data.products?.length ?? 0} productos ·{' '}
@@ -586,7 +590,8 @@ export function Backups() {
             </p>
             <p>
               Actuales: {customers.length} clientes, {vehicles.length} vehículos y {services.length}{' '}
-              mantenimientos y {products?.length ?? 0} productos.
+              mantenimientos, {jobs?.length ?? 0} presupuestos y trabajos, y {products?.length ?? 0}{' '}
+              productos.
             </p>
             <p>
               El respaldo contiene {candidate.data.products?.length ?? 0} productos y{' '}

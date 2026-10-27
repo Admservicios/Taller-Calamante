@@ -1,3 +1,5 @@
+import type { QuoteSnapshot } from './localDatabase';
+import type { WorkEvent } from './workOrders';
 import type { SupplyItem } from './supplyItems';
 import type { SuppliesDetail } from './maintenanceEntry';
 import { vehiclePlanStatus, type MaintenancePlan } from './maintenancePlans';
@@ -36,6 +38,8 @@ export type ServiceChange = {
   changes: { field: string; before: string; after: string }[];
 };
 export type Service = {
+  quotes?: QuoteSnapshot[];
+  workHistory?: WorkEvent[];
   stockManaged?: true;
   annulment?: { at: string; reason: string };
   changes?: ServiceChange[];

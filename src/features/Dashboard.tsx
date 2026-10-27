@@ -144,6 +144,17 @@ export function Dashboard() {
           </span>
         </Link>
       )}
+      {!!store.jobs?.some((job) => job.stage !== 'cancelado') && (
+        <Link className="stock-replenishment-link" to="/mantenimientos?vista=pendientes">
+          <span>
+            {store.jobs.filter((job) => job.stage !== 'cancelado').length} presupuestos y trabajos
+            en curso
+          </span>
+          <span>
+            Revisar trabajos <ArrowRight size={16} />
+          </span>
+        </Link>
+      )}
       <div className="dashboard-grid">
         <div className="dashboard-main">
           <Panel

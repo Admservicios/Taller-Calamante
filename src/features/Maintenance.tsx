@@ -1,3 +1,6 @@
+import { workStages, type WorkStage } from '../lib/workOrders';
+import { downloadQuotePDF } from '../lib/quotePDF';
+import { QuoteHistory } from '../components/QuoteHistory';
 import {
   laborAmountSchema,
   suggestedServiceCents,
@@ -27,7 +30,6 @@ import type { PreparedPhoto } from '../lib/photos';
 import {
   maintenanceKind,
   maintenanceTypes,
-  recordServicePlan,
   servicePlan,
   vehiclePlans,
 } from '../lib/maintenancePlans';
@@ -62,21 +64,33 @@ function MaintenanceFormFields() {
     vehicles,
     services,
     workshop,
-    addService,
+    saveWorkOrder,
     updateService,
     notify,
     mode,
     referenceDate,
   } = store;
   const { id } = useParams();
-  const [original] = useState(() => services.find((s) => !s.annulment && s.id === id));
+  const [params] = useSearchParams();
+  const [originalJob] = useState(() => store.jobs?.find((job) => job.id === id));
+  const [original] = useState(
+    () => services.find((s) => !s.annulment && s.id === id) ?? originalJob,
+  );
+  const [stage, setStage] = useState<WorkStage>(
+    originalJob?.stage ??
+      (original
+        ? 'completado'
+        : params.get('estado') === 'presupuesto'
+          ? 'presupuesto'
+          : 'completado'),
+  );
+  const [cancelReason, setCancelReason] = useState(originalJob?.cancellationReason ?? '');
   const [initialPlan] = useState(() =>
-    original ? editableServicePlan(original, store) : undefined,
+    original && !originalJob ? editableServicePlan(original, store) : undefined,
   );
   const [hasNext, setHasNext] = useState(!original || !!initialPlan);
   const [removedPhotoIds, setRemovedPhotoIds] = useState<string[]>([]);
   const savedPhotos = (store.photos ?? []).filter((p) => p.serviceId === original?.id);
-  const [params] = useSearchParams();
   const navigate = useNavigate();
   const initialVehicle =
     vehicles.find((v) => v.id === (original?.vehicleId ?? params.get('vehiculo'))) ?? vehicles[0];
@@ -187,18 +201,31 @@ function MaintenanceFormFields() {
     setDirty(true);
   };
   const cancel = () => {
-    if (confirmDiscard()) navigate('/mantenimientos');
+    if (confirmDiscard())
+      navigate(
+        originalJob || stage !== 'completado'
+          ? '/mantenimientos?vista=pendientes'
+          : '/mantenimientos',
+      );
   };
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!vehicle || saving || preparingPhotos) return;
+    setError('');
     const wantsPDF = (e.nativeEvent as SubmitEvent).submitter?.getAttribute('value') === 'pdf';
     const data = new FormData(e.currentTarget);
-    if (isAlignment && alignment === 'No realizada' && balancing === 'No realizado') {
+    if (
+      stage === 'completado' &&
+      isAlignment &&
+      alignment === 'No realizada' &&
+      balancing === 'No realizado'
+    ) {
       setError('Indicá una alineación o un balanceo realizado para guardar este servicio.');
       return;
     }
-    const result = (hasNext ? serviceSchema : serviceFieldsSchema).safeParse({
+    const result = (
+      hasNext && stage === 'completado' ? serviceSchema : serviceFieldsSchema
+    ).safeParse({
       date: data.get('date'),
       km: Number(data.get('km')),
       type: actualType,
@@ -219,7 +246,7 @@ function MaintenanceFormFields() {
       setError('El detalle completo del trabajo no puede superar los 2000 caracteres.');
       return;
     }
-    if (!original && result.data.km < vehicle.km) {
+    if (stage === 'completado' && !original && result.data.km < vehicle.km) {
       setError(`El kilometraje debe ser igual o mayor a ${number(vehicle.km)} km.`);
       return;
     }
@@ -238,6 +265,8 @@ function MaintenanceFormFields() {
       original,
     );
     const service: Service = {
+      ...(original?.quotes ? { quotes: original.quotes } : {}),
+      ...(original?.workHistory ? { workHistory: original.workHistory } : {}),
       ...(!original || original.stockManaged ? { stockManaged: true as const } : {}),
       id: original?.id ?? randomId(),
       vehicleId: vehicle.id,
@@ -252,7 +281,7 @@ function MaintenanceFormFields() {
       public: mode === 'demo' ? data.get('public') === 'on' : (original?.public ?? false),
     };
     const next = { date: nextDate, km: nextKm, recommendation };
-    if (hasNext) {
+    if (hasNext && stage === 'completado') {
       try {
         service.maintenance = servicePlan(service, next);
       } catch {
@@ -260,7 +289,7 @@ function MaintenanceFormFields() {
         return;
       }
     }
-    if (!original) {
+    if (!original && stage === 'completado') {
       try {
         applyServiceStock(store, store, service);
       } catch (reason) {
@@ -269,7 +298,7 @@ function MaintenanceFormFields() {
       }
     }
     let correctedVehicle = vehicle;
-    if (original) {
+    if (original && !originalJob) {
       try {
         correctedVehicle = editServiceData(store, original, service, referenceDate).vehicles.find(
           (v) => v.id === vehicle.id,
@@ -280,15 +309,53 @@ function MaintenanceFormFields() {
       }
     }
     setSaving(true);
-    const saved = original
-      ? await updateService(original, service, photos, removedPhotoIds)
-      : await addService(service, next, photos);
+    const workResult =
+      original && !originalJob
+        ? null
+        : await saveWorkOrder(
+            originalJob,
+            service,
+            stage,
+            photos,
+            removedPhotoIds,
+            wantsPDF && stage !== 'completado',
+            cancelReason,
+          );
+    if (workResult && 'error' in workResult) {
+      setError(workResult.error);
+      setSaving(false);
+      return;
+    }
+    const savedRecord = workResult?.saved;
+    const saved =
+      original && !originalJob
+        ? await updateService(original, service, photos, removedPhotoIds)
+        : !!savedRecord;
     if (!saved) {
       setSaving(false);
       return;
     }
     setDirty(false);
     markClean();
+    if (stage !== 'completado') {
+      let message = 'Trabajo guardado. No se modificaron existencias, kilómetros ni vencimientos.';
+      if (wantsPDF && savedRecord?.quotes?.length) {
+        setGeneratingPDF(true);
+        try {
+          await downloadQuotePDF(savedRecord.quotes.at(-1)!, mode === 'demo');
+          message = 'Presupuesto guardado y PDF descargado.';
+        } catch {
+          message =
+            'El presupuesto quedó emitido y guardado. Podés volver a descargarlo desde sus versiones.';
+        } finally {
+          setGeneratingPDF(false);
+        }
+      }
+      setSaving(false);
+      notify(message);
+      navigate('/mantenimientos?vista=pendientes');
+      return;
+    }
     let message =
       mode === 'demo'
         ? 'Mantenimiento agregado a la sesión de demostración. Las fotos se conservan en esta sesión.'
@@ -304,17 +371,9 @@ function MaintenanceFormFields() {
         const customer = customers.find((c) => c.id === vehicle.customerId);
         if (!customer) throw new Error('Falta el cliente.');
         await downloadServicePDF({
-          service,
+          service: savedRecord ?? service,
           customer,
-          vehicle: original
-            ? correctedVehicle
-            : recordServicePlan(
-                vehicle,
-                service,
-                next,
-                referenceDate,
-                services.filter((s) => !s.annulment),
-              ),
+          vehicle: original && !originalJob ? correctedVehicle : { ...vehicle, km: service.km },
           workshop,
           demo: mode === 'demo',
         });
@@ -333,6 +392,22 @@ function MaintenanceFormFields() {
     notify(message);
     navigate(`/vehiculos/${vehicle.id}`);
   };
+  const saveLabel =
+    stage !== 'completado'
+      ? stage === 'presupuesto'
+        ? 'Guardar presupuesto'
+        : stage === 'en-trabajo'
+          ? 'Guardar trabajo'
+          : 'Guardar cancelación'
+      : originalJob
+        ? 'Completar mantenimiento'
+        : mode === 'demo'
+          ? 'Guardar en demo'
+          : original
+            ? 'Guardar cambios'
+            : 'Guardar mantenimiento';
+  const pdfLabel =
+    stage === 'completado' ? 'Guardar y generar PDF' : 'Guardar y emitir presupuesto PDF';
   const history = services
     .filter((s) => !s.annulment)
     .filter((s) => s.vehicleId === vehicleId)
@@ -352,8 +427,22 @@ function MaintenanceFormFields() {
   return (
     <>
       <PageTitle
-        title={original ? 'Editar mantenimiento' : 'Registrar mantenimiento'}
-        subtitle="Elegí el vehículo, agregá las tareas realizadas y revisá el próximo vencimiento."
+        title={
+          originalJob
+            ? stage === 'completado'
+              ? 'Completar mantenimiento'
+              : 'Editar trabajo'
+            : original
+              ? 'Editar mantenimiento'
+              : stage === 'completado'
+                ? 'Registrar mantenimiento'
+                : 'Nuevo presupuesto'
+        }
+        subtitle={
+          stage === 'completado'
+            ? 'Elegí el vehículo, agregá las tareas realizadas y revisá el próximo vencimiento.'
+            : 'Prepará el trabajo y sus importes. Solo al completarlo pasará al historial.'
+        }
         actions={
           <button className="button" onClick={cancel} disabled={saving || preparingPhotos}>
             <ArrowLeft size={16} />
@@ -374,44 +463,32 @@ function MaintenanceFormFields() {
           <div className="maintenance-save-buttons">
             <button
               className="button primary"
-              aria-label={
-                saving
-                  ? 'Guardando…'
-                  : mode === 'demo'
-                    ? 'Guardar en demo'
-                    : original
-                      ? 'Guardar cambios'
-                      : 'Guardar mantenimiento'
-              }
+              aria-label={saving ? 'Guardando…' : saveLabel}
               type="submit"
               disabled={!vehicle || saving || preparingPhotos}
             >
               <Save size={17} />
-              <span className="save-label-full">
+              <span className="save-label-full">{saving ? 'Guardando…' : saveLabel}</span>
+              <span className="save-label-short" aria-hidden="true">
                 {saving
                   ? 'Guardando…'
-                  : mode === 'demo'
-                    ? 'Guardar en demo'
-                    : original
-                      ? 'Guardar cambios'
-                      : 'Guardar mantenimiento'}
-              </span>
-              <span className="save-label-short" aria-hidden="true">
-                {saving ? 'Guardando…' : mode === 'demo' ? 'Guardar demo' : 'Guardar'}
+                  : originalJob && stage === 'completado'
+                    ? 'Completar'
+                    : mode === 'demo'
+                      ? 'Guardar demo'
+                      : 'Guardar'}
               </span>
             </button>
             <button
               className="button"
-              aria-label={generatingPDF ? 'Generando PDF…' : 'Guardar y generar PDF'}
+              aria-label={generatingPDF ? 'Generando PDF…' : pdfLabel}
               type="submit"
               name="intent"
               value="pdf"
-              disabled={!vehicle || saving || preparingPhotos}
+              disabled={!vehicle || saving || preparingPhotos || stage === 'cancelado'}
             >
               <FileDown size={17} />
-              <span className="save-label-full">
-                {generatingPDF ? 'Generando PDF…' : 'Guardar y generar PDF'}
-              </span>
+              <span className="save-label-full">{generatingPDF ? 'Generando PDF…' : pdfLabel}</span>
               <span className="save-label-short" aria-hidden="true">
                 {generatingPDF ? 'Generando…' : 'Guardar + PDF'}
               </span>
@@ -424,6 +501,50 @@ function MaintenanceFormFields() {
           )}
         </div>
         <div className="form-main" inert={saving}>
+          {(!original || originalJob) && (
+            <Panel title="Estado del trabajo" icon={Wrench}>
+              <label>
+                Estado
+                <select
+                  value={stage}
+                  onChange={(e) => {
+                    const value = e.target.value as WorkStage;
+                    setStage(value);
+                    if (value === 'completado' && originalJob) {
+                      setServiceDate(referenceDate);
+                      setServiceKm(vehicle?.km ?? 0);
+                      setNextDate(nextServiceDate(referenceDate));
+                      setNextKm((vehicle?.km ?? 0) + 10000);
+                      setHasNext(true);
+                    }
+                  }}
+                >
+                  {Object.entries(workStages).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p className="fineprint">
+                {stage === 'completado'
+                  ? 'Al guardar se registran el trabajo realizado, los kilómetros, el stock y sus vencimientos.'
+                  : 'Este trabajo no descuenta stock ni modifica kilómetros o vencimientos.'}
+              </p>
+              {stage === 'cancelado' && (
+                <label>
+                  Motivo de cancelación
+                  <textarea
+                    required
+                    minLength={3}
+                    maxLength={500}
+                    value={cancelReason}
+                    onChange={(e) => setCancelReason(e.target.value)}
+                  />
+                </label>
+              )}
+            </Panel>
+          )}
           {original && (
             <details className="help-details">
               <summary>Información sobre esta corrección</summary>
@@ -497,7 +618,8 @@ function MaintenanceFormFields() {
           <Panel title="Detalles del mantenimiento" icon={Wrench}>
             <div className="form-grid three">
               <label>
-                Fecha del servicio <span>*</span>
+                {stage === 'completado' ? 'Fecha del servicio' : 'Fecha del presupuesto / trabajo'}{' '}
+                <span>*</span>
                 <input
                   type="date"
                   name="date"
@@ -520,7 +642,8 @@ function MaintenanceFormFields() {
                 />
               </label>
               <label>
-                Kilometraje actual <span>*</span>
+                {stage === 'completado' ? 'Kilometraje actual' : 'Kilometraje informado'}{' '}
+                <span>*</span>
                 <div className="input-suffix">
                   <input
                     key={vehicleId}
@@ -586,7 +709,11 @@ function MaintenanceFormFields() {
                 minLength={5}
                 maxLength={isAlignment ? 1800 : 2000}
                 rows={4}
-                placeholder="Describí el servicio y los trabajos realizados…"
+                placeholder={
+                  stage === 'completado'
+                    ? 'Describí el servicio y los trabajos realizados…'
+                    : 'Describí el trabajo que se presupuesta…'
+                }
               />
             </label>
           </Panel>
@@ -594,7 +721,8 @@ function MaintenanceFormFields() {
             <Panel title="Alineación y balanceo" icon={Settings2}>
               <div className="form-grid">
                 <label>
-                  Alineación realizada <span>*</span>
+                  {stage === 'completado' ? 'Alineación realizada' : 'Alineación a realizar'}{' '}
+                  <span>*</span>
                   <select
                     name="alignment"
                     required={!original}
@@ -608,7 +736,8 @@ function MaintenanceFormFields() {
                   </select>
                 </label>
                 <label>
-                  Ruedas balanceadas <span>*</span>
+                  {stage === 'completado' ? 'Ruedas balanceadas' : 'Ruedas a balancear'}{' '}
+                  <span>*</span>
                   <select
                     name="balancing"
                     required={!original}
@@ -630,9 +759,11 @@ function MaintenanceFormFields() {
           )}
           <Panel title="Insumos y repuestos" icon={Settings2}>
             <p className="fine-print">
-              {original && !original.stockManaged
-                ? 'Servicio anterior al control de stock: sus correcciones no descuentan existencias. Si corresponde, registrá un ajuste con motivo en Productos.'
-                : 'Los artículos del catálogo descuentan stock al guardar. Los artículos manuales no modifican existencias. No se reservan cantidades mientras completás el formulario.'}
+              {stage !== 'completado'
+                ? 'El stock se verifica y descuenta al completar el mantenimiento. Presupuestar no reserva cantidades.'
+                : original && !originalJob && !original.stockManaged
+                  ? 'Servicio anterior al control de stock: sus correcciones no descuentan existencias. Si corresponde, registrá un ajuste con motivo en Productos.'
+                  : 'Los artículos del catálogo descuentan stock al guardar. Los artículos manuales no modifican existencias. No se reservan cantidades mientras completás el formulario.'}
             </p>
             <SupplyItemsEditor
               rows={supplyRows}
@@ -647,99 +778,102 @@ function MaintenanceFormFields() {
               }}
             />
           </Panel>
-          <Panel title={`Próximo mantenimiento · ${kind.label}`} icon={CalendarDays}>
-            {original && (
-              <label className="check-label">
-                <input
-                  type="checkbox"
-                  checked={hasNext}
-                  onChange={(e) => setHasNext(e.target.checked)}
-                />
-                Este registro tiene un vencimiento propio
-              </label>
-            )}
-            {!hasNext && (
-              <p className="fine-print">
-                No se registró un vencimiento para esta visita. Podés corregir sus datos sin
-                inventar un intervalo.
-              </p>
-            )}
-            {hasNext && (
-              <div className="form-grid three">
-                <label>
-                  Fecha recomendada <span>*</span>
+          {stage === 'completado' && (
+            <Panel title={`Próximo mantenimiento · ${kind.label}`} icon={CalendarDays}>
+              {original && (
+                <label className="check-label">
                   <input
-                    type="date"
-                    required
-                    value={nextDate}
-                    onChange={(e) => setNextDate(e.target.value)}
+                    type="checkbox"
+                    checked={hasNext}
+                    onChange={(e) => setHasNext(e.target.checked)}
                   />
+                  Este registro tiene un vencimiento propio
                 </label>
-                <label>
-                  Kilometraje objetivo <span>*</span>
-                  <input
-                    type="number"
-                    required
-                    min={serviceKm + 1}
-                    max="9999999"
-                    value={nextKm}
-                    onChange={(e) => setNextKm(Number(e.target.value))}
-                  />
-                </label>
-                <label>
-                  Trabajo recomendado
-                  <select
-                    name="nextType"
-                    value={customRecommendation ? '__custom__' : recommendation}
-                    onChange={(e) => {
-                      if (e.target.value === '__custom__') setCustomRecommendation(true);
-                      else {
-                        setCustomRecommendation(false);
-                        setRecommendation(e.target.value);
-                      }
-                    }}
-                  >
-                    {kind.recommendations.map((value) => (
-                      <option key={value}>{value}</option>
-                    ))}
-                    <option value="__custom__">Otro trabajo recomendado…</option>
-                  </select>
-                </label>
-                {customRecommendation && (
-                  <label className="entry-other-supplies">
-                    Trabajo recomendado personalizado
+              )}
+              {!hasNext && (
+                <p className="fine-print">
+                  No se registró un vencimiento para esta visita. Podés corregir sus datos sin
+                  inventar un intervalo.
+                </p>
+              )}
+              {hasNext && (
+                <div className="form-grid three">
+                  <label>
+                    Fecha recomendada <span>*</span>
                     <input
+                      type="date"
                       required
-                      maxLength={150}
-                      value={recommendation}
-                      onChange={(e) => setRecommendation(e.target.value)}
-                      placeholder="Escribí la recomendación"
+                      value={nextDate}
+                      onChange={(e) => setNextDate(e.target.value)}
                     />
                   </label>
-                )}
-              </div>
-            )}
-            <p className="fine-print">
-              Este aviso corresponde a {kind.label}. Los otros servicios conservan sus vencimientos.
-            </p>
-            <details className="help-details">
-              <summary>Ver otros vencimientos y cómo se actualizan</summary>{' '}
+                  <label>
+                    Kilometraje objetivo <span>*</span>
+                    <input
+                      type="number"
+                      required
+                      min={serviceKm + 1}
+                      max="9999999"
+                      value={nextKm}
+                      onChange={(e) => setNextKm(Number(e.target.value))}
+                    />
+                  </label>
+                  <label>
+                    Trabajo recomendado
+                    <select
+                      name="nextType"
+                      value={customRecommendation ? '__custom__' : recommendation}
+                      onChange={(e) => {
+                        if (e.target.value === '__custom__') setCustomRecommendation(true);
+                        else {
+                          setCustomRecommendation(false);
+                          setRecommendation(e.target.value);
+                        }
+                      }}
+                    >
+                      {kind.recommendations.map((value) => (
+                        <option key={value}>{value}</option>
+                      ))}
+                      <option value="__custom__">Otro trabajo recomendado…</option>
+                    </select>
+                  </label>
+                  {customRecommendation && (
+                    <label className="entry-other-supplies">
+                      Trabajo recomendado personalizado
+                      <input
+                        required
+                        maxLength={150}
+                        value={recommendation}
+                        onChange={(e) => setRecommendation(e.target.value)}
+                        placeholder="Escribí la recomendación"
+                      />
+                    </label>
+                  )}
+                </div>
+              )}
               <p className="fine-print">
-                {original
-                  ? 'Al corregir fecha o kilómetros se mantiene el intervalo de esta visita; podés ajustar los objetivos. Un servicio posterior del mismo tipo o un vencimiento ajustado manualmente conserva su prioridad. Revisá Recordatorios si cambiás el tipo o vehículo: si no hay otro vencimiento registrado, esa categoría quedará sin programación.'
-                  : `Solo se actualiza el vencimiento de ${kind.label}. Los demás servicios conservan su fecha y kilometraje objetivo.`}
+                Este aviso corresponde a {kind.label}. Los otros servicios conservan sus
+                vencimientos.
               </p>
-              {vehicle &&
-                vehiclePlans(vehicle)
-                  .filter((p) => p.category !== kind.key)
-                  .map((plan) => (
-                    <p className="fine-print" key={plan.category}>
-                      Se conserva {plan.label}: {dateLabel(plan.nextDate)} o {number(plan.nextKm)}{' '}
-                      km.
-                    </p>
-                  ))}
-            </details>
-          </Panel>
+              <details className="help-details">
+                <summary>Ver otros vencimientos y cómo se actualizan</summary>{' '}
+                <p className="fine-print">
+                  {original
+                    ? 'Al corregir fecha o kilómetros se mantiene el intervalo de esta visita; podés ajustar los objetivos. Un servicio posterior del mismo tipo o un vencimiento ajustado manualmente conserva su prioridad. Revisá Recordatorios si cambiás el tipo o vehículo: si no hay otro vencimiento registrado, esa categoría quedará sin programación.'
+                    : `Solo se actualiza el vencimiento de ${kind.label}. Los demás servicios conservan su fecha y kilometraje objetivo.`}
+                </p>
+                {vehicle &&
+                  vehiclePlans(vehicle)
+                    .filter((p) => p.category !== kind.key)
+                    .map((plan) => (
+                      <p className="fine-print" key={plan.category}>
+                        Se conserva {plan.label}: {dateLabel(plan.nextDate)} o {number(plan.nextKm)}{' '}
+                        km.
+                      </p>
+                    ))}
+              </details>
+            </Panel>
+          )}
           <div className="form-bottom-grid">
             <Panel title="Observaciones privadas" icon={NotebookPen}>
               <label>
@@ -830,7 +964,10 @@ function MaintenanceFormFields() {
               </div>
             </Panel>
           </div>
-          <Panel title="Fotos del mantenimiento" icon={Camera}>
+          <Panel
+            title={stage === 'completado' ? 'Fotos del mantenimiento' : 'Fotos del trabajo'}
+            icon={Camera}
+          >
             {savedPhotos.map((photo) => (
               <label className="check-label" key={photo.id}>
                 <input
@@ -893,8 +1030,9 @@ function MaintenanceFormFields() {
               <p className="muted">Sin servicios registrados.</p>
             )}
           </Panel>
+          {original && <QuoteHistory service={original} />}
           <Panel className="save-panel">
-            {hasNext && (
+            {hasNext && stage === 'completado' && (
               <div className="info-strip">
                 <Info size={21} />
                 <span>
@@ -904,7 +1042,7 @@ function MaintenanceFormFields() {
                 </span>
               </div>
             )}
-            {mode === 'demo' && (
+            {mode === 'demo' && stage === 'completado' && (
               <label className="check-label">
                 <input
                   type="checkbox"

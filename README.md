@@ -24,6 +24,8 @@ Los datos se guardan en **el navegador del usuario**, usando `localStorage` para
 
 Disponible:
 
+- Presupuestos y trabajos en el mismo formulario de Mantenimientos: Presupuesto, Confirmado / En trabajo, Completado y Cancelado. Solo al completar se registra el servicio realizado y se actualizan stock, kilómetros y vencimientos. Los presupuestos PDF emitidos conservan sus versiones y precios originales.
+
 - Clientes: crear, editar y desactivar; buscar también por patente, filtrar por estado y vehículos, ordenar y paginar con filtros conservados al volver de la ficha.
 - Filtros de cliente con búsqueda por nombre, DNI/CUIT o teléfono en vehículos, mantenimientos y próximos servicios.
 - Vehículos: registrar y editar, filtrar por cliente/marca/estado, ordenar, alternar tarjetas/tabla y exportar la flota a CSV con sus vencimientos vigentes.
